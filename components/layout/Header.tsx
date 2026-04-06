@@ -16,6 +16,7 @@ const navLinks = [
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [trainKey, setTrainKey] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -23,26 +24,36 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const trigger = () => setTrainKey((k) => k + 1);
+    const initial = setTimeout(() => {
+      trigger();
+      const interval = setInterval(trigger, 5000);
+      return () => clearInterval(interval);
+    }, 3000);
+    return () => clearTimeout(initial);
+  }, []);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-dark shadow-lg" : "bg-dark/90 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? "bg-dark shadow-lg" : "bg-transparent"
       }`}
     >
       <Container>
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-2.5 min-w-0 overflow-hidden">
             <img
               src="/logo.png"
               alt="Владен"
-              className="h-12 md:h-14 w-auto object-contain"
+              className="h-9 md:h-14 w-auto object-contain flex-shrink-0"
             />
-            <div className="flex flex-col leading-none">
-              <span className="text-accent text-xl md:text-2xl font-oswald font-bold tracking-wider">
+            <div className="flex flex-col leading-none min-w-0">
+              <span className="text-accent text-lg md:text-2xl font-oswald font-bold tracking-wider whitespace-nowrap">
                 ВЛАДЕН
               </span>
-              <span className="text-text-dark/60 text-[10px] tracking-widest uppercase font-inter">
+              <span className="text-white/70 text-[9px] sm:text-[10px] tracking-widest uppercase font-inter whitespace-nowrap">
                 Строительная компания
               </span>
             </div>
@@ -63,21 +74,54 @@ export default function Header() {
 
           {/* CTA */}
           <div className="hidden md:block">
-            <Button
-              size="sm"
-              onClick={() => {
-                document
-                  .getElementById("contacts")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Получить консультацию
-            </Button>
+            <div className="relative group">
+              {/* SVG трасса — всегда в DOM, stroke-dashoffset анимируется */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+                style={{ filter: "drop-shadow(0 0 4px #fbbf24)" }}
+              >
+                <defs>
+                  <linearGradient id="comet-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stopColor="#D97706" stopOpacity="0" />
+                    <stop offset="40%"  stopColor="#fbbf24" />
+                    <stop offset="70%"  stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <rect
+                  key={trainKey}
+                  x="1" y="1"
+                  width="calc(100% - 2px)"
+                  height="calc(100% - 2px)"
+                  rx="4"
+                  fill="none"
+                  stroke="url(#comet-grad)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeDasharray="55 485"
+                  strokeDashoffset="0"
+                  className={trainKey > 0 ? "comet-racing" : ""}
+                  style={{ opacity: 0 }}
+                />
+              </svg>
+
+              <Button
+                size="md"
+                className="hover:shadow-[0_0_18px_5px_rgba(217,119,6,0.4)] transition-shadow duration-300"
+                onClick={() => {
+                  document
+                    .getElementById("contacts")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Получить консультацию
+              </Button>
+            </div>
           </div>
 
           {/* Mobile burger */}
           <button
-            className="md:hidden text-text-dark p-2"
+            className="md:hidden text-accent p-2 flex-shrink-0 ml-3"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Меню"
           >
@@ -101,6 +145,18 @@ export default function Header() {
           </button>
         </div>
       </Container>
+
+      {/* Fade-хвост под хедером — только когда прозрачный */}
+      {!scrolled && (
+        <div
+          className="absolute left-0 right-0 pointer-events-none"
+          style={{
+            top: "100%",
+            height: 10,
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.35), transparent)",
+          }}
+        />
+      )}
 
       {/* Mobile menu */}
       <div

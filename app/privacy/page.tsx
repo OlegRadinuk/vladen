@@ -129,7 +129,12 @@ export default function PrivacyPage() {
                     </a>
                   </li>
                   <li>
-                    Адрес: г. Симферополь, ул. Киевская 41, офис 727
+                    Адрес: <a
+                      href="https://yandex.com/maps/org/vladen/111586244168/?ll=80.925822%2C47.800786&z=3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-accent transition-colors underline"
+                    >г. Симферополь, ул. Киевская 41, офис 727</a>
                   </li>
                 </ul>
               </div>

@@ -1,21 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+
+type CalcData = {
+  service: string;
+  area: number;
+  material: string;
+  total: number;
+};
 
 type Status = "idle" | "loading" | "success" | "error";
 
 function validatePhone(phone: string) {
   const cleaned = phone.replace(/\D/g, "");
-  return cleaned.length >= 10;
+  return cleaned.length >= 11;
+}
+
+function formatPhone(value: string): string {
+  // Оставляем только цифры
+  let digits = value.replace(/\D/g, "");
+
+  // Если начинается с 8 — меняем на 7
+  if (digits.startsWith("8")) digits = "7" + digits.slice(1);
+  // Если начинается с 9 (например, 978...) — добавляем 7
+  if (digits.startsWith("9")) digits = "7" + digits;
+  // Обрезаем до 11 цифр
+  digits = digits.slice(0, 11);
+
+  // Форматируем: +7 (978) 123-45-67
+  let result = "+7";
+  if (digits.length > 1) result += " (" + digits.slice(1, 4);
+  if (digits.length >= 4) result += ") " + digits.slice(4, 7);
+  if (digits.length >= 7) result += "-" + digits.slice(7, 9);
+  if (digits.length >= 9) result += "-" + digits.slice(9, 11);
+
+  return result;
 }
 
 export default function Contacts() {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
   const [phoneError, setPhoneError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [calcData, setCalcData] = useState<CalcData | null>(null);
+
+  useEffect(() => {
+    const readCalc = () => {
+      try {
+        const raw = localStorage.getItem("vladen_calc");
+        setCalcData(raw ? JSON.parse(raw) : null);
+      } catch {}
+    };
+    // Слушаем обновления от калькулятора на этой же странице
+    window.addEventListener("vladen_calc_update", readCalc);
+    return () => window.removeEventListener("vladen_calc_update", readCalc);
+  }, []);
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhone(e.target.value);
+    setPhone(formatted);
+    setPhoneError("");
+  };
+
+  const handlePhoneFocus = () => {
+    if (phone === "+7 " || phone === "+7") setPhone("+7 ");
+  };
+
+  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Не даём удалить "+7 " префикс
+    if (
+      (e.key === "Backspace" || e.key === "Delete") &&
+      phone.replace(/\D/g, "").length <= 1
+    ) {
+      e.preventDefault();
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,12 +92,12 @@ export default function Contacts() {
       const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone }),
+        body: JSON.stringify({ name, phone, calc: calcData }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
       setName("");
-      setPhone("");
+      setPhone("+7 ");
     } catch {
       setStatus("error");
     }
@@ -51,7 +112,7 @@ export default function Contacts() {
             <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
               Свяжитесь с нами
             </p>
-            <h2 className="font-oswald text-3xl md:text-5xl font-bold text-text-light mb-6">
+            <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light mb-6">
               Обсудим ваш проект
             </h2>
             <p className="text-text-muted leading-relaxed mb-8">
@@ -107,16 +168,21 @@ export default function Contacts() {
                 </div>
                 <div>
                   <div className="text-text-muted text-xs">Офис</div>
-                  <div className="text-text-light font-medium">
+                  <a
+                    href="https://yandex.com/maps/org/vladen/111586244168/?ll=80.925822%2C47.800786&z=3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-text-light font-medium hover:text-accent transition-colors"
+                  >
                     г. Симферополь, ул. Киевская 41, офис 727
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             <h3 className="font-oswald text-2xl font-semibold text-text-light mb-6">
               Оставить заявку
             </h3>
@@ -158,11 +224,10 @@ export default function Contacts() {
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      setPhoneError("");
-                    }}
-                    placeholder="+7 (900) 000-00-00"
+                    onChange={handlePhoneChange}
+                    onFocus={handlePhoneFocus}
+                    onKeyDown={handlePhoneKeyDown}
+                    placeholder="+7 (978) 123-45-67"
                     required
                     className={`w-full border rounded-lg px-4 py-3 text-text-light focus:outline-none transition-colors ${
                       phoneError
@@ -174,6 +239,18 @@ export default function Contacts() {
                     <p className="text-red-500 text-xs mt-1">{phoneError}</p>
                   )}
                 </div>
+
+                {calcData && (
+                  <div className="bg-accent/8 border border-accent/25 rounded-lg px-4 py-3 text-sm">
+                    <p className="text-text-muted text-xs mb-1 font-medium uppercase tracking-wide">Ваш расчёт из калькулятора</p>
+                    <div className="text-text-light space-y-0.5">
+                      <p>Вид работ: <span className="font-medium">{calcData.service}</span></p>
+                      <p>Площадь: <span className="font-medium">{calcData.area} м²</span></p>
+                      <p>Класс материалов: <span className="font-medium">{calcData.material}</span></p>
+                      <p>Ориентировочная стоимость: <span className="font-medium text-accent">от {new Intl.NumberFormat("ru-RU").format(calcData.total)} ₽</span></p>
+                    </div>
+                  </div>
+                )}
 
                 {status === "error" && (
                   <p className="text-red-500 text-sm">

@@ -10,7 +10,7 @@ const navLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-text-dark">
+    <footer className="text-text-dark" style={{ backgroundColor: "#16191D" }}>
       <Container>
         <div className="py-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left: Brand + Nav + Contacts */}
@@ -69,7 +69,16 @@ export default function Footer() {
                     vladen2026@mail.ru
                   </a>
                 </li>
-                <li>г. Симферополь, ул. Киевская 41, офис 727</li>
+                <li>
+                  <a
+                    href="https://yandex.com/maps/org/vladen/111586244168/?ll=80.925822%2C47.800786&z=3"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-accent transition-colors"
+                  >
+                    г. Симферополь, ул. Киевская 41, офис 727
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

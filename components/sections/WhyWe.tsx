@@ -72,7 +72,7 @@ export default function WhyWe() {
           <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
             Наши преимущества
           </p>
-          <h2 className="font-oswald text-3xl md:text-5xl font-bold text-text-light mb-4">
+          <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light mb-4">
             Почему выбирают нас
           </h2>
           <p className="text-text-muted max-w-xl mx-auto">

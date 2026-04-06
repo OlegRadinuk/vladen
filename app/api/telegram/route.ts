@@ -8,14 +8,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  let body: { name?: string; phone?: string };
+  type CalcData = { service?: string; area?: number; material?: string; total?: number };
+  let body: { name?: string; phone?: string; calc?: CalcData };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, phone } = body;
+  const { name, phone, calc } = body;
   if (!name || !phone) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -35,11 +36,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
+  const calcBlock = calc
+    ? `\n\n📊 <b>Расчёт из калькулятора:</b>\n` +
+      `   Вид работ: ${calc.service}\n` +
+      `   Площадь: ${calc.area} м²\n` +
+      `   Материалы: ${calc.material}\n` +
+      `   Ориентир. стоимость: от ${new Intl.NumberFormat("ru-RU").format(calc.total ?? 0)} ₽`
+    : "";
+
   const text =
-    `🏗 Новая заявка с сайта ВЛАДЕН\n\n` +
+    `🏗 <b>Новая заявка с сайта ВЛАДЕН</b>\n\n` +
     `👤 Имя: ${name}\n` +
-    `📞 Телефон: ${phone}\n` +
-    `🕐 Время: ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
+    `📞 Телефон: ${phone}` +
+    calcBlock +
+    `\n\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
 
   const res = await fetch(
     `https://api.telegram.org/bot${botToken}/sendMessage`,

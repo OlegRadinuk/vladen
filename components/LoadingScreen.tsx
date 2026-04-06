@@ -2,40 +2,63 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoading } from "@/contexts/LoadingContext";
+
+const MIN_DURATION = 2000; // всегда показываем минимум 2 секунды
 
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [progress, setProgress] = useState(0);
+  const { setIsLoading } = useLoading();
 
   useEffect(() => {
-    // Simulate progress
-    const interval = setInterval(() => {
-      setProgress((p) => {
-        if (p >= 90) {
-          clearInterval(interval);
-          return 90;
-        }
-        return p + Math.random() * 15;
-      });
-    }, 150);
+    let raf: number;
+    let current = 0;
+    const startTime = Date.now();
 
-    // Hide on DOMContentLoaded (не ждём видео и тяжёлые ресурсы)
-    const finish = () => {
-      clearInterval(interval);
-      setProgress(100);
-      setTimeout(() => setVisible(false), 350);
+    const animateTo = (target: number, speed: number, onDone?: () => void) => {
+      cancelAnimationFrame(raf);
+      const step = () => {
+        current += (target - current) * speed;
+        setProgress(Math.round(current));
+        if (Math.abs(target - current) > 0.3) {
+          raf = requestAnimationFrame(step);
+        } else {
+          current = target;
+          setProgress(target);
+          onDone?.();
+        }
+      };
+      raf = requestAnimationFrame(step);
     };
 
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", finish, { once: true });
+    const finish = () => {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_DURATION - elapsed);
+      setTimeout(() => {
+        animateTo(100, 0.08, () => {
+          setTimeout(() => { setVisible(false); setIsLoading(false); }, 400);
+        });
+      }, remaining);
+    };
+
+    // Фаза 1 (0→50) быстро, фаза 2 (50→90) медленно — симулируем загрузку
+    // Если window.load придёт раньше — finish() прервёт и добьёт до 100%
+    animateTo(50, 0.05, () => {
+      animateTo(90, 0.012);
+    });
+
+    const onLoad = () => finish();
+
+    if (document.readyState === "complete") {
+      onLoad();
     } else {
-      // DOM уже готов
-      setTimeout(finish, 600);
+      window.addEventListener("load", onLoad, { once: true });
     }
 
     return () => {
-      clearInterval(interval);
-      document.removeEventListener("DOMContentLoaded", finish);
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", onLoad);
     };
   }, []);
 
@@ -45,17 +68,10 @@ export default function LoadingScreen() {
         <motion.div
           key="loader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          exit={{ opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }}
           className="fixed inset-0 z-[9999] bg-dark flex flex-col items-center justify-center"
         >
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center gap-4 mb-10"
-          >
+          <div className="flex flex-col items-center gap-4 mb-10">
             <img
               src="/logo.png"
               alt="Владен"
@@ -70,15 +86,19 @@ export default function LoadingScreen() {
                 Строительная компания
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Progress bar */}
-          <div className="w-48 h-0.5 bg-white/10 rounded-full overflow-hidden">
+          <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-accent rounded-full"
-              animate={{ width: `${Math.min(progress, 100)}%` }}
-              transition={{ duration: 0.3 }}
+              initial={{ width: "0%" }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.15, ease: "linear" }}
             />
+          </div>
+
+          <div className="mt-3 font-oswald text-xs text-text-muted tracking-widest">
+            {progress}%
           </div>
         </motion.div>
       )}

@@ -1,15 +1,27 @@
 import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import AnimateOnView from "@/components/ui/AnimateOnView";
+import YandexReviews from "@/components/ui/YandexReviews";
 import Contacts from "@/components/sections/Contacts";
 
 export const metadata: Metadata = {
-  title: "О компании",
+  title: "О компании Владен — ремонт и строительство в Крыму с 2005 года",
   description:
-    "О строительной компании Владен. 18 лет опыта в Крыму. Наша команда, ценности и подход к работе.",
+    "ООО «ВЛАДЕН» — компания по ремонту квартир и строительству в Симферополе с 2005 года. Собственная бригада отделочников и строителей, 200+ объектов, официальный договор. Работаем по всему Крыму.",
+  keywords: [
+    "компания по ремонту квартир Симферополь",
+    "отзывы о ремонте квартир Симферополь",
+    "надёжная компания ремонт Крым",
+    "ООО Владен Симферополь",
+    "ремонтная компания Симферополь официально",
+    "строительная компания Симферополь отзывы",
+  ],
+  alternates: { canonical: "https://vladen-crimea.ru/about" },
   openGraph: {
-    title: "О компании — Владен",
-    description: "18 лет строительного опыта в Крыму.",
+    title: "О компании Владен | Ремонт и строительство в Крыму",
+    description:
+      "ООО «ВЛАДЕН» — ремонт квартир и строительство в Симферополе с 2005 года. 18 лет, 200+ объектов, собственная бригада.",
+    url: "https://vladen-crimea.ru/about",
   },
 };
 
@@ -144,6 +156,31 @@ export default function AboutPage() {
                 </AnimateOnView>
               ))}
             </div>
+          </div>
+        </Container>
+      </div>
+
+      {/* Яндекс отзывы */}
+      <div className="bg-light py-16">
+        <Container>
+          <AnimateOnView className="text-center mb-10">
+            <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
+              Отзывы клиентов
+            </p>
+            <h2 className="font-oswald text-3xl md:text-4xl font-bold text-text-light mb-2">
+              Что о нас говорят на Яндексе
+            </h2>
+            <a
+              href="https://yandex.com/maps/org/vladen/111586244168/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-text-muted text-sm hover:text-accent transition-colors"
+            >
+              Открыть страницу компании на Яндекс Картах ↗
+            </a>
+          </AnimateOnView>
+          <div className="max-w-2xl mx-auto">
+            <YandexReviews />
           </div>
         </Container>
       </div>

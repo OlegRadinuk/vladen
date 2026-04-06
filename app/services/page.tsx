@@ -1,60 +1,38 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
 
 export const metadata: Metadata = {
-  title: "Услуги",
+  title: "Ремонт квартир и домов в Симферополе — услуги и цены",
   description:
-    "Полный спектр строительных услуг в Крыму: строительство домов, ремонт, отделка, фундаменты, кровля.",
+    "Ремонт квартир под ключ, дизайнерский ремонт, отделка домов, строительство в Симферополе и Крыму. Прозрачные цены, гарантия качества. ООО «ВЛАДЕН» с 2005 года. Звоните: +7 (978) 717-44-47",
+  keywords: [
+    "ремонт квартиры Симферополь цена",
+    "ремонт квартиры под ключ Симферополь",
+    "сколько стоит ремонт квартиры Симферополь",
+    "ремонт квартиры Крым недорого",
+    "дизайнерский ремонт квартиры Симферополь цена",
+    "отделка квартиры Симферополь под ключ",
+    "ремонт дома Симферополь цена",
+    "дизайн проект квартиры Симферополь",
+    "капитальный ремонт Симферополь",
+    "строительство дома под ключ Симферополь цена",
+    "фундамент Симферополь",
+    "кровля Симферополь цена",
+  ],
+  alternates: { canonical: "https://vladen-crimea.ru/services" },
   openGraph: {
-    title: "Услуги — Владен",
-    description: "Строительные услуги в Крыму от компании Владен.",
+    title: "Ремонт квартир и домов в Симферополе — цены | Владен",
+    description:
+      "Ремонт квартир, дизайнерская отделка, строительство в Симферополе. Полный цикл работ под ключ. Звоните: +7 (978) 717-44-47",
+    url: "https://vladen-crimea.ru/services",
   },
 };
 
 const services = [
-  {
-    category: "Подготовка и проектирование",
-    items: [
-      {
-        title: "Подбор земельного участка",
-        desc: "Помогаем выбрать и проверить участок: анализ документов, геологии, коммуникаций и инфраструктуры района.",
-        price: "по запросу",
-      },
-      {
-        title: "Проектирование",
-        desc: "Архитектурные и конструктивные проекты. Получение всех разрешений и согласований.",
-        price: "по запросу",
-      },
-      {
-        title: "Дизайн-проекты",
-        desc: "Авторский дизайн интерьера и экстерьера. Визуализация, рабочие чертежи, авторский надзор.",
-        price: "по запросу",
-      },
-    ],
-  },
-  {
-    category: "Строительство",
-    items: [
-      {
-        title: "Фундамент и стены",
-        desc: "Закладка фундаментов любого типа: ленточный, плитный, свайный. Возведение стен из кирпича, газобетона, монолитного бетона.",
-        price: "по запросу",
-      },
-      {
-        title: "Кровля",
-        desc: "Монтаж стропильной системы, укладка металлочерепицы, профнастила, мягкой кровли. Гидроизоляция и водоотведение.",
-        price: "по запросу",
-      },
-      {
-        title: "Инженерные сети",
-        desc: "Электрика, водоснабжение, канализация, отопление, вентиляция. Проектирование и монтаж под ключ.",
-        price: "по запросу",
-      },
-    ],
-  },
   {
     category: "Ремонт и отделка",
     items: [
@@ -62,28 +40,75 @@ const services = [
         title: "Дизайнерские ремонты",
         desc: "Ремонт квартир и домов по дизайн-проекту. Все виды отделочных работ: плитка, паркет, штукатурка, покраска.",
         price: "по запросу",
+        img: "/images/services/dizayn-remont.jpg",
       },
       {
         title: "Ремонт под ключ",
         desc: "Комплексный ремонт — от черновой отделки до меблировки. Авторский надзор, гарантия на работы.",
         price: "по запросу",
+        img: "/images/services/remont.jpg",
+      },
+      {
+        title: "Дизайн-проекты",
+        desc: "Авторский дизайн интерьера и экстерьера. Визуализация, рабочие чертежи, авторский надзор.",
+        price: "по запросу",
+        img: "/images/services/dizayn-proekt.png",
+      },
+      {
+        title: "Демонтаж и перепланировка",
+        desc: "Снос перегородок, демонтаж стяжки и старой отделки. Согласование перепланировки под ключ.",
+        price: "по запросу",
+        img: "/images/services/demontazh.jpg",
+      },
+    ],
+  },
+  {
+    category: "Строительство",
+    items: [
+      {
+        title: "Фасадные работы",
+        desc: "Утепление и отделка фасадов: штукатурка, облицовка, покраска. Надёжная защита от крымского климата.",
+        price: "по запросу",
+        img: "/images/services/fasad.jpg",
+      },
+      {
+        title: "Фундамент и стены",
+        desc: "Закладка фундаментов любого типа: ленточный, плитный, свайный. Возведение стен из кирпича, газобетона, монолитного бетона.",
+        price: "по запросу",
+        img: "/images/services/fundament.png",
+      },
+      {
+        title: "Кровля",
+        desc: "Монтаж стропильной системы, укладка металлочерепицы, профнастила, мягкой кровли. Гидроизоляция и водоотведение.",
+        price: "по запросу",
+        img: "/images/services/remont.jpg",
+      },
+      {
+        title: "Инженерные сети",
+        desc: "Электрика, водоснабжение, канализация, отопление, вентиляция. Проектирование и монтаж под ключ.",
+        price: "по запросу",
+        img: "/images/services/ingener-net.png",
+      },
+    ],
+  },
+  {
+    category: "Подготовка и проектирование",
+    items: [
+      {
+        title: "Подбор земельного участка",
+        desc: "Помогаем выбрать и проверить участок: анализ документов, геологии, коммуникаций и инфраструктуры района.",
+        price: "по запросу",
+        img: "/images/services/podbor.png",
+      },
+      {
+        title: "Проектирование",
+        desc: "Архитектурные и конструктивные проекты. Получение всех разрешений и согласований.",
+        price: "по запросу",
+        img: "/images/services/proektirovanie.jpg",
       },
     ],
   },
 ];
-
-function PlaceholderImage() {
-  return (
-    <div className="w-full h-40 bg-gray-100 flex items-center justify-center">
-      <svg className="w-12 h-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
-          d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
-          d="M9 22V12h6v10" />
-      </svg>
-    </div>
-  );
-}
 
 export default function ServicesPage() {
   return (
@@ -115,8 +140,14 @@ export default function ServicesPage() {
                 {cat.items.map((item, i) => (
                   <AnimateOnView key={item.title} delay={i * 0.1}>
                     <Card className="group overflow-hidden h-full">
-                      <div className="relative">
-                        <PlaceholderImage />
+                      <div className="relative overflow-hidden">
+                        <Image
+                          src={item.img}
+                          alt={item.title}
+                          width={800}
+                          height={450}
+                          className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                       </div>
                       <div className="p-6">

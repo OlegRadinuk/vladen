@@ -4,16 +4,36 @@ import Services from "@/components/sections/Services";
 import ProjectCase from "@/components/sections/ProjectCase";
 import WhyWe from "@/components/sections/WhyWe";
 import Calculator from "@/components/sections/Calculator";
+import Reviews from "@/components/sections/Reviews";
+import Partners from "@/components/sections/Partners";
 import Contacts from "@/components/sections/Contacts";
 
 export const metadata: Metadata = {
-  title: "Владен — Строительная компания в Крыму",
+  title: "Ремонт квартир и домов под ключ в Симферополе — Владен",
   description:
-    "Строительство домов, ремонт и отделка в Крыму. Более 200 объектов. Гарантия качества. Звоните: +7 (800) 123-45-67",
+    "Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, чистовая отделка, строительство. 18 лет опыта, более 200 объектов. Бесплатная консультация: +7 (978) 717-44-47",
+  keywords: [
+    "ремонт квартир Симферополь",
+    "ремонт квартиры под ключ Симферополь",
+    "ремонт квартиры Симферополь цена",
+    "ремонт дома Симферополь",
+    "ремонт под ключ Крым",
+    "дизайнерский ремонт Симферополь",
+    "дизайн интерьера Симферополь",
+    "ремонт квартиры Ялта",
+    "ремонт квартиры Севастополь",
+    "капитальный ремонт квартиры Симферополь",
+    "отделка квартиры Симферополь",
+    "строительство дома Симферополь",
+    "строительство под ключ Крым",
+    "строительная компания Симферополь",
+  ],
   openGraph: {
-    title: "Владен — Строительная компания в Крыму",
-    description: "Строительство домов, ремонт и отделка в Крыму.",
+    title: "Ремонт квартир и домов под ключ в Симферополе — Владен",
+    description:
+      "Ремонт квартир, дизайнерская отделка, строительство в Симферополе и Крыму. 18 лет, 200+ объектов. Звоните: +7 (978) 717-44-47",
     url: "https://vladen-crimea.ru",
+    images: [{ url: "https://vladen-crimea.ru/og-image.jpg", width: 1200, height: 630 }],
   },
 };
 
@@ -26,6 +46,8 @@ export default function HomePage() {
       <WhyWe />
       <Calculator />
       <Contacts />
+      <Partners />
+      <Reviews />
     </>
   );
 }

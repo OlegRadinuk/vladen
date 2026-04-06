@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import CountUp from "@/components/ui/CountUp";
 
 export default function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
@@ -69,20 +70,20 @@ export default function Hero() {
         }}
       />
 
-      <Container className="relative z-10 py-32 md:py-40">
+      <Container className="relative z-10 py-24 sm:py-32 md:py-40">
         <motion.div
-          className="max-w-3xl"
+          className="w-full max-w-5xl"
           variants={stagger}
           initial="hidden"
           animate="visible"
           transition={{ staggerChildren: 0.12 }}
         >
-          {/* Badge */}
-          <motion.div variants={fadeUp}>
+          {/* Badge — скрыт на очень маленьких экранах */}
+          <motion.div variants={fadeUp} className="hidden sm:block">
             <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/40 rounded-full px-4 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-accent text-sm font-inter font-medium">
-                Строительство в Крыму с 2005 года
+                Ремонт и строительство в Крыму с 2014 года
               </span>
             </div>
           </motion.div>
@@ -92,33 +93,34 @@ export default function Hero() {
             variants={fadeUp}
             className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
           >
-            Строим дома,
+            Ремонт квартир
             <br />
-            <span className="text-accent">которые служат</span>
+            <span className="text-accent">и домов под ключ</span>
             <br />
-            поколениями
+            в Симферополе
           </motion.h1>
 
           <motion.p
             variants={fadeUp}
-            className="text-text-dark text-lg md:text-xl leading-relaxed mb-8 max-w-xl"
+            className="text-text-dark text-lg md:text-xl leading-relaxed mb-10 max-w-2xl"
           >
-            Полный цикл строительства: от подбора участка до сдачи ключей.
-            Более 200 объектов по Крыму. Гарантия качества на все работы.
+            Дизайнерский ремонт, чистовая отделка, строительство.
+            Фиксированная цена в договоре — без сюрпризов.
           </motion.p>
 
           {/* Stats */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-8 mb-10">
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-12">
             {[
-              { value: "200+", label: "Объектов сдано" },
-              { value: "18", label: "Лет опыта" },
-              { value: "98%", label: "Клиентов довольны" },
+              { to: 369, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
+              { to: 12,  suffix: "",  label: "лет на рынке",   sub: "работаем с 2014" },
+              { to: 98,  suffix: "%", label: "клиентов довольны", sub: "по отзывам" },
             ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-accent font-oswald text-3xl font-bold">
-                  {stat.value}
+              <div key={stat.label} className="flex flex-col">
+                <div className="text-accent font-oswald text-4xl sm:text-5xl font-bold leading-none">
+                  <CountUp to={stat.to} suffix={stat.suffix} duration={2} />
                 </div>
-                <div className="text-text-muted text-sm">{stat.label}</div>
+                <div className="text-white font-oswald text-base sm:text-lg font-semibold mt-1 uppercase tracking-wide">{stat.label}</div>
+                <div className="text-text-muted text-sm">{stat.sub}</div>
               </div>
             ))}
           </motion.div>
@@ -136,7 +138,7 @@ export default function Hero() {
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              Получить консультацию
+              Рассчитать стоимость ремонта
             </Button>
             <Button
               size="lg"
@@ -147,14 +149,24 @@ export default function Hero() {
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              Смотреть проекты
+              Смотреть наши работы
             </Button>
           </motion.div>
         </motion.div>
       </Container>
 
       {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-light to-transparent" />
+      {/* Bottom fade */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{ height: 40, background: "linear-gradient(to top, #ECF0F1, transparent)" }}
+      />
+
+      {/* Top fade — под хедер */}
+      <div
+        className="absolute top-0 left-0 right-0 pointer-events-none"
+        style={{ height: 110, background: "linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, transparent 100%)" }}
+      />
     </section>
   );
 }
