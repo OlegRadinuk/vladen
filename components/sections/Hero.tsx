@@ -113,7 +113,7 @@ export default function Hero() {
               size="lg"
               onClick={() =>
                 document
-                  .getElementById("contacts")
+                  .getElementById("calculator")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
