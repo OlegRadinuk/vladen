@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
 
 const reviews = [
@@ -169,13 +169,6 @@ export default function Reviews() {
     touchStartX.current = null;
   };
 
-  // Мобильный вариант
-  const mobileVariants = {
-    enter: (d: number) => ({ opacity: 0, x: d * 40 }),
-    center: { opacity: 1, x: 0 },
-    exit: (d: number) => ({ opacity: 0, x: d * -40 }),
-  };
-
   return (
     <section className="py-20 md:py-28 bg-dark overflow-hidden">
       <Container>
@@ -246,28 +239,30 @@ export default function Reviews() {
 
         {/* ── МОБИЛЬ/ПЛАНШЕТ: обычный слайдер ── */}
         <div className="lg:hidden max-w-2xl mx-auto">
-          <div className="relative min-h-[220px]">
-            <AnimatePresence custom={dir} mode="wait">
+          {/* Grid-стек: все карточки в одной ячейке → высота = самый длинный отзыв, нет прыжков */}
+          <div style={{ display: "grid" }}>
+            {reviews.map((review, i) => (
               <motion.div
-                key={current}
-                custom={dir}
-                variants={mobileVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
+                key={i}
+                style={{ gridArea: "1/1", pointerEvents: i === current ? "auto" : "none" }}
+                initial={false}
+                animate={{
+                  opacity: i === current ? 1 : 0,
+                  x: i === current ? 0 : (i > current ? 24 : -24),
+                }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
+                onTouchStart={i === current ? handleTouchStart : undefined}
+                onTouchEnd={i === current ? handleTouchEnd : undefined}
                 className="bg-white/5 border border-white/10 rounded-2xl p-6 select-none"
               >
-                <Stars count={reviews[current].rating} />
+                <Stars count={review.rating} />
                 <p className="text-text-dark text-base leading-relaxed mt-5 mb-6">
-                  &ldquo;{reviews[current].text}&rdquo;
+                  &ldquo;{review.text}&rdquo;
                 </p>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-white font-oswald font-semibold">{reviews[current].name}</p>
-                    <p className="text-text-muted text-xs mt-0.5">{reviews[current].date}</p>
+                    <p className="text-white font-oswald font-semibold">{review.name}</p>
+                    <p className="text-text-muted text-xs mt-0.5">{review.date}</p>
                   </div>
                   <a
                     href="https://yandex.com/maps/org/vladen/111586244168/"
@@ -282,7 +277,7 @@ export default function Reviews() {
                   </a>
                 </div>
               </motion.div>
-            </AnimatePresence>
+            ))}
           </div>
 
           {/* Точки-навигация (без стрелок) */}
