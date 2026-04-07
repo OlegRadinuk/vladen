@@ -20,11 +20,17 @@ export default function Footer() {
 
           {/* Бренд */}
           <div className="md:col-span-2 lg:col-span-1">
-            <img
-              src="/logo.png"
-              alt="Владен"
-              className="h-14 w-auto object-contain mb-5 brightness-0 invert"
-            />
+            <div className="flex items-center gap-3 mb-5">
+              <img
+                src="/logo.png"
+                alt="Владен"
+                className="h-14 w-auto object-contain brightness-0 invert flex-shrink-0"
+              />
+              <div className="flex flex-col leading-none">
+                <span className="font-oswald text-xl font-bold text-white tracking-wider">ВЛАДЕН</span>
+                <span className="text-[11px] text-text-muted tracking-widest uppercase font-inter mt-0.5">Строительная компания</span>
+              </div>
+            </div>
             <p className="text-sm text-text-muted leading-relaxed mb-5">
               Строительная компания в Крыму.<br />
               Ремонт квартир и домов, строительство под ключ с 2014 года.
