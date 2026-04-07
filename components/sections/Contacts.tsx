@@ -241,7 +241,17 @@ export default function Contacts() {
                 </div>
 
                 {calcData && (
-                  <div className="bg-accent/8 border border-accent/25 rounded-lg px-4 py-3 text-sm">
+                  <div className="relative bg-accent/8 border border-accent/25 rounded-lg px-4 py-3 text-sm">
+                    <button
+                      type="button"
+                      onClick={() => setCalcData(null)}
+                      className="absolute top-2 right-2 text-text-muted hover:text-text-light transition-colors"
+                      aria-label="Убрать расчёт"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                     <p className="text-text-muted text-xs mb-1 font-medium uppercase tracking-wide">Ваш расчёт из калькулятора</p>
                     <div className="text-text-light space-y-0.5">
                       <p>Вид работ: <span className="font-medium">{calcData.service}</span></p>
