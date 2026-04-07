@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 const navLinks = [
   { href: "/", label: "Главная" },
   { href: "/services", label: "Услуги" },
+  { href: "/modular", label: "Модульные дома", hot: true },
   { href: "/projects", label: "Проекты" },
   { href: "/about", label: "О компании" },
   { href: "/contacts", label: "Контакты" },
@@ -65,9 +66,22 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-text-dark hover:text-accent transition-colors duration-200 font-inter text-sm tracking-wide"
+                className={`relative flex items-center gap-1 transition-colors duration-200 font-inter text-sm tracking-wide ${
+                  link.hot ? "text-accent hover:text-accent/80" : "text-text-dark hover:text-accent"
+                }`}
               >
+                {link.hot && (
+                  <svg viewBox="0 0 16 20" fill="none" className="w-3 h-3.5 flex-shrink-0">
+                    <path d="M8 0C8 0 10 4 8 7C10 5 14 7 13 11C14 9 16 10 16 13C16 17 12.4 20 8 20C3.6 20 0 17 0 13C0 9 4 7 4 7C4 10 6 11 6 11C5 8 8 0 8 0Z" fill="#D97706"/>
+                    <path d="M8 13C8 13 9 14.5 8 16C9 15 10.5 15.5 10 17C10.5 16 11.5 16.5 11 18C10.2 19.2 9.2 20 8 20C6.8 20 5.8 19.2 5 18C4.5 16.5 5.5 16 6 17C5.5 15.5 7 13 8 13Z" fill="#FCD34D"/>
+                  </svg>
+                )}
                 {link.label}
+                {link.hot && (
+                  <span className="absolute -top-2.5 -right-3 text-[9px] font-oswald font-bold text-accent uppercase tracking-wide leading-none">
+                    new
+                  </span>
+                )}
               </Link>
             ))}
           </nav>
@@ -170,10 +184,23 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-text-dark hover:text-accent transition-colors py-1"
+                className={`flex items-center gap-2 transition-colors py-1 ${
+                  link.hot ? "text-accent" : "text-text-dark hover:text-accent"
+                }`}
                 onClick={() => setIsOpen(false)}
               >
+                {link.hot && (
+                  <svg viewBox="0 0 16 20" fill="none" className="w-3 h-3.5 flex-shrink-0">
+                    <path d="M8 0C8 0 10 4 8 7C10 5 14 7 13 11C14 9 16 10 16 13C16 17 12.4 20 8 20C3.6 20 0 17 0 13C0 9 4 7 4 7C4 10 6 11 6 11C5 8 8 0 8 0Z" fill="#D97706"/>
+                    <path d="M8 13C8 13 9 14.5 8 16C9 15 10.5 15.5 10 17C10.5 16 11.5 16.5 11 18C10.2 19.2 9.2 20 8 20C6.8 20 5.8 19.2 5 18C4.5 16.5 5.5 16 6 17C5.5 15.5 7 13 8 13Z" fill="#FCD34D"/>
+                  </svg>
+                )}
                 {link.label}
+                {link.hot && (
+                  <span className="text-[10px] font-oswald font-bold text-accent/70 uppercase tracking-wide">
+                    new
+                  </span>
+                )}
               </Link>
             ))}
             <Button
