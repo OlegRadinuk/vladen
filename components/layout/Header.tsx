@@ -8,7 +8,7 @@ import Button from "@/components/ui/Button";
 const navLinks = [
   { href: "/", label: "Главная" },
   { href: "/services", label: "Услуги" },
-  { href: "/modular", label: "Модульные дома / бани", hot: true },
+  { href: "/modular", label: "Модульные дома / Бани", hot: true },
   { href: "/projects", label: "Проекты" },
   { href: "/about", label: "О компании" },
   { href: "/contacts", label: "Контакты" },
