@@ -189,14 +189,16 @@ export default function ChatWidget() {
             className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent shadow-lg hover:bg-accent/90 transition-colors flex items-center justify-center group"
             aria-label="Открыть чат с консультантом"
           >
-            <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white">
-              <path
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+            {/* Hardhat icon */}
+            <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8">
+              {/* Dome */}
+              <path d="M6 20 C6 10 26 10 26 20" fill="white" />
+              {/* Center stripe */}
+              <rect x="14" y="10" width="4" height="10" rx="1" fill="#D97706" />
+              {/* Brim */}
+              <rect x="4" y="20" width="24" height="3.5" rx="1.75" fill="white" />
+              {/* Inner shadow line */}
+              <path d="M6 20 C6 10 26 10 26 20" stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" fill="none" />
             </svg>
             {/* Badge */}
             <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />

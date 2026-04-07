@@ -20,7 +20,7 @@ export default function ScrollToTop() {
         document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
       }}
       aria-label="Наверх"
-      className={`hidden md:flex fixed bottom-8 right-8 z-50 w-11 h-11 items-center justify-center rounded-full bg-accent text-white shadow-lg hover:bg-accent/80 transition-all duration-300 ${
+      className={`hidden md:flex fixed bottom-24 right-6 z-50 w-11 h-11 items-center justify-center rounded-full bg-dark/80 backdrop-blur-sm border border-white/10 text-white shadow-lg hover:bg-dark transition-all duration-300 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
       }`}
     >
