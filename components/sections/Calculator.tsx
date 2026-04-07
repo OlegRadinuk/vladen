@@ -148,7 +148,7 @@ export default function Calculator() {
 
             {/* Result */}
             <div className="border-t border-white/10 pt-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                   <p className="text-text-muted text-sm mb-1">
                     Ориентировочная стоимость

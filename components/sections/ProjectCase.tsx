@@ -47,7 +47,7 @@ export default function ProjectCase() {
           <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
             Реализованный проект
           </p>
-          <h2 className="font-oswald text-3xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             Кейс: Дом в Симферополе
           </h2>
           <p className="text-text-dark max-w-xl mx-auto">

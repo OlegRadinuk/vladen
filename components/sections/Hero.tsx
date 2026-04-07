@@ -93,11 +93,9 @@ export default function Hero() {
             variants={fadeUp}
             className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
           >
-            Ремонт квартир
+            Ремонт квартир и домов
             <br />
-            <span className="text-accent">и домов под ключ</span>
-            <br />
-            в Симферополе
+            <span className="text-accent">под ключ в Симферополе</span>
           </motion.h1>
 
           <motion.p
@@ -109,18 +107,18 @@ export default function Hero() {
           </motion.p>
 
           {/* Stats */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-6 sm:gap-10 mb-10 sm:mb-12">
+          <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12">
             {[
               { to: 369, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
               { to: 12,  suffix: "",  label: "лет на рынке",   sub: "работаем с 2014" },
               { to: 98,  suffix: "%", label: "клиентов довольны", sub: "по отзывам" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col">
-                <div className="text-accent font-oswald text-4xl sm:text-5xl font-bold leading-none">
+                <div className="text-accent font-oswald text-3xl sm:text-5xl font-bold leading-none">
                   <CountUp to={stat.to} suffix={stat.suffix} duration={2} />
                 </div>
-                <div className="text-white font-oswald text-base sm:text-lg font-semibold mt-1 uppercase tracking-wide">{stat.label}</div>
-                <div className="text-text-muted text-sm">{stat.sub}</div>
+                <div className="text-white font-oswald text-xs sm:text-lg font-semibold mt-1 uppercase tracking-wide leading-tight">{stat.label}</div>
+                <div className="text-text-muted text-xs hidden sm:block">{stat.sub}</div>
               </div>
             ))}
           </motion.div>

@@ -41,7 +41,7 @@ function formatPhone(value: string): string {
 
 export default function Contacts() {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("+7 ");
+  const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [calcData, setCalcData] = useState<CalcData | null>(null);
@@ -65,7 +65,7 @@ export default function Contacts() {
   };
 
   const handlePhoneFocus = () => {
-    if (phone === "+7 " || phone === "+7") setPhone("+7 ");
+    if (phone === "") setPhone("+7 ");
   };
 
   const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -78,7 +78,7 @@ export default function Contacts() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPhoneError("");
 
@@ -97,7 +97,7 @@ export default function Contacts() {
       if (!res.ok) throw new Error();
       setStatus("success");
       setName("");
-      setPhone("+7 ");
+      setPhone("");
     } catch {
       setStatus("error");
     }
@@ -278,8 +278,10 @@ export default function Contacts() {
                 </Button>
 
                 <p className="text-text-muted text-xs text-center">
-                  Нажимая кнопку, вы соглашаетесь с обработкой персональных
-                  данных
+                  Нажимая кнопку, вы соглашаетесь с{" "}
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-accent transition-colors">
+                    обработкой персональных данных
+                  </a>
                 </p>
               </form>
             )}

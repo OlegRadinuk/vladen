@@ -18,12 +18,12 @@ const services = [
   {
     title: "Демонтаж и перепланировка",
     desc: "Снос перегородок, демонтаж стяжки и отделки. Согласование перепланировки под ключ.",
-    img: "/images/services/demontazh.jpg",
+    img: "/images/services/demontag.png",
   },
   {
     title: "Фасадные работы",
     desc: "Утепление и отделка фасадов: штукатурка, облицовка, покраска. Защита от крымского климата.",
-    img: "/images/services/fasad.jpg",
+    img: "/images/services/fasadnie.png",
   },
   {
     title: "Инженерные сети",
@@ -38,7 +38,7 @@ const services = [
   {
     title: "Кровля",
     desc: "Монтаж и ремонт кровли: металлочерепица, профнастил, мягкая кровля. Гидроизоляция.",
-    img: "/images/services/remont.jpg",
+    img: "/images/services/krovlja.png",
   },
   {
     title: "Проектирование",
