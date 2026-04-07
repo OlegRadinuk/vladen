@@ -6,40 +6,53 @@ import { motion, AnimatePresence } from "framer-motion";
 type Message = { role: "user" | "assistant"; content: string };
 type AvatarState = "idle" | "thinking" | "talking";
 
-function HardhatIcon() {
-  return (
-    <svg viewBox="0 0 40 40" fill="none" className="w-7 h-7">
-      {/* Hat brim */}
-      <rect x="6" y="24" width="28" height="4" rx="2" fill="white" />
-      {/* Hat dome */}
-      <path d="M10 24 C10 14 30 14 30 24" fill="white" />
-      {/* Stripe */}
-      <rect x="17" y="14" width="6" height="10" rx="1" fill="#D97706" />
-      {/* Face */}
-      <circle cx="20" cy="32" r="5" fill="#FBBF24" />
-      <circle cx="18" cy="31" r="1" fill="#1A1A1A" />
-      <circle cx="22" cy="31" r="1" fill="#1A1A1A" />
-      <path d="M17.5 34 Q20 36 22.5 34" stroke="#1A1A1A" strokeWidth="1.2" strokeLinecap="round" fill="none" />
-    </svg>
-  );
-}
 
 function Avatar({ state }: { state: AvatarState }) {
   return (
-    <div className="relative flex-shrink-0">
-      {/* Pulse ring when thinking */}
-      {state === "thinking" && (
-        <>
-          <div className="absolute inset-0 rounded-full bg-accent/30 animate-ping" />
-          <div className="absolute inset-[-4px] rounded-full bg-accent/15 animate-pulse" />
-        </>
+    <div className="relative flex-shrink-0 w-10 h-10">
+      {/* Outer ring — always visible, spins when thinking */}
+      <div
+        className={`absolute inset-[-3px] rounded-full border-2 transition-all duration-500 ${
+          state === "thinking"
+            ? "border-accent animate-spin border-t-transparent"
+            : state === "talking"
+            ? "border-accent/60 animate-pulse"
+            : "border-accent/30"
+        }`}
+      />
+      {/* Middle glow ring */}
+      {(state === "thinking" || state === "talking") && (
+        <div className="absolute inset-[-7px] rounded-full bg-accent/10 animate-ping" />
       )}
-      {/* Talking glow */}
-      {state === "talking" && (
-        <div className="absolute inset-[-3px] rounded-full bg-accent/25 animate-pulse" />
-      )}
-      <div className="relative w-10 h-10 rounded-full bg-accent flex items-center justify-center shadow-lg">
-        <HardhatIcon />
+      {/* Core circle */}
+      <div
+        className={`absolute inset-0 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
+          state === "thinking"
+            ? "bg-gradient-to-br from-accent to-amber-600"
+            : state === "talking"
+            ? "bg-gradient-to-br from-accent to-orange-400"
+            : "bg-gradient-to-br from-accent/90 to-amber-700"
+        }`}
+      >
+        {/* Animated bars when talking */}
+        {state === "talking" ? (
+          <div className="flex items-center gap-[3px]">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="w-[3px] bg-white rounded-full"
+                style={{
+                  height: 14,
+                  animation: `chatbar 0.8s ease-in-out ${i * 0.15}s infinite`,
+                }}
+              />
+            ))}
+          </div>
+        ) : state === "thinking" ? (
+          <div className="w-4 h-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+        ) : (
+          <span className="text-white font-oswald font-bold text-base leading-none">В</span>
+        )}
       </div>
     </div>
   );
@@ -189,16 +202,8 @@ export default function ChatWidget() {
             className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent shadow-lg hover:bg-accent/90 transition-colors flex items-center justify-center group"
             aria-label="Открыть чат с консультантом"
           >
-            {/* Hardhat icon */}
-            <svg viewBox="0 0 32 32" fill="none" className="w-8 h-8">
-              {/* Dome */}
-              <path d="M6 20 C6 10 26 10 26 20" fill="white" />
-              {/* Center stripe */}
-              <rect x="14" y="10" width="4" height="10" rx="1" fill="#D97706" />
-              {/* Brim */}
-              <rect x="4" y="20" width="24" height="3.5" rx="1.75" fill="white" />
-              {/* Inner shadow line */}
-              <path d="M6 20 C6 10 26 10 26 20" stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" fill="none" />
+            <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white">
+              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             {/* Badge */}
             <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />
@@ -353,6 +358,10 @@ export default function ChatWidget() {
         @keyframes bounce {
           0%, 60%, 100% { transform: translateY(0); }
           30% { transform: translateY(-6px); }
+        }
+        @keyframes chatbar {
+          0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+          50% { transform: scaleY(1); opacity: 1; }
         }
       `}</style>
     </>
