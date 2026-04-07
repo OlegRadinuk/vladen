@@ -9,14 +9,14 @@ export async function POST(request: NextRequest) {
   }
 
   type CalcData = { service?: string; area?: number; material?: string; total?: number };
-  let body: { name?: string; phone?: string; calc?: CalcData };
+  let body: { name?: string; phone?: string; calc?: CalcData; chat?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, phone, calc } = body;
+  const { name, phone, calc, chat } = body;
   if (!name || !phone) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -44,11 +44,16 @@ export async function POST(request: NextRequest) {
       `   Ориентир. стоимость: от ${new Intl.NumberFormat("ru-RU").format(calc.total ?? 0)} ₽`
     : "";
 
+  const chatBlock = chat
+    ? `\n\n💬 <b>Переписка с чатом:</b>\n<blockquote>${chat.slice(0, 3000)}</blockquote>`
+    : "";
+
   const text =
     `🏗 <b>Новая заявка с сайта ВЛАДЕН</b>\n\n` +
     `👤 Имя: ${name}\n` +
     `📞 Телефон: ${phone}` +
     calcBlock +
+    chatBlock +
     `\n\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
 
   const res = await fetch(

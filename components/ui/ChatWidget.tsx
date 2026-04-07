@@ -91,7 +91,28 @@ export default function ChatWidget() {
   const [nameInput, setNameInput] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  function formatPhone(value: string) {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    if (!digits) return "";
+    let result = "+7";
+    if (digits.length > 1) result += " (" + digits.slice(1, 4);
+    if (digits.length >= 4) result += ") " + digits.slice(4, 7);
+    if (digits.length >= 7) result += "-" + digits.slice(7, 9);
+    if (digits.length >= 9) result += "-" + digits.slice(9, 11);
+    return result;
+  }
+
+  function handleWheel(e: React.WheelEvent<HTMLDivElement>) {
+    const el = messagesRef.current;
+    if (!el) return;
+    const { scrollTop, scrollHeight, clientHeight } = el;
+    const atTop = scrollTop === 0 && e.deltaY < 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight && e.deltaY > 0;
+    if (!atTop && !atBottom) e.stopPropagation();
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -247,7 +268,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50 min-h-0">
+            <div ref={messagesRef} onWheel={handleWheel} className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-gray-50 min-h-0">
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -300,7 +321,7 @@ export default function ChatWidget() {
                     />
                     <input
                       value={phoneInput}
-                      onChange={(e) => setPhoneInput(e.target.value)}
+                      onChange={(e) => setPhoneInput(formatPhone(e.target.value))}
                       placeholder="+7 (___) ___-__-__"
                       type="tel"
                       className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-accent bg-white"
