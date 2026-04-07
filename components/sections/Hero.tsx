@@ -20,15 +20,6 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const stagger = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.12 } } as const,
-  };
-  const fadeUp = {
-    hidden: { opacity: 0, y: 32 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-dark">
       {/* Video background */}
@@ -73,41 +64,34 @@ export default function Hero() {
       <Container className="relative z-10 py-24 sm:py-32 md:py-40">
         <motion.div
           className="w-full max-w-5xl"
-          variants={stagger}
-          initial="hidden"
-          animate="visible"
-          transition={{ staggerChildren: 0.12 }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {/* Badge — скрыт на очень маленьких экранах */}
-          <motion.div variants={fadeUp} className="hidden sm:block">
+          <div className="hidden sm:block">
             <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/40 rounded-full px-4 py-1.5 mb-6">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-accent text-sm font-inter font-medium">
                 Ремонт и строительство в Крыму с 2014 года
               </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* Heading */}
-          <motion.h1
-            variants={fadeUp}
-            className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
-          >
+          <h1 className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
             Ремонт квартир и домов
             <br />
             <span className="text-accent">под ключ в Симферополе</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={fadeUp}
-            className="text-text-dark text-lg md:text-xl leading-relaxed mb-10 max-w-2xl"
-          >
+          <p className="text-text-dark text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
             Дизайнерский ремонт, чистовая отделка, строительство.
             Фиксированная цена в договоре — без сюрпризов.
-          </motion.p>
+          </p>
 
           {/* Stats */}
-          <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12">
             {[
               { to: 369, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
               { to: 12,  suffix: "",  label: "лет на рынке",   sub: "работаем с 2014" },
@@ -121,13 +105,10 @@ export default function Hero() {
                 <div className="text-text-muted text-xs hidden sm:block">{stat.sub}</div>
               </div>
             ))}
-          </motion.div>
+          </div>
 
           {/* CTA */}
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-col sm:flex-row gap-4"
-          >
+          <div className="flex flex-col sm:flex-row gap-4">
             <Button
               size="lg"
               onClick={() =>
@@ -149,7 +130,7 @@ export default function Hero() {
             >
               Смотреть наши работы
             </Button>
-          </motion.div>
+          </div>
         </motion.div>
       </Container>
 
