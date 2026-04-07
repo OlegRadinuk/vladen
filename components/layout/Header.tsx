@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 
@@ -45,9 +46,12 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 min-w-0 overflow-hidden">
-            <img
+            <Image
               src="/logo.png"
               alt="Владен"
+              width={56}
+              height={56}
+              priority
               className="h-9 md:h-14 w-auto object-contain flex-shrink-0"
             />
             <div className="flex flex-col leading-none min-w-0">

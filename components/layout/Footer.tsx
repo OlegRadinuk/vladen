@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 
 const navLinks = [
@@ -21,9 +22,11 @@ export default function Footer() {
           {/* Бренд */}
           <div className="md:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <img
+              <Image
                 src="/logo.png"
                 alt="Владен"
+                width={56}
+                height={56}
                 className="h-14 w-auto object-contain brightness-0 invert flex-shrink-0"
               />
               <div className="flex flex-col leading-none">

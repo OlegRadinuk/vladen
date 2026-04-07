@@ -146,6 +146,7 @@ export default function ServicesPage() {
                           alt={item.title}
                           width={800}
                           height={450}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

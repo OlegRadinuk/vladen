@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { useLoading } from "@/contexts/LoadingContext";
 
 export default function LoadingScreen() {
@@ -33,9 +34,12 @@ export default function LoadingScreen() {
           exit={{ opacity: 0, transition: { duration: 0.4, ease: "easeInOut" } }}
           className="fixed inset-0 z-[9999] bg-dark flex flex-col items-center justify-center gap-8"
         >
-          <img
+          <Image
             src="/logo.png"
             alt="Владен"
+            width={160}
+            height={80}
+            priority
             className="h-20 w-auto object-contain"
             style={{ filter: "drop-shadow(0 0 24px rgba(217,119,6,0.35))" }}
           />
