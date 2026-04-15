@@ -24,6 +24,20 @@ export const metadata: Metadata = {
       "Модульные дома и бани под ключ. Сборка от 7 дней, круглогодичное проживание, от 350 000 руб.",
     url: "https://vladen-crimea.ru/modular",
   },
+  twitter: {
+    card: "summary",
+    title: "Модульные дома и бани в Крыму — от 350 000 ₽",
+    description: "Быстровозводимые дома и бани под ключ в Крыму. Сборка от 7 дней. Гарантия 5 лет.",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
+    { "@type": "ListItem", position: 2, name: "Модульные дома", item: "https://vladen-crimea.ru/modular" },
+  ],
 };
 
 const products = [
@@ -124,6 +138,7 @@ const steps = [
 export default function ModularPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-24 relative overflow-hidden">
         {/* Grid pattern */}

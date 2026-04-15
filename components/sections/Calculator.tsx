@@ -4,63 +4,75 @@ import { useState, useRef } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 
+// Цены по каждому тарифу: [эконом/предчистовая, стандарт/чистовая, премиум]
 const serviceTypes = [
-  { id: "house", label: "Строительство дома", basePrice: 35000 },
-  { id: "repair", label: "Ремонт квартиры", basePrice: 8000 },
-  { id: "foundation", label: "Фундамент", basePrice: 12000 },
-  { id: "roof", label: "Кровельные работы", basePrice: 6000 },
+  { id: "house",      label: "Строительство дома",  prices: [55000, 80000, 80000] },
+  { id: "repair",     label: "Ремонт квартиры",      prices: [20000, 30000, 40000] },
+  { id: "foundation", label: "Фундамент",            prices: [12000, 18000, 25000] },
+  { id: "roof",       label: "Кровельные работы",    prices: [ 6000,  9000, 14000] },
 ];
 
-const materials = [
-  { id: "standard", label: "Стандарт", mult: 1 },
-  { id: "comfort", label: "Комфорт", mult: 1.4 },
-  { id: "premium", label: "Премиум", mult: 1.9 },
+// Тарифы: для дома — предчистовая / чистовая; для ремонта — эконом / стандарт / премиум
+const tiers = [
+  { id: "t1", labelHouse: "Предчистовая", labelOther: "Эконом" },
+  { id: "t2", labelHouse: "Чистовая",     labelOther: "Стандарт" },
+  { id: "t3", labelHouse: "Чистовая +",   labelOther: "Премиум" },
 ];
 
 function saveCalc(data: object) {
   localStorage.setItem("vladen_calc", JSON.stringify(data));
-  // Оповещаем форму на этой же странице
   window.dispatchEvent(new Event("vladen_calc_update"));
 }
 
 export default function Calculator() {
-  const [serviceId, setServiceId] = useState("house");
-  const [area, setArea] = useState(100);
-  const [materialId, setMaterialId] = useState("standard");
-  const [saved, setSaved] = useState(false);
-  // Флаг: пользователь реально что-то менял
+  const [serviceId, setServiceId]   = useState("house");
+  const [area, setArea]             = useState(100);
+  const [tierIdx, setTierIdx]       = useState(0);
+  const [saved, setSaved]           = useState(false);
   const touched = useRef(false);
 
-  const service = serviceTypes.find((s) => s.id === serviceId)!;
-  const material = materials.find((m) => m.id === materialId)!;
-  const total = Math.round(service.basePrice * area * material.mult);
-  const formatted = new Intl.NumberFormat("ru-RU").format(total);
+  const service  = serviceTypes.find((s) => s.id === serviceId)!;
+  const isHouse  = serviceId === "house";
+  // Для дома показываем только 2 тарифа (предчистовая / чистовая)
+  const visibleTiers = isHouse ? tiers.slice(0, 2) : tiers;
+  const safeTierIdx  = isHouse && tierIdx > 1 ? 1 : tierIdx;
+
+  const pricePerM2 = service.prices[safeTierIdx];
+  const total      = Math.round(pricePerM2 * area);
+  const formatted  = new Intl.NumberFormat("ru-RU").format(total);
+  const tierLabel  = isHouse
+    ? tiers[safeTierIdx].labelHouse
+    : tiers[safeTierIdx].labelOther;
+
+  const persist = (sid: string, a: number, ti: number) => {
+    const svc = serviceTypes.find((s) => s.id === sid)!;
+    const isH = sid === "house";
+    const idx = isH && ti > 1 ? 1 : ti;
+    const t   = Math.round(svc.prices[idx] * a);
+    const lbl = isH ? tiers[idx].labelHouse : tiers[idx].labelOther;
+    saveCalc({ service: svc.label, area: a, material: lbl, total: t });
+  };
 
   const handleServiceChange = (id: string) => {
     touched.current = true;
     setServiceId(id);
-    const svc = serviceTypes.find((s) => s.id === id)!;
-    const mat = materials.find((m) => m.id === materialId)!;
-    const t = Math.round(svc.basePrice * area * mat.mult);
-    saveCalc({ service: svc.label, area, material: mat.label, total: t });
+    const newTi = id === "house" && tierIdx > 1 ? 1 : tierIdx;
+    setTierIdx(newTi);
+    persist(id, area, newTi);
     setSaved(false);
   };
 
   const handleAreaChange = (val: number) => {
     touched.current = true;
     setArea(val);
-    const mat = materials.find((m) => m.id === materialId)!;
-    const t = Math.round(service.basePrice * val * mat.mult);
-    saveCalc({ service: service.label, area: val, material: mat.label, total: t });
+    persist(serviceId, val, safeTierIdx);
     setSaved(false);
   };
 
-  const handleMaterialChange = (id: string) => {
+  const handleTierChange = (idx: number) => {
     touched.current = true;
-    setMaterialId(id);
-    const mat = materials.find((m) => m.id === id)!;
-    const t = Math.round(service.basePrice * area * mat.mult);
-    saveCalc({ service: service.label, area, material: mat.label, total: t });
+    setTierIdx(idx);
+    persist(serviceId, area, idx);
     setSaved(false);
   };
 
@@ -124,23 +136,28 @@ export default function Calculator() {
               </div>
             </div>
 
-            {/* Material */}
+            {/* Tier */}
             <div>
               <label className="block text-white font-oswald text-lg mb-3">
-                Класс материалов
+                {isHouse ? "Вариант отделки" : "Класс отделки"}
               </label>
-              <div className="grid grid-cols-3 gap-3">
-                {materials.map((m) => (
+              <div className={`grid gap-3 ${isHouse ? "grid-cols-2" : "grid-cols-3"}`}>
+                {visibleTiers.map((t, i) => (
                   <button
-                    key={m.id}
-                    onClick={() => handleMaterialChange(m.id)}
+                    key={t.id}
+                    onClick={() => handleTierChange(i)}
                     className={`p-3 rounded-lg border text-sm font-inter transition-all duration-200 ${
-                      materialId === m.id
+                      safeTierIdx === i
                         ? "border-accent bg-accent/20 text-accent"
                         : "border-white/20 text-text-dark hover:border-accent/50"
                     }`}
                   >
-                    {m.label}
+                    <span className="block font-medium">
+                      {isHouse ? t.labelHouse : t.labelOther}
+                    </span>
+                    <span className="block text-xs mt-0.5 opacity-70">
+                      {new Intl.NumberFormat("ru-RU").format(service.prices[i])} ₽/м²
+                    </span>
                   </button>
                 ))}
               </div>
@@ -157,17 +174,19 @@ export default function Calculator() {
                     от {formatted} ₽
                   </p>
                   <p className="text-text-muted text-xs mt-1">
-                    * Точная смета после выезда специалиста
+                    {pricePerM2.toLocaleString("ru-RU")} ₽/м² · {tierLabel} · {area} м²
+                  </p>
+                  <p className="text-text-muted text-xs mt-0.5">
+                    * Точная смета после выезда специалиста — бесплатно
                   </p>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <Button
                     size="lg"
                     onClick={() => {
-                      // Если не трогали — всё равно сохраняем при явном нажатии
                       if (!touched.current) {
                         touched.current = true;
-                        saveCalc({ service: service.label, area, material: material.label, total });
+                        persist(serviceId, area, safeTierIdx);
                       }
                       setSaved(true);
                       setTimeout(() => {

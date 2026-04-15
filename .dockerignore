@@ -1,0 +1,8 @@
+node_modules
+.next
+.git
+*.txt
+*.png
+*.MP4
+*.jpg
+.env*.local

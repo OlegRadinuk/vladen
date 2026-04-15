@@ -23,6 +23,20 @@ export const metadata: Metadata = {
       "ООО «ВЛАДЕН» — ремонт квартир и строительство в Симферополе с 2014 года. 12 лет, 200+ объектов, собственная бригада.",
     url: "https://vladen-crimea.ru/about",
   },
+  twitter: {
+    card: "summary",
+    title: "О компании Владен — ремонт и строительство в Крыму",
+    description: "ООО «ВЛАДЕН» с 2014 года. 200+ объектов, собственная бригада, официальный договор.",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
+    { "@type": "ListItem", position: 2, name: "О компании", item: "https://vladen-crimea.ru/about" },
+  ],
 };
 
 const team = [
@@ -57,6 +71,7 @@ function PlaceholderAvatar({ name }: { name: string }) {
 export default function AboutPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
@@ -25,54 +26,87 @@ export const metadata: Metadata = {
       "Примеры ремонтов квартир и домов в Симферополе, Ялте, Севастополе. 200+ реализованных объектов ООО «ВЛАДЕН».",
     url: "https://vladen-crimea.ru/projects",
   },
+  twitter: {
+    card: "summary",
+    title: "Портфолио ремонтов и строительства в Крыму — Владен",
+    description: "Реальные фото выполненных ремонтов квартир и строительства домов в Крыму. 200+ объектов.",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
+    { "@type": "ListItem", position: 2, name: "Проекты", item: "https://vladen-crimea.ru/projects" },
+  ],
 };
 
 const projects = [
   {
-    title: "Двухэтажный дом в Симферополе",
-    type: "Строительство под ключ",
-    area: "280 м²",
-    year: "2023",
-    desc: "Газобетонный дом с полной отделкой, инженерными системами и ландшафтным дизайном.",
+    title: "Двухэтажный дом в Евпатории",
+    type: "Индивидуальный проект",
+    area: "165 м²",
+    year: "2025",
+    desc: "Стены из природного камня ракушка, металлочерепица, декоративная штукатурка. Баня, кухня-гостиная 38 м², две спальни. Сдан в декабре 2025.",
+    image: "/cases/1keys-fasad.jpg",
   },
   {
-    title: "Коттедж в Ялте",
-    type: "Строительство + отделка",
-    area: "190 м²",
-    year: "2022",
-    desc: "Одноэтажный коттедж из кирпича. Открытая терраса с видом на море.",
+    title: "Одноэтажный дом в с. Мирное",
+    type: "Под ключ · Предчистовая",
+    area: "81 м²",
+    year: "2025",
+    desc: "Ракушечник, битумная черепица, тёплый пол, электрокотёл + бойлер. Забор, откатные ворота, все центральные коммуникации.",
+    image: "/cases/keys2.jpg",
   },
   {
-    title: "Квартира в Севастополе",
+    title: "Посёлок «Крымская Палитра»",
+    type: "Коттеджный посёлок",
+    area: "6 × 107 м²",
+    year: "2025",
+    desc: "6 одноэтажных домов по типовому проекту. Четыре комнаты, терраса, центральное отопление, газ. Планировка участка 6 соток.",
+    image: "/cases/kottedge.jpg",
+  },
+  {
+    title: "Ремонт квартиры в Симферополе",
     type: "Ремонт под ключ",
-    area: "85 м²",
-    year: "2023",
-    desc: "Капитальный ремонт трёхкомнатной квартиры. Современный стиль, тёплые полы.",
+    area: "74 м²",
+    year: "2024",
+    desc: "Трёхкомнатная квартира, чистовая отделка. Тёплый пол в ванной, натяжные потолки, новая электропроводка, встроенная кухня.",
+    image: null,
   },
   {
-    title: "Офисный центр в Керчи",
-    type: "Коммерческое строительство",
-    area: "450 м²",
-    year: "2022",
-    desc: "Двухэтажный офисный центр. Фасадные работы, отделка, инженерные системы.",
+    title: "Одноэтажный дом в Бахчисарае",
+    type: "Строительство под ключ",
+    area: "112 м²",
+    year: "2024",
+    desc: "Дом из ракушечника с мансардой. Три спальни, кухня-гостиная с террасой. Полная чистовая отделка, отопление, скважина.",
+    image: null,
   },
   {
-    title: "Дача в Бахчисарае",
-    type: "Строительство дачи",
-    area: "120 м²",
-    year: "2021",
-    desc: "Деревянный дом с мансардой. Баня, беседка, мощёные дорожки.",
-  },
-  {
-    title: "Таунхаус в Евпатории",
-    type: "Строительство + благоустройство",
-    area: "160 м²",
-    year: "2021",
-    desc: "Таунхаус на 2 секции. Монолитный фундамент, газобетон, полная отделка.",
+    title: "Ремонт офиса в Симферополе",
+    type: "Коммерческий ремонт",
+    area: "135 м²",
+    year: "2024",
+    desc: "Офисное помещение под ключ: перепланировка, стяжка, натяжные потолки, новая электрика, сантехника, покраска фасада.",
+    image: null,
   },
 ];
 
-function PlaceholderImage({ title }: { title: string }) {
+function ProjectThumb({ image, title }: { image: string | null; title: string }) {
+  if (image) {
+    return (
+      <div className="relative w-full h-52">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+      </div>
+    );
+  }
   return (
     <div className="w-full h-52 bg-gray-200 flex flex-col items-center justify-center gap-2">
       <svg className="w-14 h-14 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,6 +123,7 @@ function PlaceholderImage({ title }: { title: string }) {
 export default function ProjectsPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>
@@ -117,12 +152,15 @@ export default function ProjectsPage() {
       {/* Projects grid */}
       <div className="bg-light py-20">
         <Container>
+          <h2 className="font-oswald text-2xl sm:text-3xl font-bold text-text-light mb-8">
+            Портфолио реализованных объектов
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, i) => (
               <AnimateOnView key={project.title} delay={i * 0.08}>
               <Card className="group overflow-hidden h-full">
-                <div className="relative">
-                  <PlaceholderImage title={project.title} />
+                <div className="relative overflow-hidden">
+                  <ProjectThumb image={project.image} title={project.title} />
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
                 <div className="p-6">

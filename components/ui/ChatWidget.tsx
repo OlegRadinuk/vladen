@@ -74,13 +74,15 @@ function TypingDots() {
 
 const INITIAL_MESSAGE: Message = {
   role: "assistant",
-  content: "Привет! Я Влад, консультант компании Владен. Помогу рассчитать стоимость ремонта или строительства, отвечу на вопросы. Что вас интересует?",
+  content: "Привет! Я Влад, ИИ-консультант компании Владен. Помогу рассчитать стоимость ремонта или строительства, отвечу на вопросы. Что вас интересует?",
 };
 
+const BUBBLE_TEXT = "Привет! 👋 Я ИИ-консультант Владен. Помогу рассчитать стоимость ремонта или строительства — спросите, это бесплатно!";
 const SUGGEST_AFTER = 2; // предлагать номер после N ответов ассистента
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [avatarState, setAvatarState] = useState<AvatarState>("idle");
@@ -93,6 +95,20 @@ export default function ChatWidget() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const bubbleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Показываем bubble через 3с, скрываем через 10с
+  useEffect(() => {
+    const show = setTimeout(() => setShowBubble(true), 3000);
+    const hide = setTimeout(() => setShowBubble(false), 13000);
+    return () => { clearTimeout(show); clearTimeout(hide); };
+  }, []);
+
+  const openChat = () => {
+    setShowBubble(false);
+    if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
+    setIsOpen(true);
+  };
 
   function formatPhone(value: string) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -203,13 +219,55 @@ export default function ChatWidget() {
       ...prev,
       {
         role: "assistant",
-        content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: +7 (978) 717-44-47`,
+        content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: +7 (978) 717-44-47\n\nЕсть ещё вопросы? С удовольствием отвечу.`,
       },
     ]);
   }
 
   return (
     <>
+      {/* Bubble preview */}
+      <AnimatePresence>
+        {!isOpen && showBubble && (
+          <motion.div
+            key="bubble"
+            initial={{ opacity: 0, y: 12, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 380, damping: 28 }}
+            className="fixed bottom-24 right-6 z-50 max-w-[260px] sm:max-w-[300px]"
+          >
+            <div
+              onClick={openChat}
+              className="relative w-full text-left bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 px-4 py-3 group cursor-pointer"
+            >
+              {/* Close */}
+              <span
+                role="button"
+                onClick={(e) => { e.stopPropagation(); setShowBubble(false); }}
+                className="absolute top-2 right-2 text-gray-300 hover:text-gray-500 transition-colors"
+                aria-label="Закрыть"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5">
+                  <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="w-6 h-6 rounded-full bg-accent flex-shrink-0 flex items-center justify-center">
+                  <span className="text-white font-oswald font-bold text-xs">В</span>
+                </div>
+                <span className="text-xs font-semibold text-gray-700">Влад · ИИ-консультант</span>
+                <span className="w-2 h-2 rounded-full bg-green-500 ml-auto flex-shrink-0" />
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed pr-4">{BUBBLE_TEXT}</p>
+              <p className="text-xs text-accent font-medium mt-2 group-hover:underline">Написать →</p>
+            </div>
+            {/* Arrow pointing to FAB */}
+            <div className="absolute -bottom-2 right-5 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Floating button */}
       <AnimatePresence>
         {!isOpen && (
@@ -219,7 +277,7 @@ export default function ChatWidget() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            onClick={() => setIsOpen(true)}
+            onClick={openChat}
             className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent shadow-lg hover:bg-accent/90 transition-colors flex items-center justify-center group"
             aria-label="Открыть чат с консультантом"
           >
@@ -253,7 +311,7 @@ export default function ChatWidget() {
                     ? "думает..."
                     : avatarState === "talking"
                     ? "печатает..."
-                    : "консультант Владен · онлайн"}
+                    : "ИИ-консультант Владен · онлайн"}
                 </p>
               </div>
               <button

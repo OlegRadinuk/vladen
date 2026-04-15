@@ -30,6 +30,20 @@ export const metadata: Metadata = {
       "Ремонт квартир, дизайнерская отделка, строительство в Симферополе. Полный цикл работ под ключ. Звоните: +7 (978) 717-44-47",
     url: "https://vladen-crimea.ru/services",
   },
+  twitter: {
+    card: "summary",
+    title: "Услуги и цены на ремонт квартир в Симферополе — Владен",
+    description: "Ремонт эконом от 20 000 ₽/м², стандарт от 30 000 ₽/м², премиум от 40 000 ₽/м². Строительство от 55 000 ₽/м².",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
+    { "@type": "ListItem", position: 2, name: "Услуги", item: "https://vladen-crimea.ru/services" },
+  ],
 };
 
 const services = [
@@ -113,6 +127,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>

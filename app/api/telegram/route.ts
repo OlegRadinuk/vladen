@@ -36,16 +36,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
+  // Экранируем спецсимволы HTML чтобы Telegram не сломал разметку
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
   const calcBlock = calc
     ? `\n\n📊 <b>Расчёт из калькулятора:</b>\n` +
-      `   Вид работ: ${calc.service}\n` +
+      `   Вид работ: ${esc(calc.service ?? "")}\n` +
       `   Площадь: ${calc.area} м²\n` +
-      `   Материалы: ${calc.material}\n` +
+      `   Материалы: ${esc(calc.material ?? "")}\n` +
       `   Ориентир. стоимость: от ${new Intl.NumberFormat("ru-RU").format(calc.total ?? 0)} ₽`
     : "";
 
+  // Telegram limit ~4096 chars; резервируем ~300 на шапку — остаток на чат
   const chatBlock = chat
-    ? `\n\n💬 <b>Переписка с чатом:</b>\n<blockquote>${chat.slice(0, 3000)}</blockquote>`
+    ? `\n\n💬 <b>Переписка с ИИ-консультантом:</b>\n<blockquote>${esc(chat).slice(0, 3700)}</blockquote>`
     : "";
 
   const text =

@@ -21,11 +21,26 @@ export const metadata: Metadata = {
       "Звоните: +7 (978) 717-44-47. Симферополь, ул. Киевская 41, оф. 727. Бесплатный замер и консультация.",
     url: "https://vladen-crimea.ru/contacts",
   },
+  twitter: {
+    card: "summary",
+    title: "Контакты Владен — ремонт квартир в Симферополе",
+    description: "Звоните: +7 (978) 717-44-47. Бесплатный замер и консультация. Работаем по всему Крыму.",
+  },
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
+    { "@type": "ListItem", position: 2, name: "Контакты", item: "https://vladen-crimea.ru/contacts" },
+  ],
 };
 
 export default function ContactsPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <div className="bg-dark pt-32 pb-20">
         <Container>
           <h1 className="font-oswald text-4xl md:text-6xl font-bold text-white mb-4">
