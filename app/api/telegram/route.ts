@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     `\n\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;
 
   const res = await fetch(
-    `https://api.telegram.org/bot${botToken}/sendMessage`,
+    `https://tg-proxy.radinuko.workers.dev/bot${botToken}/sendMessage`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
