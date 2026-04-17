@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import LoadingScreen from "@/components/LoadingScreen";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollToTop from "@/components/ui/ScrollToTop";
-import Script from "next/script";
+import ChatWidget from "@/components/ui/ChatWidget";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 
 const oswald = Oswald({
@@ -272,7 +272,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
-          <Script src="https://optisphere.tech/widget.js" data-bot="vlad" strategy="lazyOnload" />
+          <ChatWidget />
         </LoadingProvider>
       </body>
     </html>
