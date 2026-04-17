@@ -49,6 +49,10 @@ export const metadata: Metadata = {
     "строительство дома из ракушняка Крым",
     "Владен",
   ],
+  verification: {
+    google: "c8BSwUzn9rfTn3XWZAF8CH5DWdaWag5IinDhu2KsBOo",
+    yandex: "08a03483f1c3ba4a",
+  },
   metadataBase: new URL("https://vladen-crimea.ru"),
   alternates: { canonical: "https://vladen-crimea.ru" },
   icons: {
