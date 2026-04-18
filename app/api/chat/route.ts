@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 export async function POST(request: NextRequest) {
   const body = await request.text();
 
-  const res = await fetch("https://optisphere.tech/api/bots/vlad/chat", {
+  const res = await fetch("http://optisphere.tech/api/bots/vlad/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body,
