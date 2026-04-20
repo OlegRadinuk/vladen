@@ -76,7 +76,7 @@ export default function Header() {
               >
                 {link.label}
                 {link.hot && (
-                  <span className="absolute -top-2.5 -right-3 text-[9px] font-oswald font-bold text-accent uppercase tracking-wide leading-none">
+                  <span className="inline-flex items-center px-1 py-px text-[8px] font-oswald font-bold text-dark bg-accent rounded uppercase tracking-wide leading-none ml-1.5">
                     new
                   </span>
                 )}
@@ -189,7 +189,7 @@ export default function Header() {
               >
                 {link.label}
                 {link.hot && (
-                  <span className="text-[10px] font-oswald font-bold text-accent uppercase tracking-wide">
+                  <span className="inline-flex items-center px-1 py-px text-[8px] font-oswald font-bold text-dark bg-accent rounded uppercase tracking-wide leading-none">
                     new
                   </span>
                 )}
