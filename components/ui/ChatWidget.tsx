@@ -91,6 +91,7 @@ export default function ChatWidget() {
   const [phoneSent, setPhoneSent] = useState(false);
   const [phoneInput, setPhoneInput] = useState("");
   const [nameInput, setNameInput] = useState("");
+  const [pdConsent, setPdConsent] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -190,6 +191,7 @@ export default function ChatWidget() {
   }
 
   async function sendPhone() {
+    if (!pdConsent) return;
     const name = nameInput.trim();
     const phone = phoneInput.trim();
     if (!name || !phone) return;
@@ -207,6 +209,7 @@ export default function ChatWidget() {
           phone,
           calc: undefined,
           chat: history,
+          consent_timestamp: new Date().toISOString(),
         }),
       });
     } catch {
@@ -215,6 +218,7 @@ export default function ChatWidget() {
 
     setPhoneSent(true);
     setShowPhonePrompt(false);
+    setPdConsent(false);
     setMessages((prev) => [
       ...prev,
       {
@@ -384,10 +388,25 @@ export default function ChatWidget() {
                       type="tel"
                       className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-accent bg-white"
                     />
+                    <label className="flex items-start gap-2 text-xs text-text-muted cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={pdConsent}
+                        onChange={(e) => setPdConsent(e.target.checked)}
+                        className="mt-0.5 flex-shrink-0 accent-accent"
+                      />
+                      <span>
+                        Согласен на обработку{" "}
+                        <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-accent underline">
+                          персональных данных
+                        </a>
+                      </span>
+                    </label>
                     <div className="flex gap-2">
                       <button
                         onClick={sendPhone}
-                        className="flex-1 bg-accent text-white text-xs font-semibold rounded-lg py-2 hover:bg-accent/90 transition-colors"
+                        disabled={!pdConsent}
+                        className="flex-1 bg-accent text-white text-xs font-semibold rounded-lg py-2 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Отправить
                       </button>

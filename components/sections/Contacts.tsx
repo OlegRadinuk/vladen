@@ -45,6 +45,7 @@ export default function Contacts() {
   const [phoneError, setPhoneError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [calcData, setCalcData] = useState<CalcData | null>(null);
+  const [pdConsent, setPdConsent] = useState(false);
 
   useEffect(() => {
     const readCalc = () => {
@@ -80,6 +81,7 @@ export default function Contacts() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!pdConsent) return;
     setPhoneError("");
 
     if (!validatePhone(phone)) {
@@ -92,12 +94,13 @@ export default function Contacts() {
       const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, calc: calcData }),
+        body: JSON.stringify({ name, phone, calc: calcData, consent_timestamp: new Date().toISOString() }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
       setName("");
       setPhone("");
+      setPdConsent(false);
     } catch {
       setStatus("error");
     }
@@ -268,21 +271,34 @@ export default function Contacts() {
                   </p>
                 )}
 
+                <label className="flex items-start gap-2 text-xs text-text-muted cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={pdConsent}
+                    onChange={(e) => setPdConsent(e.target.checked)}
+                    className="mt-0.5 flex-shrink-0 accent-accent"
+                  />
+                  <span>
+                    Согласен на обработку персональных данных в соответствии с{" "}
+                    <a
+                      href="/privacy"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-accent transition-colors"
+                    >
+                      Политикой конфиденциальности
+                    </a>
+                  </span>
+                </label>
+
                 <Button
                   type="submit"
                   size="lg"
                   className="w-full"
-                  disabled={status === "loading"}
+                  disabled={status === "loading" || !pdConsent}
                 >
                   {status === "loading" ? "Отправка..." : "Отправить заявку"}
                 </Button>
-
-                <p className="text-text-muted text-xs text-center">
-                  Нажимая кнопку, вы соглашаетесь с{" "}
-                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-accent transition-colors">
-                    обработкой персональных данных
-                  </a>
-                </p>
               </form>
             )}
           </div>

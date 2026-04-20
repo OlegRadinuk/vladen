@@ -7,6 +7,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import ChatWidget from "@/components/ui/ChatWidget";
+import CookieBanner from "@/components/ui/CookieBanner";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 
 const oswald = Oswald({
@@ -273,6 +274,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
           <ChatWidget />
+          <CookieBanner />
         </LoadingProvider>
       </body>
     </html>
