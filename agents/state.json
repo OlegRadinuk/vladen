@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "version": "1.1.0",
+    "description": "Стейт проекта vladen. Агенты читают только свой слайс.",
+    "last_updated": "2026-04-20",
+    "last_session_date": "2026-04-20",
+    "last_session_phase": "152-fz-compliance-chain",
+    "open_blockers": [
+      "AI-ассистент теряет соединения — проксируется через optisphere.tech без retry/timeout"
+    ],
+    "ready_to_ship": false
+  },
+
+  "project": {
+    "name": "vladen",
+    "slug": "vladen-crimea",
+    "started_at": "2024",
+    "type": "multi-page-site",
+    "stage": "active",
+    "url": "https://vladen-crimea.ru"
+  },
+
+  "client_brief": {
+    "client_name": "ООО Владен",
+    "client_city": "Симферополь",
+    "niche": "строительство и ремонт",
+    "segment": "b2c + b2b",
+    "main_service": "ремонт квартир и строительство под ключ",
+    "goals": ["лиды через сайт", "доверие через команду и портфолио"],
+    "founded": "2014",
+    "founded_city": "Адлер",
+    "work_cities": ["Симферополь", "Ялта", "Евпатория", "Джанкой"],
+    "regions": ["Крым", "Краснодарский край"],
+    "projects_count": "200+"
+  },
+
+  "team": [
+    { "name": "Биленчук Александр Михайлович", "role": "Учредитель, собственник" },
+    { "name": "Биленчук Юлия Владимировна", "role": "Генеральный директор" },
+    { "name": "Шелпакова Татьяна Валерьевна", "role": "Сметчик" },
+    { "name": "Дымов Григорий Григорьевич", "role": "Архитектор" },
+    { "name": "Дуквен Ольга Александровна", "role": "Дизайнер" },
+    { "name": "Полончук Владимир Леонидович", "role": "Главный инженер" },
+    { "name": "Монастырский Валентин Сергеевич", "role": "Прораб" }
+  ],
+
+  "server": {
+    "provider": "Selectel",
+    "ip": "89.111.168.203",
+    "os": "Ubuntu 22.04 LTS",
+    "user": "root",
+    "ssh_key": "~/.ssh/id_ed25519",
+    "status": "fresh — ssh key not yet added",
+    "created_at": "2026-04-20",
+    "purpose": "vladen-crimea.ru production"
+  },
+
+  "tech": {
+    "stack": "Next.js + TypeScript + Tailwind + Framer Motion",
+    "db": null,
+    "ai_assistant": {
+      "name": "Влад",
+      "widget": "ChatWidget.tsx",
+      "api_route": "/api/chat",
+      "proxy_url": "http://optisphere.tech/api/bots/vlad/chat",
+      "telegram_proxy": "tg-proxy.radinuko.workers.dev"
+    }
+  }
+}
