@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button";
 // Цены по каждому тарифу: [эконом/предчистовая, стандарт/чистовая, премиум]
 const serviceTypes = [
   { id: "house",      label: "Строительство дома",  prices: [55000, 80000, 80000] },
-  { id: "repair",     label: "Ремонт квартиры",      prices: [20000, 30000, 40000] },
+  { id: "repair",     label: "Ремонт квартиры",      prices: [17000, 27000, 37000] },
   { id: "foundation", label: "Фундамент",            prices: [12000, 18000, 25000] },
   { id: "roof",       label: "Кровельные работы",    prices: [ 6000,  9000, 14000] },
 ];
