@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-  // Origin check
-  const origin = request.headers.get("origin");
-  const allowedOrigin = process.env.ALLOWED_ORIGIN ?? "";
-  if (allowedOrigin && origin !== allowedOrigin) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   type CalcData = { service?: string; area?: number; material?: string; total?: number };
   let body: { name?: string; phone?: string; calc?: CalcData; chat?: string };
   try {
