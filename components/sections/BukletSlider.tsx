@@ -26,7 +26,7 @@ function Slide01() {
         fontFamily: '"Manrope", system-ui, sans-serif',
         display: "grid",
         gridTemplateRows: "1fr auto",
-        padding: "56px 96px 48px",
+        padding: "56px 96px 80px",
         boxSizing: "border-box",
       }}
     >
@@ -76,7 +76,7 @@ function Slide02() {
   const paper = "#F5F3EF";
   const line = "rgba(26,26,26,0.14)";
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "1fr auto auto", gap: 32, padding: "56px 96px 56px", boxSizing: "border-box" }}>
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "1fr auto auto", gap: 32, padding: "56px 96px 80px", boxSizing: "border-box" }}>
       <RunningFoot left="Три уровня отделки" page="02 / 06" />
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60 }}>
@@ -144,8 +144,7 @@ function TierSlide({ tier, pageNum }: { tier: { num: string; name: string; price
   const metaLabel = `Уровень ${tier.num} · ${tier.name === "Эконом" ? "Под аренду и инвестиции" : tier.name === "Комфорт" ? "Для собственного проживания" : "Архитектурный современный интерьер"}`;
   const roomLabels = ["Гостиная", "Кухня", "Санузел", "Спальня"];
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: bg, color: textColor, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto auto auto", gap: 22, padding: "52px 96px 52px", boxSizing: "border-box" }}>
-      <RunningFoot left={`${tier.name} · от ${tier.price} ₽/м²`} page={`${pageNum} / 06`} />
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: bg, color: textColor, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto auto auto", gap: 22, padding: "52px 96px 80px", boxSizing: "border-box" }}>
 
       {/* Head */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "end", paddingBottom: 22, borderBottom: `1px solid ${line}` }}>
@@ -223,7 +222,7 @@ function TierSlide({ tier, pageNum }: { tier: { num: string; name: string; price
 function Slide06() {
   const line = "rgba(245,243,239,.16)";
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: "#161616", color: "#F5F3EF", fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto 1fr auto", gap: 36, padding: "56px 96px 48px", boxSizing: "border-box" }}>
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: "#161616", color: "#F5F3EF", fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto 1fr auto", gap: 36, padding: "56px 96px 80px", boxSizing: "border-box" }}>
 
 
       <div>
@@ -420,8 +419,8 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
     if (!cellsRef.current[0]) return;
     const cell = cellsRef.current[0];
     const rect = cell.getBoundingClientRect();
-    // Fill width exactly — no black bars on sides
-    setScale(rect.width / 1920);
+    const availH = window.innerHeight - 56; // 56px nav bar
+    setScale(Math.min(rect.width / 1920, availH / 1080));
   }, []);
 
   useEffect(() => {
@@ -559,10 +558,16 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
               <button key={i} className="buklet-dot" onClick={() => goTo(i)} aria-label={`Слайд ${i + 1}`} style={{ width: i === current ? 26 : 7, height: 7, borderRadius: 999, background: i === current ? "#F39C2D" : "rgba(245,243,239,.28)" }} />
             ))}
           </div>
-          <button onClick={scrollToNext} style={{ background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", border: "1px solid rgba(245,243,239,.18)", borderRadius: 999, color: "rgba(245,243,239,.65)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, pointerEvents: "auto", marginRight: 72 }}>
-            Пропустить
-            <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 72, pointerEvents: "auto" }}>
+            <a href="/buklet.pdf" download style={{ background: "#F39C2D", border: "none", borderRadius: 999, color: "#1A1A1A", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, textDecoration: "none" }}>
+              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Скачать PDF
+            </a>
+            <button onClick={scrollToNext} style={{ background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", border: "1px solid rgba(245,243,239,.18)", borderRadius: 999, color: "rgba(245,243,239,.65)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font }}>
+              Пропустить
+              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -620,6 +625,10 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
         </div>
 
         {/* CTA */}
+        <a href="/buklet.pdf" download style={{ width: "100%", background: "#F39C2D", border: "none", borderRadius: 999, color: "#1A1A1A", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, padding: "14px 24px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: font, textDecoration: "none", marginBottom: 12, boxSizing: "border-box" }}>
+          <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Скачать лукбук PDF
+        </a>
         <button onClick={scrollToNext} style={{ width: "100%", background: "rgba(243,156,45,.1)", border: "1px solid rgba(243,156,45,.3)", borderRadius: 999, color: "#F39C2D", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, padding: "14px 24px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: font }}>
           Смотреть проекты
           <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
