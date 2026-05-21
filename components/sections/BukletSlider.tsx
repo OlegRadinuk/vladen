@@ -25,34 +25,11 @@ function Slide01() {
         color: "#F5F3EF",
         fontFamily: '"Manrope", system-ui, sans-serif',
         display: "grid",
-        gridTemplateRows: "auto 1fr auto",
+        gridTemplateRows: "1fr auto",
         padding: "56px 96px 48px",
         boxSizing: "border-box",
       }}
     >
-      {/* Lookbook badge */}
-      <div style={{ position: "absolute", top: 0, right: 0, background: "#F39C2D", color: "#1A1A1A", padding: "16px 28px 16px 56px", display: "flex", alignItems: "baseline", gap: 12, fontWeight: 800, letterSpacing: ".18em", textTransform: "uppercase", zIndex: 3, clipPath: "polygon(40px 0, 100% 0, 100% 100%, 0 100%)", whiteSpace: "nowrap" }}>
-        <span style={{ fontSize: 13 }}>Лукбук</span>
-        <span style={{ fontSize: 18, letterSpacing: ".06em" }}>2026</span>
-        <span style={{ fontSize: 11, opacity: .7, letterSpacing: ".22em" }}>Том I</span>
-      </div>
-
-      {/* Top */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 24, zIndex: 2, position: "relative" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <Image src="/logo.png" alt="Владен" width={44} height={44} style={{ height: 44, width: "auto" }} />
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1 }}>
-            <span style={{ fontWeight: 800, fontSize: 22, letterSpacing: ".18em", color: "#F5F3EF" }}>ВЛАДЕН</span>
-            <span style={{ fontWeight: 500, fontSize: 10, letterSpacing: ".32em", color: "#F5F3EF", opacity: .55, marginTop: 5, textTransform: "uppercase" }}>Строительная компания</span>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 36, fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 600, opacity: .6 }}>
-          <div><b style={{ color: "#F39C2D", fontWeight: 700, opacity: 1 }}>01</b> Эконом</div>
-          <div><b style={{ color: "#F39C2D", fontWeight: 700, opacity: 1 }}>02</b> Комфорт</div>
-          <div><b style={{ color: "#F39C2D", fontWeight: 700, opacity: 1 }}>03</b> Премиум</div>
-        </div>
-      </div>
-
       {/* Hero */}
       <div style={{ alignSelf: "center", position: "relative", zIndex: 2 }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 12, border: "1px solid rgba(245,243,239,.22)", borderRadius: 999, padding: "11px 22px", fontSize: 13, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 600, marginBottom: 44 }}>
@@ -99,8 +76,7 @@ function Slide02() {
   const paper = "#F5F3EF";
   const line = "rgba(26,26,26,0.14)";
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "1fr auto auto", gap: 32, padding: "72px 96px 72px", boxSizing: "border-box" }}>
-      <Badge />
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "1fr auto auto", gap: 32, padding: "56px 96px 56px", boxSizing: "border-box" }}>
       <RunningFoot left="Три уровня отделки" page="02 / 06" />
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60 }}>
@@ -168,9 +144,7 @@ function TierSlide({ tier, pageNum }: { tier: { num: string; name: string; price
   const metaLabel = `Уровень ${tier.num} · ${tier.name === "Эконом" ? "Под аренду и инвестиции" : tier.name === "Комфорт" ? "Для собственного проживания" : "Архитектурный современный интерьер"}`;
   const roomLabels = ["Гостиная", "Кухня", "Санузел", "Спальня"];
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: bg, color: textColor, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto auto auto", gap: 22, padding: "108px 96px 72px", boxSizing: "border-box" }}>
-      <Badge />
-      <RunningHead meta={`Уровень ${tier.num} · ${tier.name}`} metaColor={tier.dark ? "#F5F3EF" : undefined} />
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: bg, color: textColor, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto auto auto", gap: 22, padding: "52px 96px 52px", boxSizing: "border-box" }}>
       <RunningFoot left={`${tier.name} · от ${tier.price} ₽/м²`} page={`${pageNum} / 06`} />
 
       {/* Head */}
@@ -249,9 +223,8 @@ function TierSlide({ tier, pageNum }: { tier: { num: string; name: string; price
 function Slide06() {
   const line = "rgba(245,243,239,.16)";
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: "#161616", color: "#F5F3EF", fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto 1fr auto", gap: 36, padding: "116px 96px 48px", boxSizing: "border-box" }}>
-      <Badge />
-      <RunningHead meta="Контакты" metaColor="#F5F3EF" />
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: "#161616", color: "#F5F3EF", fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto 1fr auto", gap: 36, padding: "56px 96px 48px", boxSizing: "border-box" }}>
+
 
       <div>
         <div style={{ fontSize: 13, letterSpacing: ".24em", textTransform: "uppercase", fontWeight: 700, display: "flex", alignItems: "center", gap: 12, color: "#F5F3EF", marginBottom: 24 }}>
@@ -447,12 +420,8 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
     if (!cellsRef.current[0]) return;
     const cell = cellsRef.current[0];
     const rect = cell.getBoundingClientRect();
-    const padH = window.innerWidth < 640 ? 60 : 80; // top+bottom arrow zones
-    const padW = window.innerWidth < 640 ? 0 : 100; // left+right arrow zones
-    const availW = rect.width - padW;
-    const availH = rect.height - padH;
-    const s = Math.min(availW / 1920, availH / 1080);
-    setScale(s);
+    // Fill width exactly — no black bars on sides
+    setScale(rect.width / 1920);
   }, []);
 
   useEffect(() => {
