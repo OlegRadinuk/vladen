@@ -99,14 +99,12 @@ function Slide02() {
   const paper = "#F5F3EF";
   const line = "rgba(26,26,26,0.14)";
   return (
-    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "auto auto 1fr auto", gap: 32, padding: "120px 96px 72px", boxSizing: "border-box" }}>
+    <section style={{ position: "absolute", inset: 0, width: 1920, height: 1080, overflow: "hidden", background: paper, color: ink, fontFamily: '"Manrope", system-ui, sans-serif', display: "grid", gridTemplateRows: "1fr auto auto", gap: 32, padding: "72px 96px 72px", boxSizing: "border-box" }}>
       <Badge />
-      <RunningHead meta="Обзор · Лукбук 2026" />
       <RunningFoot left="Три уровня отделки" page="02 / 06" />
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 720 }}>
-          <Eyebrow>Концепция</Eyebrow>
           <h1 style={{ margin: 0, fontWeight: 800, fontSize: 96, lineHeight: .95, letterSpacing: "-.035em" }}>Три уровня,<br />один <span style={{ color: "#F39C2D" }}>стандарт.</span></h1>
         </div>
         <p style={{ textAlign: "right", maxWidth: 520, fontSize: 20, lineHeight: 1.55, color: "#2A2A2A", fontWeight: 400, margin: 0 }}>
@@ -541,146 +539,121 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
     </button>
   );
 
+  const font = '"Manrope", system-ui, sans-serif';
+
   return (
-    <section
-      ref={sectionRef}
-      style={{
-        background: "#0a0a0a",
-        position: "relative",
-        height: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        overflow: "hidden",
-      }}
-    >
+    <section ref={sectionRef} style={{ background: "#1A1A1A", position: "relative" }}>
       <style>{`
         .buklet-track::-webkit-scrollbar { display: none; }
         .buklet-track { scrollbar-width: none; }
-        .buklet-dot { transition: background .2s, transform .2s; border: none; padding: 0; cursor: pointer; }
+        .buklet-dot { transition: all .25s ease; border: none; padding: 0; cursor: pointer; }
         .buklet-dot:hover { background: rgba(245,243,239,.5) !important; }
         .buklet-arrow { transition: background .15s, opacity .15s; }
         .buklet-arrow:not(:disabled):hover { background: #F39C2D !important; border-color: #F39C2D !important; color: #1A1A1A !important; }
-
-        @keyframes buklet-hintfade { 0%,70%{opacity:1} 100%{opacity:0} }
-        .buklet-hint { animation: buklet-hintfade 3.5s ease forwards; }
-
-        @media (max-width: 640px) {
-          .buklet-arrow { width: 36px !important; height: 36px !important; }
-          .buklet-skip-btn { display: none !important; }
-        }
+        @media (min-width: 641px) { .buklet-mobile { display: none !important; } }
+        @media (max-width: 640px)  { .buklet-desktop { display: none !important; } }
       `}</style>
 
-      {/* Трек со слайдами — занимает всё свободное место */}
-      <div
-        ref={trackRef}
-        className="buklet-track"
-        style={{
-          flex: 1,
-          overflowX: "auto",
-          overflowY: "hidden",
-          scrollSnapType: "x mandatory",
-          scrollBehavior: "smooth",
-          display: "flex",
-          alignItems: "center",
-          WebkitOverflowScrolling: "touch" as never,
-          background: "#0a0a0a",
-          position: "relative",
-        }}
-      >
-        {/* Стрелки поверх трека */}
+      {/* ── DESKTOP (641px+) ── */}
+      <div className="buklet-desktop" style={{ height: "100dvh", display: "flex", flexDirection: "column", overflow: "hidden", position: "relative" }}>
+
+        {/* Трек — только слайды, без стрелок */}
+        <div ref={trackRef} className="buklet-track" style={{ flex: 1, overflowX: "auto", overflowY: "hidden", scrollSnapType: "x mandatory", scrollBehavior: "smooth", display: "flex", alignItems: "center", WebkitOverflowScrolling: "touch" as never, background: "#0a0a0a" }}>
+          <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide01 /></div>
+          </div>
+          <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide02 /></div>
+          </div>
+          {TIER_SLIDES.map((tier, i) => (
+            <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><TierSlide tier={tier} pageNum={String(3 + i).padStart(2, "0")} /></div>
+            </div>
+          ))}
+          <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide06 /></div>
+          </div>
+        </div>
+
+        {/* Стрелки — вне трека, позиционируются относительно desktop-обёртки */}
         <ArrowBtn dir="left" onClick={() => goTo(current - 1)} disabled={current === 0} />
         <ArrowBtn dir="right" onClick={() => goTo(current + 1)} disabled={current === total - 1} />
 
-        {/* Slide 1 */}
-        <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
-            <Slide01 />
+        {/* Нижняя панель */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", zIndex: 20, pointerEvents: "none" }}>
+          <div style={{ fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: "#F5F3EF", fontFamily: font, background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", padding: "5px 12px", borderRadius: 999, pointerEvents: "auto" }}>
+            <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b>
+            <span style={{ opacity: .45 }}> / {String(total).padStart(2, "0")}</span>
           </div>
-        </div>
-
-        {/* Slide 2 */}
-        <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
-            <Slide02 />
+          <div style={{ display: "flex", alignItems: "center", gap: 8, pointerEvents: "auto" }}>
+            {SLIDES.map((_, i) => (
+              <button key={i} className="buklet-dot" onClick={() => goTo(i)} aria-label={`Слайд ${i + 1}`} style={{ width: i === current ? 26 : 7, height: 7, borderRadius: 999, background: i === current ? "#F39C2D" : "rgba(245,243,239,.28)" }} />
+            ))}
           </div>
+          <button onClick={scrollToNext} style={{ background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", border: "1px solid rgba(245,243,239,.18)", borderRadius: 999, color: "rgba(245,243,239,.65)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, pointerEvents: "auto", marginRight: 72 }}>
+            Пропустить
+            <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+          </button>
         </div>
+      </div>
 
-        {/* Tier slides 3-5 */}
-        {TIER_SLIDES.map((tier, i) => (
-          <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
-            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
-              <TierSlide tier={tier} pageNum={String(3 + i).padStart(2, "0")} />
+      {/* ── MOBILE (≤640px) ── */}
+      <div className="buklet-mobile" style={{ padding: "64px 20px 80px", fontFamily: font, color: "#F5F3EF" }}>
+        {/* Заголовок */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+          <span style={{ width: 22, height: 2, background: "#F39C2D", display: "inline-block", flex: "none" }}></span>
+          <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, opacity: .6 }}>Варианты ремонта</span>
+        </div>
+        <h2 style={{ margin: "0 0 12px", fontWeight: 800, fontSize: 34, lineHeight: 1.05, letterSpacing: "-.025em" }}>
+          Три уровня<br /><span style={{ color: "#F39C2D" }}>под ключ</span>
+        </h2>
+        <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.6, color: "rgba(245,243,239,.65)" }}>
+          От инвестиционной аренды до архитектурного премиума — прозрачная смета, подобранные материалы.
+        </p>
+
+        {/* Карточки тиров */}
+        {[
+          { name: "Эконом", price: "17 000", sub: "Под аренду и инвестиции", items: ["Быстрое заселение", "Практичные материалы", "Инвестиционная недвижимость"], light: true },
+          { name: "Комфорт", price: "27 000", sub: "Для собственного проживания", items: ["Скрытый свет, инсталляции", "Кварцвинил, современный дизайн", "Баланс цены и качества"], light: true },
+          { name: "Премиум", price: "37 000", sub: "Архитектурный подход", items: ["Теневые потолки, крупная плитка", "Максимальный визуал", "Дизайнерский интерьер"], light: false },
+        ].map((t) => (
+          <div key={t.name} style={{ background: t.light ? "rgba(245,243,239,.06)" : "rgba(245,243,239,.03)", border: "1px solid rgba(245,243,239,.12)", borderRadius: 12, padding: "20px 18px", marginBottom: 12, display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: "-.02em", lineHeight: 1 }}>{t.name}</div>
+                <div style={{ fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 600, opacity: .5, marginTop: 4 }}>{t.sub}</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontWeight: 800, fontSize: 20, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1 }}>{t.price}</div>
+                <div style={{ fontSize: 10, opacity: .5, fontWeight: 600, letterSpacing: ".1em" }}>₽/м²</div>
+              </div>
             </div>
+            <div style={{ height: 1, background: "rgba(245,243,239,.1)" }}></div>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 7 }}>
+              {t.items.map(f => (
+                <li key={f} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 500, color: "rgba(245,243,239,.8)" }}>
+                  <span style={{ width: 5, height: 5, background: "#F39C2D", flex: "none", borderRadius: 1, display: "inline-block" }}></span>
+                  {f}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
 
-        {/* Slide 6 */}
-        <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
-            <Slide06 />
-          </div>
-        </div>
-
-      </div>
-
-      {/* Нижняя панель: счётчик | точки | кнопка пропустить */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0,
-        height: 56, display: "flex", alignItems: "center",
-        justifyContent: "space-between", padding: "0 20px",
-        zIndex: 20, pointerEvents: "none",
-      }}>
-        {/* Счётчик слайдов — слева */}
-        <div style={{
-          fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase",
-          fontWeight: 700, color: "#F5F3EF",
-          fontFamily: '"Manrope", system-ui, sans-serif',
-          background: "rgba(15,15,15,.8)", backdropFilter: "blur(8px)",
-          padding: "5px 12px", borderRadius: 999,
-          pointerEvents: "auto",
-        }}>
-          <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b>
-          <span style={{ opacity: .45 }}> / {String(total).padStart(2, "0")}</span>
-        </div>
-
-        {/* Точки — по центру */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, pointerEvents: "auto" }}>
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className="buklet-dot"
-              onClick={() => goTo(i)}
-              aria-label={`Слайд ${i + 1}`}
-              style={{
-                width: i === current ? 26 : 7,
-                height: 7, borderRadius: 999,
-                background: i === current ? "#F39C2D" : "rgba(245,243,239,.28)",
-                transition: "all .25s ease",
-              }}
-            />
+        {/* Статистика */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 }}>
+          {[["от 17 000 ₽", "Стартовая цена за м²"], ["от 30 дней", "Срок ремонта"], ["2 года", "Гарантия"], ["с 2014", "Работаем в Крыму"]].map(([v, l]) => (
+            <div key={l} style={{ background: "rgba(245,243,239,.04)", border: "1px solid rgba(245,243,239,.08)", borderRadius: 10, padding: "14px 14px" }}>
+              <div style={{ fontWeight: 800, fontSize: 18, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1 }}>{v}</div>
+              <div style={{ fontSize: 10, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 600, opacity: .5, marginTop: 5 }}>{l}</div>
+            </div>
           ))}
         </div>
 
-        {/* Пропустить — справа (смещён влево чтоб не перекрывать чат-виджет) */}
-        <button
-          className="buklet-skip-btn"
-          onClick={scrollToNext}
-          style={{
-            background: "rgba(15,15,15,.8)", backdropFilter: "blur(8px)",
-            border: "1px solid rgba(245,243,239,.18)", borderRadius: 999,
-            color: "rgba(245,243,239,.65)", fontSize: 11,
-            letterSpacing: ".18em", textTransform: "uppercase",
-            fontWeight: 700, cursor: "pointer", padding: "5px 14px",
-            display: "flex", alignItems: "center", gap: 5,
-            fontFamily: '"Manrope", system-ui, sans-serif',
-            pointerEvents: "auto",
-            marginRight: 72,
-          }}
-        >
-          Пропустить
-          <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
+        {/* CTA */}
+        <button onClick={scrollToNext} style={{ width: "100%", background: "rgba(243,156,45,.1)", border: "1px solid rgba(243,156,45,.3)", borderRadius: 999, color: "#F39C2D", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, padding: "14px 24px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: font }}>
+          Смотреть проекты
+          <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
         </button>
       </div>
     </section>
