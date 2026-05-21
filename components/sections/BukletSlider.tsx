@@ -437,7 +437,8 @@ const TIER_SLIDES = [
   },
 ];
 
-export default function BukletSlider({ nextSectionId = "calculator" }: { nextSectionId?: string }) {
+export default function BukletSlider({ nextSectionId = "project-case" }: { nextSectionId?: string }) {
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cellsRef = useRef<HTMLDivElement[]>([]);
   const [current, setCurrent] = useState(0);
@@ -448,9 +449,10 @@ export default function BukletSlider({ nextSectionId = "calculator" }: { nextSec
     if (!cellsRef.current[0]) return;
     const cell = cellsRef.current[0];
     const rect = cell.getBoundingClientRect();
-    const padding = window.innerWidth < 640 ? 16 : 32;
-    const availW = rect.width - padding;
-    const availH = rect.height - padding;
+    const padH = window.innerWidth < 640 ? 60 : 80; // top+bottom arrow zones
+    const padW = window.innerWidth < 640 ? 0 : 100; // left+right arrow zones
+    const availW = rect.width - padW;
+    const availH = rect.height - padH;
     const s = Math.min(availW / 1920, availH / 1080);
     setScale(s);
   }, []);
@@ -491,8 +493,10 @@ export default function BukletSlider({ nextSectionId = "calculator" }: { nextSec
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const el = trackRef.current;
-      if (!el) return;
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inView) return;
       if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1); }
       else if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1); }
     };
@@ -505,54 +509,112 @@ export default function BukletSlider({ nextSectionId = "calculator" }: { nextSec
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const ArrowBtn = ({ dir, onClick, disabled }: { dir: "left" | "right"; onClick: () => void; disabled: boolean }) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === "left" ? "Назад" : "Вперёд"}
+      className="buklet-arrow"
+      style={{
+        position: "absolute",
+        top: "50%",
+        transform: "translateY(-50%)",
+        [dir]: 16,
+        zIndex: 10,
+        width: 52, height: 52,
+        borderRadius: "50%",
+        border: "1px solid rgba(245,243,239,.25)",
+        background: "rgba(22,22,22,.75)",
+        backdropFilter: "blur(8px)",
+        color: "#F5F3EF",
+        cursor: disabled ? "default" : "pointer",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        opacity: disabled ? 0.25 : 1,
+        transition: "all .15s",
+      }}
+    >
+      <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        {dir === "left"
+          ? <polyline points="15 18 9 12 15 6" />
+          : <polyline points="9 18 15 12 9 6" />}
+      </svg>
+    </button>
+  );
+
   return (
-    <section className="buklet-section" style={{ background: "#0a0a0a", position: "relative" }}>
+    <section
+      ref={sectionRef}
+      style={{
+        background: "#0a0a0a",
+        position: "relative",
+        height: "100dvh",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
       <style>{`
         .buklet-track::-webkit-scrollbar { display: none; }
         .buklet-track { scrollbar-width: none; }
-        .buklet-dot { transition: background .2s, transform .2s; }
-        .buklet-dot:hover { background: rgba(245,243,239,.45) !important; }
-        .buklet-btn { transition: background .15s, border-color .15s, color .15s; }
-        .buklet-btn:hover:not(:disabled) { background: #F39C2D !important; border-color: #F39C2D !important; color: #1A1A1A !important; }
-        .buklet-btn:disabled { opacity: .3; cursor: default; }
+        .buklet-dot { transition: background .2s, transform .2s; border: none; padding: 0; cursor: pointer; }
+        .buklet-dot:hover { background: rgba(245,243,239,.5) !important; }
+        .buklet-arrow { transition: background .15s, opacity .15s; }
+        .buklet-arrow:not(:disabled):hover { background: #F39C2D !important; border-color: #F39C2D !important; color: #1A1A1A !important; }
 
-        /* Mobile swipe hint */
-        @keyframes hintfade { 0%,70%{opacity:1} 100%{opacity:0} }
-        .buklet-hint { animation: hintfade 3.5s ease forwards; }
+        @keyframes buklet-hintfade { 0%,70%{opacity:1} 100%{opacity:0} }
+        .buklet-hint { animation: buklet-hintfade 3.5s ease forwards; }
 
-        /* Mobile: full-width slides, smaller padding */
+        /* На мобиле стрелки поменьше и ближе к краю */
         @media (max-width: 640px) {
-          .buklet-topbar { padding: 8px 12px !important; }
-          .buklet-topbar-word { font-size: 12px !important; }
-          .buklet-topbar-sub { display: none !important; }
-          .buklet-controls { padding: 8px 12px !important; gap: 8px !important; }
-          .buklet-btn-sm { width: 36px !important; height: 36px !important; }
-          .buklet-dot { width: 7px !important; height: 7px !important; }
-          .buklet-label { display: none !important; }
-          .buklet-skip { font-size: 11px !important; padding: 0 10px !important; }
+          .buklet-arrow { width: 40px !important; height: 40px !important; }
+          .buklet-skip-btn { display: none !important; }
         }
       `}</style>
 
-      {/* Top bar */}
-      <div className="buklet-topbar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 20px", background: "#161616", borderBottom: "1px solid rgba(245,243,239,.1)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <Image src="/logo.png" alt="Владен" width={28} height={28} style={{ height: 28, width: "auto" }} />
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1, color: "#F5F3EF" }}>
-            <span className="buklet-topbar-word" style={{ fontWeight: 800, fontSize: 14, letterSpacing: ".18em", fontFamily: '"Manrope", system-ui, sans-serif' }}>ВЛАДЕН</span>
-            <span className="buklet-topbar-sub" style={{ fontSize: 9, letterSpacing: ".24em", opacity: .6, marginTop: 4, textTransform: "uppercase", fontFamily: '"Manrope", system-ui, sans-serif' }}>Варианты ремонта</span>
-          </div>
+      {/* Кнопка «Пропустить» — вверху по центру, не мешает виджету */}
+      <div style={{
+        position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)",
+        zIndex: 20, display: "flex", alignItems: "center", gap: 16,
+      }}>
+        {/* Счётчик слайдов */}
+        <div style={{
+          fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase",
+          fontWeight: 700, color: "#F5F3EF", opacity: .65,
+          fontFamily: '"Manrope", system-ui, sans-serif',
+          background: "rgba(22,22,22,.7)", backdropFilter: "blur(8px)",
+          padding: "6px 14px", borderRadius: 999,
+        }}>
+          <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b>
+          <span style={{ opacity: .5 }}> / {String(total).padStart(2, "0")}</span>
         </div>
-        <div style={{ fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: "#F5F3EF", opacity: .7, fontFamily: '"Manrope", system-ui, sans-serif' }}>
-          <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b> &nbsp;/&nbsp; {String(total).padStart(2, "0")}
-        </div>
+
+        <button
+          className="buklet-skip-btn"
+          onClick={scrollToNext}
+          style={{
+            background: "rgba(22,22,22,.7)", backdropFilter: "blur(8px)",
+            border: "1px solid rgba(245,243,239,.2)", borderRadius: 999,
+            color: "rgba(245,243,239,.7)", fontSize: 11,
+            letterSpacing: ".18em", textTransform: "uppercase",
+            fontWeight: 700, cursor: "pointer", padding: "6px 16px",
+            display: "flex", alignItems: "center", gap: 6,
+            fontFamily: '"Manrope", system-ui, sans-serif',
+            transition: "all .15s",
+          }}
+        >
+          Пропустить
+          <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
       </div>
 
-      {/* Track */}
+      {/* Трек со слайдами — занимает всё свободное место */}
       <div
         ref={trackRef}
         className="buklet-track"
         style={{
-          height: "clamp(280px, 56vw, 680px)",
+          flex: 1,
           overflowX: "auto",
           overflowY: "hidden",
           scrollSnapType: "x mandatory",
@@ -564,84 +626,66 @@ export default function BukletSlider({ nextSectionId = "calculator" }: { nextSec
           position: "relative",
         }}
       >
+        {/* Стрелки поверх трека */}
+        <ArrowBtn dir="left" onClick={() => goTo(current - 1)} disabled={current === 0} />
+        <ArrowBtn dir="right" onClick={() => goTo(current + 1)} disabled={current === total - 1} />
+
         {/* Slide 1 */}
-        <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", padding: "clamp(8px,2vw,16px)", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 30px 60px -20px rgba(0,0,0,.6)" }}>
+        <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
+          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
             <Slide01 />
           </div>
         </div>
 
         {/* Slide 2 */}
-        <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", padding: "clamp(8px,2vw,16px)", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 30px 60px -20px rgba(0,0,0,.6)" }}>
+        <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
+          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
             <Slide02 />
           </div>
         </div>
 
         {/* Tier slides 3-5 */}
         {TIER_SLIDES.map((tier, i) => (
-          <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", padding: "clamp(8px,2vw,16px)", boxSizing: "border-box" }}>
-            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 30px 60px -20px rgba(0,0,0,.6)" }}>
+          <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
+            <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
               <TierSlide tier={tier} pageNum={String(3 + i).padStart(2, "0")} />
             </div>
           </div>
         ))}
 
         {/* Slide 6 */}
-        <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", padding: "clamp(8px,2vw,16px)", boxSizing: "border-box" }}>
-          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 30px 60px -20px rgba(0,0,0,.6)" }}>
+        <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box" }}>
+          <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none", boxShadow: "0 40px 80px -20px rgba(0,0,0,.7)" }}>
             <Slide06 />
           </div>
         </div>
 
-        {/* Swipe hint on touch */}
-        <div className="buklet-hint" style={{ position: "absolute", left: "50%", bottom: 20, transform: "translateX(-50%)", fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: "rgba(245,243,239,.7)", background: "rgba(0,0,0,.55)", backdropFilter: "blur(8px)", padding: "8px 16px", borderRadius: 999, pointerEvents: "none", display: "none" }}>
+        {/* Swipe hint — только на тач */}
+        <div className="buklet-hint" style={{ position: "absolute", left: "50%", bottom: 24, transform: "translateX(-50%)", fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: "rgba(245,243,239,.7)", background: "rgba(0,0,0,.55)", backdropFilter: "blur(8px)", padding: "8px 16px", borderRadius: 999, pointerEvents: "none", display: "none" }}>
           ← Свайп →
         </div>
         <style>{`@media (pointer: coarse) { .buklet-hint { display: block !important; } }`}</style>
       </div>
 
-      {/* Controls */}
-      <div className="buklet-controls" style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 20px", background: "#161616", borderTop: "1px solid rgba(245,243,239,.1)" }}>
-        <button
-          className="buklet-btn buklet-btn-sm"
-          onClick={() => goTo(current - 1)}
-          disabled={current === 0}
-          aria-label="Назад"
-          style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid rgba(245,243,239,.2)", background: "transparent", color: "#F5F3EF", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
-        >
-          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-        </button>
-
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              className="buklet-dot"
-              onClick={() => goTo(i)}
-              aria-label={`Слайд ${i + 1}`}
-              style={{ width: 9, height: 9, borderRadius: "50%", border: "none", padding: 0, cursor: "pointer", background: i === current ? "#F39C2D" : "rgba(245,243,239,.22)", transform: i === current ? "scale(1.3)" : "scale(1)" }}
-            />
-          ))}
-        </div>
-
-        <button
-          className="buklet-label buklet-skip"
-          onClick={scrollToNext}
-          style={{ flexShrink: 0, background: "transparent", border: "1px solid rgba(245,243,239,.2)", borderRadius: 999, color: "rgba(245,243,239,.7)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "0 16px", height: 40, display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap", fontFamily: '"Manrope", system-ui, sans-serif', transition: "all .15s" }}
-        >
-          Пропустить <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-        </button>
-
-        <button
-          className="buklet-btn buklet-btn-sm"
-          onClick={() => goTo(current + 1)}
-          disabled={current === total - 1}
-          aria-label="Вперёд"
-          style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid rgba(245,243,239,.2)", background: "transparent", color: "#F5F3EF", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
-        >
-          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
-        </button>
+      {/* Точки навигации — внизу по центру */}
+      <div style={{
+        position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)",
+        display: "flex", alignItems: "center", gap: 10, zIndex: 10,
+      }}>
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            className="buklet-dot"
+            onClick={() => goTo(i)}
+            aria-label={`Слайд ${i + 1}`}
+            style={{
+              width: i === current ? 28 : 8,
+              height: 8, borderRadius: 999,
+              background: i === current ? "#F39C2D" : "rgba(245,243,239,.3)",
+              transition: "all .25s ease",
+            }}
+          />
+        ))}
       </div>
     </section>
   );
