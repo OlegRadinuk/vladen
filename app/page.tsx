@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
 import Services from "@/components/sections/Services";
+import BukletSlider from "@/components/sections/BukletSlider";
 import ProjectCase from "@/components/sections/ProjectCase";
 import WhyWe from "@/components/sections/WhyWe";
 import Calculator from "@/components/sections/Calculator";
@@ -43,7 +44,8 @@ export default function HomePage() {
     <>
       <Hero />
       <Services />
-      <ProjectCase />
+      <BukletSlider nextSectionId="project-case" />
+      <div id="project-case"><ProjectCase /></div>
       <WhyWe />
       <Calculator />
       <FAQ />
