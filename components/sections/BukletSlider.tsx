@@ -564,50 +564,11 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
         @keyframes buklet-hintfade { 0%,70%{opacity:1} 100%{opacity:0} }
         .buklet-hint { animation: buklet-hintfade 3.5s ease forwards; }
 
-        /* На мобиле стрелки поменьше и ближе к краю */
         @media (max-width: 640px) {
-          .buklet-arrow { width: 40px !important; height: 40px !important; }
+          .buklet-arrow { width: 36px !important; height: 36px !important; }
           .buklet-skip-btn { display: none !important; }
         }
       `}</style>
-
-      {/* Кнопка «Пропустить» — вверху по центру, не мешает виджету */}
-      <div style={{
-        position: "absolute", top: 16, left: "50%", transform: "translateX(-50%)",
-        zIndex: 20, display: "flex", alignItems: "center", gap: 16,
-      }}>
-        {/* Счётчик слайдов */}
-        <div style={{
-          fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase",
-          fontWeight: 700, color: "#F5F3EF", opacity: .65,
-          fontFamily: '"Manrope", system-ui, sans-serif',
-          background: "rgba(22,22,22,.7)", backdropFilter: "blur(8px)",
-          padding: "6px 14px", borderRadius: 999,
-        }}>
-          <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b>
-          <span style={{ opacity: .5 }}> / {String(total).padStart(2, "0")}</span>
-        </div>
-
-        <button
-          className="buklet-skip-btn"
-          onClick={scrollToNext}
-          style={{
-            background: "rgba(22,22,22,.7)", backdropFilter: "blur(8px)",
-            border: "1px solid rgba(245,243,239,.2)", borderRadius: 999,
-            color: "rgba(245,243,239,.7)", fontSize: 11,
-            letterSpacing: ".18em", textTransform: "uppercase",
-            fontWeight: 700, cursor: "pointer", padding: "6px 16px",
-            display: "flex", alignItems: "center", gap: 6,
-            fontFamily: '"Manrope", system-ui, sans-serif',
-            transition: "all .15s",
-          }}
-        >
-          Пропустить
-          <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-        </button>
-      </div>
 
       {/* Трек со слайдами — занимает всё свободное место */}
       <div
@@ -660,32 +621,67 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
           </div>
         </div>
 
-        {/* Swipe hint — только на тач */}
-        <div className="buklet-hint" style={{ position: "absolute", left: "50%", bottom: 24, transform: "translateX(-50%)", fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: "rgba(245,243,239,.7)", background: "rgba(0,0,0,.55)", backdropFilter: "blur(8px)", padding: "8px 16px", borderRadius: 999, pointerEvents: "none", display: "none" }}>
-          ← Свайп →
-        </div>
-        <style>{`@media (pointer: coarse) { .buklet-hint { display: block !important; } }`}</style>
       </div>
 
-      {/* Точки навигации — внизу по центру */}
+      {/* Нижняя панель: счётчик | точки | кнопка пропустить */}
       <div style={{
-        position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)",
-        display: "flex", alignItems: "center", gap: 10, zIndex: 10,
+        position: "absolute", bottom: 0, left: 0, right: 0,
+        height: 56, display: "flex", alignItems: "center",
+        justifyContent: "space-between", padding: "0 20px",
+        zIndex: 20, pointerEvents: "none",
       }}>
-        {SLIDES.map((_, i) => (
-          <button
-            key={i}
-            className="buklet-dot"
-            onClick={() => goTo(i)}
-            aria-label={`Слайд ${i + 1}`}
-            style={{
-              width: i === current ? 28 : 8,
-              height: 8, borderRadius: 999,
-              background: i === current ? "#F39C2D" : "rgba(245,243,239,.3)",
-              transition: "all .25s ease",
-            }}
-          />
-        ))}
+        {/* Счётчик слайдов — слева */}
+        <div style={{
+          fontSize: 12, letterSpacing: ".22em", textTransform: "uppercase",
+          fontWeight: 700, color: "#F5F3EF",
+          fontFamily: '"Manrope", system-ui, sans-serif',
+          background: "rgba(15,15,15,.8)", backdropFilter: "blur(8px)",
+          padding: "5px 12px", borderRadius: 999,
+          pointerEvents: "auto",
+        }}>
+          <b style={{ color: "#F39C2D" }}>{String(current + 1).padStart(2, "0")}</b>
+          <span style={{ opacity: .45 }}> / {String(total).padStart(2, "0")}</span>
+        </div>
+
+        {/* Точки — по центру */}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, pointerEvents: "auto" }}>
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              className="buklet-dot"
+              onClick={() => goTo(i)}
+              aria-label={`Слайд ${i + 1}`}
+              style={{
+                width: i === current ? 26 : 7,
+                height: 7, borderRadius: 999,
+                background: i === current ? "#F39C2D" : "rgba(245,243,239,.28)",
+                transition: "all .25s ease",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Пропустить — справа (смещён влево чтоб не перекрывать чат-виджет) */}
+        <button
+          className="buklet-skip-btn"
+          onClick={scrollToNext}
+          style={{
+            background: "rgba(15,15,15,.8)", backdropFilter: "blur(8px)",
+            border: "1px solid rgba(245,243,239,.18)", borderRadius: 999,
+            color: "rgba(245,243,239,.65)", fontSize: 11,
+            letterSpacing: ".18em", textTransform: "uppercase",
+            fontWeight: 700, cursor: "pointer", padding: "5px 14px",
+            display: "flex", alignItems: "center", gap: 5,
+            fontFamily: '"Manrope", system-ui, sans-serif',
+            pointerEvents: "auto",
+            marginRight: 72,
+          }}
+        >
+          Пропустить
+          <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
       </div>
     </section>
   );
