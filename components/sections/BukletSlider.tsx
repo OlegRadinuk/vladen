@@ -623,8 +623,8 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
                 <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: "-.02em", lineHeight: 1 }}>{t.name}</div>
                 <div style={{ fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 600, opacity: .5, marginTop: 4 }}>{t.sub}</div>
               </div>
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontWeight: 800, fontSize: 20, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1 }}>{t.price}</div>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <div style={{ fontWeight: 800, fontSize: 20, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1, whiteSpace: "nowrap" }}>{t.price}</div>
                 <div style={{ fontSize: 10, opacity: .5, fontWeight: 600, letterSpacing: ".1em" }}>₽/м²</div>
               </div>
             </div>
