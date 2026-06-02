@@ -74,10 +74,10 @@ function TypingDots() {
 
 const INITIAL_MESSAGE: Message = {
   role: "assistant",
-  content: "Привет! Я Влад, ИИ-консультант компании Владен. Помогу рассчитать стоимость ремонта или строительства, отвечу на вопросы. Что вас интересует?",
+  content: "Привет! Я Влад, ИИ-консультант компании Владен. Подскажу стоимость и сроки ремонта под ключ. Какой объект — квартира или дом, и какая площадь?",
 };
 
-const BUBBLE_TEXT = "Привет! 👋 Я ИИ-консультант Владен. Помогу рассчитать стоимость ремонта или строительства — спросите, это бесплатно!";
+const BUBBLE_TEXT = "Ремонт квартиры или дома? 👋 Назовите площадь — прикину стоимость и сроки за пару минут. Это бесплатно.";
 const SUGGEST_AFTER = 2; // предлагать номер после N ответов ассистента
 
 export default function ChatWidget() {
@@ -100,7 +100,10 @@ export default function ChatWidget() {
 
   // Показываем bubble через 3с, скрываем через 10с
   useEffect(() => {
-    const show = setTimeout(() => setShowBubble(true), 3000);
+    const show = setTimeout(() => {
+      setShowBubble(true);
+      if (typeof ym !== "undefined") ym(109280535, "reachGoal", "bubble_shown");
+    }, 3000);
     const hide = setTimeout(() => setShowBubble(false), 13000);
     return () => { clearTimeout(show); clearTimeout(hide); };
   }, []);
@@ -241,16 +244,23 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="fixed bottom-24 right-6 z-50 max-w-[260px] sm:max-w-[300px]"
+            className="fixed bottom-[88px] right-4 z-50 max-w-[260px] sm:max-w-[300px]"
           >
             <div
-              onClick={openChat}
+              onClick={() => {
+                if (typeof ym !== "undefined") ym(109280535, "reachGoal", "bubble_click");
+                openChat();
+              }}
               className="relative w-full text-left bg-white rounded-2xl rounded-br-sm shadow-xl border border-gray-100 px-4 py-3 group cursor-pointer"
             >
               {/* Close */}
               <span
                 role="button"
-                onClick={(e) => { e.stopPropagation(); setShowBubble(false); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (typeof ym !== "undefined") ym(109280535, "reachGoal", "bubble_closed");
+                  setShowBubble(false);
+                }}
                 className="absolute top-2 right-2 text-gray-300 hover:text-gray-500 transition-colors"
                 aria-label="Закрыть"
               >
@@ -268,30 +278,41 @@ export default function ChatWidget() {
               <p className="text-sm text-gray-600 leading-relaxed pr-4">{BUBBLE_TEXT}</p>
               <p className="text-xs text-accent font-medium mt-2 group-hover:underline">Написать →</p>
             </div>
-            {/* Arrow pointing to FAB */}
-            <div className="absolute -bottom-2 right-5 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
+            {/* Arrow pointing to pill FAB — смещена вправо под центр pill */}
+            <div className="absolute -bottom-2 right-10 w-4 h-4 bg-white border-r border-b border-gray-100 rotate-45" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating button */}
+      {/* Floating pill — аватар + имя + статус */}
       <AnimatePresence>
         {!isOpen && (
           <motion.button
             key="fab"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
+            initial={{ scale: 0.8, opacity: 0, y: 8 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.8, opacity: 0, y: 8 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             onClick={openChat}
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent shadow-lg hover:bg-accent/90 transition-colors flex items-center justify-center group"
-            aria-label="Открыть чат с консультантом"
+            className="fixed bottom-6 right-4 z-50 flex items-center gap-3 bg-dark text-white rounded-full pl-1.5 pr-5 py-1.5 shadow-xl hover:shadow-2xl hover:bg-dark/90 transition-all duration-200 group"
+            aria-label="Открыть чат с консультантом Влад"
           >
-            <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6 text-white">
-              <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            {/* Badge */}
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white" />
+            {/* Аватар */}
+            <div className="relative flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-amber-700 flex items-center justify-center shadow-md">
+                <span className="text-white font-oswald font-bold text-base leading-none">В</span>
+              </div>
+              {/* Зелёная точка онлайн */}
+              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-500 border-2 border-dark" />
+            </div>
+            {/* Текст: две строки с именем и статусом */}
+            <div className="text-left leading-tight">
+              <p className="font-oswald font-semibold text-sm leading-tight">Влад</p>
+              <p className="text-[11px] text-text-dark leading-tight">
+                <span className="hidden sm:inline">ИИ-консультант · </span>
+                <span className="text-green-400">онлайн</span>
+              </p>
+            </div>
           </motion.button>
         )}
       </AnimatePresence>
