@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
+import PhoneLink from "@/components/ui/PhoneLink";
 
 const navLinks = [
   { href: "/services", label: "Услуги" },
@@ -85,7 +86,7 @@ export default function Footer() {
               </h3>
               <ul className="space-y-3.5">
                 <li>
-                  <a href="tel:+79787174447" className="flex items-start gap-3 group">
+                  <PhoneLink className="flex items-start gap-3 group">
                     <span className="w-7 h-7 rounded-md bg-accent/15 flex items-center justify-center flex-shrink-0 group-hover:bg-accent transition-colors duration-200">
                       <svg className="w-3.5 h-3.5 text-accent group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -94,7 +95,7 @@ export default function Footer() {
                     <span className="text-sm text-text-muted group-hover:text-white transition-colors leading-tight pt-0.5">
                       +7 (978) 717-44-47
                     </span>
-                  </a>
+                  </PhoneLink>
                 </li>
                 <li>
                   <a href="mailto:vladen2026@mail.ru" className="flex items-start gap-3 group">

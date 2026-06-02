@@ -106,6 +106,7 @@ export default function ChatWidget() {
   }, []);
 
   const openChat = () => {
+    if(typeof ym!=='undefined') ym(109280535,'reachGoal','chat_open');
     setShowBubble(false);
     if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
     setIsOpen(true);
@@ -140,6 +141,7 @@ export default function ChatWidget() {
   }, [isOpen]);
 
   async function sendMessage() {
+    if(typeof ym!=='undefined') ym(109280535,'reachGoal','chat_message');
     const text = input.trim();
     if (!text || avatarState === "thinking") return;
 

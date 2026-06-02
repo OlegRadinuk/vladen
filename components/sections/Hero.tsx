@@ -82,7 +82,7 @@ export default function Hero() {
           <h1 className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
             Ремонт квартир и домов
             <br />
-            <span className="text-accent">под ключ в Симферополе</span>
+            <span className="text-accent">под ключ в Крыму</span>
           </h1>
 
           <p className="text-text-dark text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">

@@ -98,6 +98,7 @@ export default function Contacts() {
       });
       if (!res.ok) throw new Error();
       setStatus("success");
+      if(typeof ym!=='undefined') ym(109280535,'reachGoal','form_submit');
       setName("");
       setPhone("");
       setPdConsent(false);
@@ -127,6 +128,7 @@ export default function Contacts() {
               <a
                 href="tel:+79787174447"
                 className="flex items-center gap-4 group"
+                onClick={() => { if(typeof ym!=='undefined') ym(109280535,'reachGoal','phone_click'); }}
               >
                 <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all duration-200">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

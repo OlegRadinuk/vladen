@@ -187,6 +187,7 @@ export default function Calculator() {
                       if (!touched.current) {
                         touched.current = true;
                         persist(serviceId, area, safeTierIdx);
+                        if(typeof ym!=='undefined') ym(109280535,'reachGoal','calculator_result');
                       }
                       setSaved(true);
                       setTimeout(() => {
