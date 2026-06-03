@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import Lightbox, { LightboxImage } from "@/components/ui/Lightbox";
 
 interface MediaItem {
   src: string;
@@ -21,6 +22,7 @@ interface Case {
   stats: { value: string; label: string }[];
   features: string[];
   media: (MediaItem | null)[];
+  gallery?: LightboxImage[];
 }
 
 const cases: Case[] = [
@@ -49,6 +51,36 @@ const cases: Case[] = [
       { src: "/cases/kottedge.jpg", type: "image", alt: "Фасад дома" },
       { src: "/cases/kottedge-plan.jpg", type: "image", alt: "Планировка участка" },
     ],
+  },
+  {
+    id: 4,
+    tag: "Ремонт под ключ",
+    title: "Ремонт дома под ключ",
+    subtitle: "Полный цикл чистовой отделки · Все инженерные системы · 78 м²",
+    location: "Крым",
+    year: "2025",
+    stats: [
+      { value: "78 м²", label: "Площадь дома" },
+      { value: "23 000 ₽/м²", label: "Стоимость работ" },
+      { value: "2025", label: "Год сдачи" },
+    ],
+    features: [
+      "Электрика и сантехника заменены полностью — с разводки до точек",
+      "Выравнивание и шпаклёвка стен, покраска, поклейка обоев",
+      "Укладка кварцвинила и ламината, монтаж плинтусов по периметру",
+      "Керамогранит на полу, стеклянная душевая перегородка",
+      "Натяжные потолки с врезными светильниками во всех комнатах",
+      "Встроенные тумбы — чистовая отделка «заехал и живёшь»",
+    ],
+    media: [
+      { src: "/cases/1.webp", type: "image", alt: "Ремонт дома под ключ — интерьер" },
+      { src: "/cases/3.webp", type: "image", alt: "Чистовая отделка комнаты" },
+      { src: "/cases/4.webp", type: "image", alt: "Отделка санузла, керамогранит" },
+    ],
+    gallery: Array.from({ length: 9 }, (_, i) => ({
+      src: `/cases/${i + 1}.webp`,
+      alt: `Ремонт дома под ключ, 78 м² — фото ${i + 1}`,
+    })),
   },
   {
     id: 2,
@@ -162,6 +194,7 @@ function MediaSlot({ item }: { item: MediaItem | null }) {
 export default function ProjectCase() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const go = useCallback(
     (index: number) => {
@@ -269,19 +302,41 @@ export default function ProjectCase() {
                 </span>
               </div>
 
-              <Button
-                variant="outline"
-                onClick={() =>
-                  document
-                    .getElementById("contacts")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                Хочу такой же дом
-              </Button>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    document
+                      .getElementById("contacts")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                >
+                  Хочу такой же дом
+                </Button>
+
+                {c.gallery && c.gallery.length > 0 && (
+                  <Button
+                    variant="primary"
+                    onClick={() => setLightboxOpen(true)}
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Смотреть больше · {c.gallery.length} фото
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
+
+        {c.gallery && (
+          <Lightbox
+            images={c.gallery}
+            open={lightboxOpen}
+            onClose={() => setLightboxOpen(false)}
+          />
+        )}
 
         {/* Controls */}
         <div className="flex items-center justify-between mt-10">

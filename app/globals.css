@@ -39,3 +39,9 @@
 .comet-racing {
   animation: comet-race 1.1s linear forwards;
 }
+
+/* Лайтбокс — плавное появление */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
