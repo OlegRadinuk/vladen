@@ -10,11 +10,17 @@ export default function LoadingScreen() {
   const { setIsLoading } = useLoading();
 
   useEffect(() => {
+    let done = false;
+
     const finish = () => {
+      if (done) return;
+      done = true;
       setVisible(false);
       // setIsLoading после окончания fade-out (0.4s)
       setTimeout(() => setIsLoading(false), 400);
     };
+
+    const safety = setTimeout(finish, 4000);
 
     if (document.readyState === "complete") {
       finish();
@@ -22,7 +28,10 @@ export default function LoadingScreen() {
       window.addEventListener("load", finish, { once: true });
     }
 
-    return () => window.removeEventListener("load", finish);
+    return () => {
+      clearTimeout(safety);
+      window.removeEventListener("load", finish);
+    };
   }, []);
 
   return (
