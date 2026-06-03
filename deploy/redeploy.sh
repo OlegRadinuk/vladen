@@ -9,7 +9,9 @@ APP_DIR="${APP_DIR:-/var/www/vladen}"
 PM2_APP_NAME="vladen"
 
 echo "=== [1/5] Установка зависимостей ==="
-npm ci --omit=dev
+# Полный набор: TypeScript нужен для чтения next.config.ts на этапе сборки.
+# В standalone-сборку devDependencies всё равно не попадают (трейсинг), прод не раздувается.
+npm ci
 
 echo "=== [2/5] Сборка проекта ==="
 npm run build
