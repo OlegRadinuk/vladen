@@ -106,6 +106,7 @@ export default function Lightbox({
             src={current.src}
             alt={current.alt}
             fill
+            unoptimized
             className="object-contain animate-[fadeIn_0.25s_ease]"
             sizes="100vw"
             priority
@@ -145,6 +146,7 @@ export default function Lightbox({
                 src={img.src}
                 alt={img.alt}
                 fill
+                unoptimized
                 className="object-cover"
                 sizes="80px"
               />

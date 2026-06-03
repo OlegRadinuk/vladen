@@ -58,11 +58,11 @@ const cases: Case[] = [
     title: "Ремонт дома под ключ",
     subtitle: "Полный цикл чистовой отделки · Все инженерные системы · 78 м²",
     location: "Крым",
-    year: "2025",
+    year: "2026",
     stats: [
       { value: "78 м²", label: "Площадь дома" },
       { value: "23 000 ₽/м²", label: "Стоимость работ" },
-      { value: "2025", label: "Год сдачи" },
+      { value: "2026", label: "Год сдачи" },
     ],
     features: [
       "Электрика и сантехника заменены полностью — с разводки до точек",
@@ -169,6 +169,7 @@ function MediaSlot({ item }: { item: MediaItem | null }) {
   if (item.type === "video") {
     return (
       <video
+        key={item.src}
         src={item.src}
         autoPlay
         loop
@@ -182,9 +183,11 @@ function MediaSlot({ item }: { item: MediaItem | null }) {
 
   return (
     <Image
+      key={item.src}
       src={item.src}
       alt={item.alt}
       fill
+      unoptimized
       className="object-contain rounded-lg"
       sizes="(max-width: 1024px) 100vw, 50vw"
     />
