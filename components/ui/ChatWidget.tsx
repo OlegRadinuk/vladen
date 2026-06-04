@@ -173,16 +173,23 @@ export default function ChatWidget() {
         const { done, value } = await reader.read();
         if (done) break;
         assistantText += decoder.decode(value, { stream: true });
+        // Маркер формы невидим пользователю — вырезаем из отображения
+        const display = assistantText
+          .replace(/\[SAVE_LEAD\]/g, "")
+          .replace(/\[SHOW_FORM\]/g, "");
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: "assistant", content: assistantText };
+          updated[updated.length - 1] = { role: "assistant", content: display };
           return updated;
         });
       }
 
+      // Влад может открыть форму контакта по запросу через маркер
+      const wantsForm = /\[SAVE_LEAD\]|\[SHOW_FORM\]/.test(assistantText);
+
       const newCount = assistantCount + 1;
       setAssistantCount(newCount);
-      if (newCount >= SUGGEST_AFTER && !showPhonePrompt && !phoneSent) {
+      if ((wantsForm || newCount >= SUGGEST_AFTER) && !showPhonePrompt && !phoneSent) {
         setShowPhonePrompt(true);
       }
     } catch {
