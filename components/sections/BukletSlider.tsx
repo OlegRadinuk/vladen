@@ -353,9 +353,18 @@ function Chip({ children, solid, dark }: { children: React.ReactNode; solid?: bo
   );
 }
 
+const ROOM_LABELS = ["Гостиная", "Кухня", "Санузел", "Спальня"];
+
+// Тема панели тира для мобильного аккордеона (по полям dark / warm)
+function tierTheme(t: { dark: boolean; warm: boolean }) {
+  if (t.dark) return { bg: "#161616", text: "#F5F3EF", line: "rgba(245,243,239,.16)", renderBg: "#1A1A1A", styleBg: "#1F1F1F", specBorder: "#F5F3EF", placeholder: "#1A1A1A", dark: true };
+  if (t.warm) return { bg: "#EBE5D8", text: "#1A1A1A", line: "rgba(26,26,26,.18)", renderBg: "#FBF8F1", styleBg: "#E2DAC8", specBorder: "#1A1A1A", placeholder: "#D8D3CC", dark: false };
+  return { bg: "#F5F3EF", text: "#1A1A1A", line: "rgba(26,26,26,.14)", renderBg: "#FFFFFF", styleBg: "#ECE9E2", specBorder: "#1A1A1A", placeholder: "#D8D3CC", dark: false };
+}
+
 const TIER_SLIDES = [
   {
-    num: "01", name: "Эконом", price: "17 000", bg: "#F5F3EF", dark: false, warm: false,
+    num: "01", name: "Эконом", price: "17 000", headSub: "Под аренду и инвестиции", bg: "#F5F3EF", dark: false, warm: false,
     headBorder: "rgba(26,26,26,0.14)",
     specRows: [
       { cat: "Пол", val: "Ламинат 32 класс" },
@@ -372,7 +381,7 @@ const TIER_SLIDES = [
     who: { solid: "Под аренду", rest: ["Быстрое заселение", "Ограниченный бюджет", "Инвестиционная недвижимость"] },
   },
   {
-    num: "02", name: "Комфорт", price: "27 000", bg: "#EBE5D8", dark: false, warm: true,
+    num: "02", name: "Комфорт", price: "27 000", headSub: "Для собственного проживания", bg: "#EBE5D8", dark: false, warm: true,
     headBorder: "rgba(26,26,26,0.14)",
     specRows: [
       { cat: "Пол", val: "Кварцвинил" },
@@ -389,7 +398,7 @@ const TIER_SLIDES = [
     who: { solid: "Для семьи", rest: ["Для жизни", "Баланс цены и дизайна", "Комфортное проживание"] },
   },
   {
-    num: "03", name: "Премиум", price: "37 000", bg: "#161616", dark: true, warm: false,
+    num: "03", name: "Премиум", price: "37 000", headSub: "Архитектурный современный интерьер", bg: "#161616", dark: true, warm: false,
     headBorder: "rgba(245,243,239,.16)",
     specRows: [
       { cat: "Пол", val: "Крупноформатный керамогранит / инженерная доска" },
@@ -413,6 +422,7 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
   const cellsRef = useRef<HTMLDivElement[]>([]);
   const [current, setCurrent] = useState(0);
   const [scale, setScale] = useState(1);
+  const [openTier, setOpenTier] = useState<number | null>(0);
   const total = SLIDES.length;
 
   const rescale = useCallback(() => {
@@ -518,8 +528,8 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
         .buklet-dot:hover { background: rgba(245,243,239,.5) !important; }
         .buklet-arrow { transition: background .15s, opacity .15s; }
         .buklet-arrow:not(:disabled):hover { background: #F39C2D !important; border-color: #F39C2D !important; color: #1A1A1A !important; }
-        @media (min-width: 641px) { .buklet-mobile { display: none !important; } }
-        @media (max-width: 640px)  { .buklet-desktop { display: none !important; } }
+        @media (min-width: 900px) { .buklet-mobile { display: none !important; } }
+        @media (max-width: 899px)  { .buklet-desktop { display: none !important; } }
       `}</style>
 
       {/* ── DESKTOP (641px+) ── */}
@@ -571,68 +581,135 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
         </div>
       </div>
 
-      {/* ── MOBILE (≤640px) ── */}
-      <div className="buklet-mobile" style={{ padding: "64px 20px 80px", fontFamily: font, color: "#F5F3EF" }}>
-        {/* Заголовок */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-          <span style={{ width: 22, height: 2, background: "#F39C2D", display: "inline-block", flex: "none" }}></span>
-          <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, opacity: .6 }}>Варианты ремонта</span>
-        </div>
-        <h2 style={{ margin: "0 0 12px", fontWeight: 800, fontSize: 34, lineHeight: 1.05, letterSpacing: "-.025em" }}>
-          Три уровня<br /><span style={{ color: "#F39C2D" }}>под ключ</span>
-        </h2>
-        <p style={{ margin: "0 0 28px", fontSize: 15, lineHeight: 1.6, color: "rgba(245,243,239,.65)" }}>
-          От инвестиционной аренды до архитектурного премиума — прозрачная смета, подобранные материалы.
-        </p>
-
-        {/* Карточки тиров */}
-        {[
-          { name: "Эконом", price: "17 000", sub: "Под аренду и инвестиции", items: ["Быстрое заселение", "Практичные материалы", "Инвестиционная недвижимость"], light: true },
-          { name: "Комфорт", price: "27 000", sub: "Для собственного проживания", items: ["Скрытый свет, инсталляции", "Кварцвинил, современный дизайн", "Баланс цены и качества"], light: true },
-          { name: "Премиум", price: "37 000", sub: "Архитектурный подход", items: ["Теневые потолки, крупная плитка", "Максимальный визуал", "Дизайнерский интерьер"], light: false },
-        ].map((t) => (
-          <div key={t.name} style={{ background: t.light ? "rgba(245,243,239,.06)" : "rgba(245,243,239,.03)", border: "1px solid rgba(245,243,239,.12)", borderRadius: 12, padding: "20px 18px", marginBottom: 12, display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-              <div>
-                <div style={{ fontWeight: 800, fontSize: 24, letterSpacing: "-.02em", lineHeight: 1 }}>{t.name}</div>
-                <div style={{ fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 600, opacity: .5, marginTop: 4 }}>{t.sub}</div>
-              </div>
-              <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <div style={{ fontWeight: 800, fontSize: 20, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1, whiteSpace: "nowrap" }}>{t.price}</div>
-                <div style={{ fontSize: 10, opacity: .5, fontWeight: 600, letterSpacing: ".1em" }}>₽/м²</div>
-              </div>
-            </div>
-            <div style={{ height: 1, background: "rgba(245,243,239,.1)" }}></div>
-            <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 7 }}>
-              {t.items.map(f => (
-                <li key={f} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 500, color: "rgba(245,243,239,.8)" }}>
-                  <span style={{ width: 5, height: 5, background: "#F39C2D", flex: "none", borderRadius: 1, display: "inline-block" }}></span>
-                  {f}
-                </li>
-              ))}
-            </ul>
+      {/* ── MOBILE (<900px): аккордеон ── */}
+      <div className="buklet-mobile" style={{ background: "#F5F3EF", color: "#1A1A1A", fontFamily: font, padding: "84px 16px 56px" }}>
+        {/* Интро — без логотипа, бренд уже в шапке сайта */}
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+            <span style={{ width: 22, height: 2, background: "#F39C2D", display: "inline-block", flex: "none" }}></span>
+            <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700 }}>Варианты ремонта</span>
           </div>
-        ))}
+          <h2 style={{ margin: 0, fontWeight: 800, fontSize: 32, lineHeight: 1.05, letterSpacing: "-.03em" }}>
+            Три уровня отделки <span style={{ color: "#F39C2D" }}>под ключ в Крыму</span>
+          </h2>
+          <p style={{ margin: "14px 0 0", fontSize: 15, lineHeight: 1.55, color: "rgba(26,26,26,.65)" }}>
+            Со стартовыми ценами от 17 000 ₽ за м² — от инвестиционной аренды до архитектурного премиума. Прозрачная смета и готовые сценарии заселения.
+          </p>
+        </div>
+
+        {/* Аккордеон уровней */}
+        <div style={{ marginBottom: 26 }}>
+          {TIER_SLIDES.map((tier, i) => {
+            const open = openTier === i;
+            const th = tierTheme(tier);
+            return (
+              <div key={tier.num} style={{ background: "#FFFFFF", borderRadius: 18, overflow: "hidden", border: "1px solid rgba(26,26,26,.14)", marginBottom: 12 }}>
+                <button
+                  type="button"
+                  id={`tier-header-${tier.num}`}
+                  aria-expanded={open}
+                  aria-controls={`tier-panel-${tier.num}`}
+                  onClick={() => setOpenTier(open ? null : i)}
+                  style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: 18, background: "transparent", border: "none", cursor: "pointer", font: "inherit", textAlign: "left" }}
+                >
+                  <span style={{ display: "flex", alignItems: "flex-start", gap: 11 }}>
+                    <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: ".12em", color: "#F39C2D", fontVariantNumeric: "tabular-nums", paddingTop: 3 }}>{tier.num}</span>
+                    <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <span style={{ fontSize: 21, fontWeight: 800, letterSpacing: "-.02em", color: open ? "#F39C2D" : "#1A1A1A", lineHeight: 1 }}>{tier.name}</span>
+                      <span style={{ fontSize: 10.5, textTransform: "uppercase", letterSpacing: ".14em", fontWeight: 700, color: "rgba(26,26,26,.5)" }}>{tier.headSub}</span>
+                    </span>
+                  </span>
+                  <span style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ fontSize: 14, fontWeight: 800, color: "#F39C2D", whiteSpace: "nowrap", fontVariantNumeric: "tabular-nums" }}>от {tier.price} ₽/м²</span>
+                    <span style={{ display: "inline-flex", color: open ? "#F39C2D" : "rgba(26,26,26,.5)", transition: "transform .3s ease", transform: open ? "rotate(180deg)" : "none" }}>
+                      <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                    </span>
+                  </span>
+                </button>
+
+                {/* Раскрывающаяся панель */}
+                <div
+                  id={`tier-panel-${tier.num}`}
+                  role="region"
+                  aria-labelledby={`tier-header-${tier.num}`}
+                  aria-hidden={!open}
+                  style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .35s ease" }}
+                >
+                  <div style={{ overflow: "hidden" }}>
+                    <div style={{ background: th.bg, color: th.text, padding: "20px 18px 24px", borderTop: "1px solid rgba(26,26,26,.14)" }}>
+
+                      {/* Рендеры — 2 колонки */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginBottom: 20 }}>
+                        {tier.imgs.map((src, ri) => (
+                          <div key={src} style={{ display: "flex", flexDirection: "column", background: th.renderBg, border: `1px solid ${th.line}`, borderRadius: 12, overflow: "hidden" }}>
+                            <div style={{ width: "100%", aspectRatio: "4 / 3", overflow: "hidden", background: th.placeholder }}>
+                              <img src={src} alt={ROOM_LABELS[ri]} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px", borderTop: `1px solid ${th.line}` }}>
+                              <span style={{ fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: th.text }}>{ROOM_LABELS[ri]}</span>
+                              <span style={{ fontSize: 10, letterSpacing: ".12em", opacity: .5, fontWeight: 600, color: th.text }}>0{ri + 1} / 04</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Спецификация */}
+                      <div style={{ marginBottom: 20 }}>
+                        <div style={{ display: "grid", gridTemplateColumns: "34% 1fr", fontWeight: 700, fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", padding: "0 0 11px", opacity: .55, color: th.text, borderBottom: `1px solid ${th.specBorder}` }}>
+                          <span>Категория</span>
+                          <span>Что входит в стоимость</span>
+                        </div>
+                        {tier.specRows.map((row, si) => (
+                          <div key={row.cat} style={{ display: "grid", gridTemplateColumns: "34% 1fr", gap: 12, padding: "11px 0", borderBottom: si < tier.specRows.length - 1 ? `1px solid ${th.line}` : "none", fontSize: 14, color: th.text }}>
+                            <span style={{ fontSize: 10, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, opacity: .6, paddingTop: 3 }}>{row.cat}</span>
+                            <span style={{ fontWeight: 500, lineHeight: 1.4 }}>{row.val}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Общий стиль */}
+                      <div style={{ border: `1px solid ${th.line}`, padding: 20, background: th.styleBg, borderRadius: 14, display: "flex", flexDirection: "column", gap: 10 }}>
+                        <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, opacity: .55, color: th.text, display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ width: 18, height: 2, background: "#F39C2D", display: "inline-block" }}></span>
+                          Общий стиль
+                        </div>
+                        <div style={{ fontWeight: 800, fontSize: 19, lineHeight: 1.15, letterSpacing: "-.015em", color: th.text }}>{tier.styleTitle}</div>
+                        <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.55, color: th.dark ? "rgba(245,243,239,.78)" : "#2A2A2A", fontWeight: 500 }}>{tier.styleText}</p>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 4 }}>
+                          {tier.chips.map(chip => (
+                            <span key={chip} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${th.line}`, borderRadius: 999, padding: "6px 12px", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 600, color: th.dark ? "rgba(245,243,239,.85)" : "#1A1A1A", whiteSpace: "nowrap" }}>{chip}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Статистика */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 }}>
-          {[["от 17 000 ₽", "Стартовая цена за м²"], ["от 30 дней", "Срок ремонта"], ["2 года", "Гарантия"], ["с 2014", "Работаем в Крыму"]].map(([v, l]) => (
-            <div key={l} style={{ background: "rgba(245,243,239,.04)", border: "1px solid rgba(245,243,239,.08)", borderRadius: 10, padding: "14px 14px" }}>
-              <div style={{ fontWeight: 800, fontSize: 18, color: "#F39C2D", letterSpacing: "-.01em", lineHeight: 1 }}>{v}</div>
-              <div style={{ fontSize: 10, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 600, opacity: .5, marginTop: 5 }}>{l}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "18px 14px", padding: "22px 4px", borderTop: "1px solid rgba(26,26,26,.14)", borderBottom: "1px solid rgba(26,26,26,.14)", marginBottom: 26 }}>
+          {[["от 17 000 / м²", "Стартовая цена"], ["от 30 дней", "Срок ремонта"], ["2 года", "Гарантия"], ["с 2014", "Работаем в Крыму"]].map(([v, l]) => (
+            <div key={l}>
+              <div style={{ fontWeight: 800, fontSize: 22, letterSpacing: "-.015em", lineHeight: 1 }}>{v}</div>
+              <div style={{ fontSize: 10, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, opacity: .55, marginTop: 8 }}>{l}</div>
             </div>
           ))}
         </div>
 
         {/* CTA */}
-        <a href="/buklet.pdf" download style={{ width: "100%", background: "#F39C2D", border: "none", borderRadius: 999, color: "#1A1A1A", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, padding: "14px 24px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: font, textDecoration: "none", marginBottom: 12, boxSizing: "border-box" }}>
-          <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Скачать лукбук PDF
-        </a>
-        <button onClick={scrollToNext} style={{ width: "100%", background: "rgba(243,156,45,.1)", border: "1px solid rgba(243,156,45,.3)", borderRadius: 999, color: "#F39C2D", fontSize: 12, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, padding: "14px 24px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, fontFamily: font }}>
-          Смотреть проекты
-          <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
-        </button>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <a href="/buklet.pdf" download style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#F39C2D", color: "#1A1A1A", padding: 17, borderRadius: 999, fontWeight: 800, fontSize: 15, textDecoration: "none" }}>
+            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Скачать PDF-лукбук
+          </a>
+          <a href="tel:+79787174447" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "transparent", color: "#1A1A1A", padding: 16, borderRadius: 999, fontWeight: 700, fontSize: 14, border: "1px solid rgba(26,26,26,.25)", textDecoration: "none" }}>
+            Позвонить · +7 (978) 717‑44‑47
+          </a>
+        </div>
       </div>
     </section>
   );
