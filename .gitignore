@@ -37,3 +37,13 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 ecosystem.config.js
+
+# debug screenshots & tooling
+/*.png
+.playwright-mcp/
+
+# client raw materials (не для git — переписка/исходники)
+/ВЛАДЕН — Варианты ремонта.pdf
+/Переписка с владом.txt
+/владен буклет-handoff/
+/владен буклет/
