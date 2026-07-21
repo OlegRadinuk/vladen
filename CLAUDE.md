@@ -1,7 +1,9 @@
 # Владен — строительная компания, Крым
 
 ## Статус проекта
-Сайт работает на Vercel. Стабильная версия на `master`.
+Прод — свой VPS (НЕ Vercel): reg.ru, `80.78.246.196`, ssh-алиас `prod-main`, APP_DIR `/var/www/vladen`, pm2 app `vladen` + nginx, домен vladen-crimea.ru.
+**Прод крутится с ветки `lookbook-accordion`** (не master). Деплой: на сервере `git pull origin lookbook-accordion` → `bash deploy/redeploy.sh`.
+Старый Selectel `89.111.168.203` (`prod-vladen-old`) упал за неоплату — не использовать.
 Playwright MCP подключён (headless) — можешь открывать сайт и смотреть.
 
 ## Правила работы

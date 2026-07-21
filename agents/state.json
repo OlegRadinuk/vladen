@@ -47,14 +47,15 @@
   ],
 
   "server": {
-    "provider": "Selectel",
-    "ip": "89.111.168.203",
-    "os": "Ubuntu 22.04 LTS",
-    "user": "root",
-    "ssh_key": "~/.ssh/id_ed25519",
-    "status": "fresh — ssh key not yet added",
-    "created_at": "2026-04-20",
-    "purpose": "vladen-crimea.ru production"
+    "provider": "reg.ru",
+    "ip": "80.78.246.196",
+    "ssh_alias": "prod-main",
+    "app_dir": "/var/www/vladen",
+    "prod_branch": "lookbook-accordion",
+    "process": "pm2 app \"vladen\", nginx, домен vladen-crimea.ru",
+    "status": "production — online (verified 2026-07-21)",
+    "purpose": "vladen-crimea.ru production",
+    "note": "НЕ Vercel. Старый Selectel 89.111.168.203 (prod-vladen-old) упал за неоплату — не использовать."
   },
 
   "tech": {
