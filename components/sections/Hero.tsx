@@ -134,11 +134,64 @@ export default function Hero() {
         </motion.div>
       </Container>
 
-      {/* Bottom gradient */}
-      {/* Bottom fade */}
+      {/* Scroll-cue → Варианты ремонта + крючок «лукбук в подарок» */}
+      <motion.button
+        onClick={() =>
+          document.getElementById("buklet")?.scrollIntoView({ behavior: "smooth" })
+        }
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9, duration: 0.6, ease: "easeOut" }}
+        className="group absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+        aria-label="Смотреть варианты ремонта — лукбук в подарок"
+      >
+        {/* Крючок-подарок */}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/15 border border-accent/40 px-3 py-1 backdrop-blur-sm transition-colors group-hover:bg-accent/25">
+          <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5 text-accent" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="20 12 20 22 4 22 4 12" />
+            <rect x="2" y="7" width="20" height="5" />
+            <line x1="12" y1="22" x2="12" y2="7" />
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+          </svg>
+          <span className="text-accent font-inter text-[11px] sm:text-xs font-semibold tracking-wide">
+            Лукбук в подарок
+          </span>
+        </span>
+        {/* Подпись */}
+        <span className="text-white/85 font-oswald text-xs sm:text-sm uppercase tracking-[0.2em] leading-none">
+          Варианты ремонта
+        </span>
+        {/* Анимированная стрелка вниз */}
+        <motion.span
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          className="text-accent"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </motion.span>
+      </motion.button>
+
+      {/* Bottom fade — тёмное свечение под тёмный блок «Варианты ремонта» */}
       <div
         className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{ height: 40, background: "linear-gradient(to top, #ECF0F1, transparent)" }}
+        style={{
+          height: 160,
+          background:
+            "linear-gradient(to top, #161616 0%, rgba(22,22,22,0.72) 42%, transparent 100%)",
+        }}
+      />
+      {/* Тёплый акцент-глоу в центре низа — «свечение в цвет блока» */}
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 pointer-events-none"
+        style={{
+          width: "80%",
+          height: 180,
+          background:
+            "radial-gradient(ellipse at 50% 100%, rgba(217,119,6,0.22) 0%, transparent 70%)",
+        }}
       />
 
       {/* Top fade — под хедер */}

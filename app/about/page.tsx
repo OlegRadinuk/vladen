@@ -3,6 +3,7 @@ import Container from "@/components/ui/Container";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import YandexReviews from "@/components/ui/YandexReviews";
 import Contacts from "@/components/sections/Contacts";
+import TeamSection from "@/components/sections/TeamSection";
 
 export const metadata: Metadata = {
   title: "О компании Владен — ремонт и строительство в Крыму с 2014 года",
@@ -39,18 +40,6 @@ const breadcrumbJsonLd = {
   ],
 };
 
-const team = [
-  { name: "Биленчук Александр Михайлович", role: "Учредитель, собственник" },
-  { name: "Биленчук Юлия Владимировна", role: "Генеральный директор" },
-  { name: "Дымов Григорий Григорьевич", role: "Заместитель по строительству" },
-  { name: "Полончук Владимир Леонидович", role: "Главный инженер" },
-  { name: "Супиченко Зинаида Николаевна", role: "Главный бухгалтер" },
-  { name: "Комочкина Татьяна Александровна", role: "Архитектор" },
-  { name: "Дуквен Ольга Александровна", role: "Дизайнер" },
-  { name: "Шелпакова Татьяна Валерьевна", role: "Сметчик" },
-  { name: "Гриценко Виталий Борисович", role: "Прораб" },
-];
-
 const milestones = [
   { year: "2014", event: "Основание компании в Адлере. Начало с посёлка коттеджей в Адлерском районе" },
   { year: "2016", event: "Первый крупный коммерческий проект. Выход на рынок Ялты и Севастополя" },
@@ -59,19 +48,6 @@ const milestones = [
   { year: "2022", event: "150-й объект. Начало работы с коммерческой недвижимостью" },
   { year: "2024", event: "Более 300 реализованных проектов. Ребрендинг и перезапуск компании" },
 ];
-
-function PlaceholderAvatar({ name }: { name: string }) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2);
-  return (
-    <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-3">
-      <span className="font-oswald text-2xl font-bold text-accent">{initials}</span>
-    </div>
-  );
-}
 
 export default function AboutPage() {
   return (
@@ -153,29 +129,7 @@ export default function AboutPage() {
           </div>
 
           {/* Team */}
-          <div>
-            <AnimateOnView className="text-center mb-10">
-              <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
-                Наша команда
-              </p>
-              <h2 className="font-oswald text-3xl md:text-4xl font-bold text-text-light">
-                Люди, которым доверяют
-              </h2>
-            </AnimateOnView>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {team.map((member, i) => (
-                <AnimateOnView key={member.name} delay={i * 0.1}>
-                  <div className="text-center p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                    <PlaceholderAvatar name={member.name} />
-                    <h3 className="font-oswald font-semibold text-text-light text-sm">
-                      {member.name}
-                    </h3>
-                    <p className="text-text-muted text-sm mt-1">{member.role}</p>
-                  </div>
-                </AnimateOnView>
-              ))}
-            </div>
-          </div>
+          <TeamSection />
         </Container>
       </div>
 

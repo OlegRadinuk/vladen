@@ -9,6 +9,7 @@ import FAQ from "@/components/sections/FAQ";
 import Reviews from "@/components/sections/Reviews";
 import Partners from "@/components/sections/Partners";
 import Contacts from "@/components/sections/Contacts";
+import MobileCTABar from "@/components/ui/MobileCTABar";
 
 export const metadata: Metadata = {
   title: "Ремонт квартир и домов под ключ в Симферополе — Владен",
@@ -43,8 +44,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Services />
-      <BukletSlider nextSectionId="project-case" />
+      <div id="buklet"><BukletSlider /></div>
+      <div id="services"><Services /></div>
       <div id="project-case"><ProjectCase /></div>
       <WhyWe />
       <Calculator />
@@ -52,6 +53,9 @@ export default function HomePage() {
       <Contacts />
       <Partners />
       <Reviews />
+      {/* Спейсер под мобильный sticky-бар */}
+      <div className="h-[68px] md:hidden" />
+      <MobileCTABar />
     </>
   );
 }

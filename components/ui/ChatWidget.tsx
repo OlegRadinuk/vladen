@@ -77,7 +77,8 @@ const INITIAL_MESSAGE: Message = {
   content: "Привет! Я Влад, ИИ-консультант компании Владен. Подскажу стоимость и сроки ремонта под ключ. Какой объект — квартира или дом, и какая площадь?",
 };
 
-const BUBBLE_TEXT = "Ремонт квартиры или дома? 👋 Назовите площадь — прикину стоимость и сроки за пару минут. Это бесплатно.";
+const BUBBLE_TEXT = "Ремонт квартиры или дома? Назовите площадь — прикину стоимость и сроки за пару минут. Это бесплатно.";
+const QUICK_REPLIES = ["Сколько стоит ремонт?", "Сроки ремонта", "Выезд на замер"];
 const SUGGEST_AFTER = 2; // предлагать номер после N ответов ассистента
 
 export default function ChatWidget() {
@@ -92,6 +93,7 @@ export default function ChatWidget() {
   const [phoneInput, setPhoneInput] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [pdConsent, setPdConsent] = useState(false);
+  const [leadContext, setLeadContext] = useState<"chat" | "lookbook">("chat");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -114,6 +116,29 @@ export default function ChatWidget() {
     if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
     setIsOpen(true);
   };
+
+  // Открытие чата извне (кнопки «Забрать лукбук у Влада», sticky-бар и т.д.)
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const intent = (e as CustomEvent).detail?.intent as string | undefined;
+      setShowBubble(false);
+      setIsOpen(true);
+      if (typeof ym !== "undefined") ym(109280535, "reachGoal", "chat_open");
+      if (intent === "lookbook" && !phoneSent) {
+        setLeadContext("lookbook");
+        setMessages([
+          {
+            role: "assistant",
+            content:
+              "Отправлю вам лукбук «Варианты ремонта» — 3 уровня отделки с ценами и примерами. Куда прислать? Оставьте имя и телефон ниже, заодно подскажу по вашему объекту.",
+          },
+        ]);
+        setShowPhonePrompt(true);
+      }
+    };
+    window.addEventListener("vlad:open", onOpen as EventListener);
+    return () => window.removeEventListener("vlad:open", onOpen as EventListener);
+  }, [phoneSent]);
 
   function formatPhone(value: string) {
     const digits = value.replace(/\D/g, "").slice(0, 11);
@@ -143,9 +168,14 @@ export default function ChatWidget() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isOpen]);
 
-  async function sendMessage() {
+  // Сообщаем sticky-бару об открытии/закрытии — чтобы он прятался и не перекрывал окно
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("vlad:chat", { detail: { open: isOpen } }));
+  }, [isOpen]);
+
+  async function sendMessage(preset?: string) {
     if(typeof ym!=='undefined') ym(109280535,'reachGoal','chat_message');
-    const text = input.trim();
+    const text = (typeof preset === "string" ? preset : input).trim();
     if (!text || avatarState === "thinking") return;
 
     const newMessages: Message[] = [...messages, { role: "user", content: text }];
@@ -208,9 +238,11 @@ export default function ChatWidget() {
     const phone = phoneInput.trim();
     if (!name || !phone) return;
 
-    const history = messages
-      .map((m) => `${m.role === "user" ? "Клиент" : "Влад"}: ${m.content}`)
-      .join("\n");
+    const history =
+      (leadContext === "lookbook" ? "[Заявка: лукбук «Варианты ремонта»]\n" : "") +
+      messages
+        .map((m) => `${m.role === "user" ? "Клиент" : "Влад"}: ${m.content}`)
+        .join("\n");
 
     try {
       await fetch("/api/telegram", {
@@ -231,13 +263,26 @@ export default function ChatWidget() {
     setPhoneSent(true);
     setShowPhonePrompt(false);
     setPdConsent(false);
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "assistant",
-        content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: +7 (978) 717-44-47\n\nЕсть ещё вопросы? С удовольствием отвечу.`,
-      },
-    ]);
+
+    if (leadContext === "lookbook") {
+      // Отдаём лукбук сразу + фиксируем лид
+      window.open("/buklet.pdf", "_blank", "noopener");
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `Готово, ${name}! Лукбук открылся в новой вкладке (если нет — вот прямая ссылка: vladen-crimea.ru/buklet.pdf). Заодно я передал ваш контакт менеджеру — подскажем по вашему объекту и посчитаем смету. Что за объект — квартира или дом?`,
+        },
+      ]);
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: +7 (978) 717-44-47\n\nЕсть ещё вопросы? С удовольствием отвечу.`,
+        },
+      ]);
+    }
   }
 
   return (
@@ -247,6 +292,7 @@ export default function ChatWidget() {
         {!isOpen && showBubble && (
           <motion.div
             key="bubble"
+            id="vlad-bubble"
             initial={{ opacity: 0, y: 12, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
@@ -296,6 +342,7 @@ export default function ChatWidget() {
         {!isOpen && (
           <motion.button
             key="fab"
+            id="vlad-fab"
             initial={{ scale: 0.8, opacity: 0, y: 8 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.8, opacity: 0, y: 8 }}
@@ -345,7 +392,7 @@ export default function ChatWidget() {
                     ? "думает..."
                     : avatarState === "talking"
                     ? "печатает..."
-                    : "ИИ-консультант Владен · онлайн"}
+                    : "онлайн · отвечает за минуту"}
                 </p>
               </div>
               <button
@@ -390,6 +437,26 @@ export default function ChatWidget() {
                 </motion.div>
               ))}
 
+              {/* Быстрые ответы — показываем в начале диалога */}
+              {messages.length === 1 && avatarState === "idle" && !showPhonePrompt && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="flex flex-wrap gap-2 pt-1"
+                >
+                  {QUICK_REPLIES.map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => sendMessage(q)}
+                      className="text-xs font-medium text-accent bg-white border border-accent/30 rounded-full px-3 py-1.5 hover:bg-accent hover:text-white transition-colors"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+
               {/* Phone prompt */}
               <AnimatePresence>
                 {showPhonePrompt && (
@@ -400,10 +467,14 @@ export default function ChatWidget() {
                     className="bg-accent/10 border border-accent/30 rounded-xl p-3 space-y-2"
                   >
                     <p className="text-text-light text-xs font-semibold">
-                      Хотите получить точный расчёт?
+                      {leadContext === "lookbook"
+                        ? "Куда прислать лукбук?"
+                        : "Хотите получить точный расчёт?"}
                     </p>
                     <p className="text-text-muted text-xs">
-                      Оставьте номер — перезвоним и договоримся о бесплатном замере.
+                      {leadContext === "lookbook"
+                        ? "Оставьте имя и номер — пришлём лукбук и бесплатно проконсультируем."
+                        : "Оставьте номер — перезвоним и договоримся о бесплатном замере."}
                     </p>
                     <input
                       value={nameInput}
@@ -438,7 +509,7 @@ export default function ChatWidget() {
                         disabled={!pdConsent}
                         className="flex-1 bg-accent text-white text-xs font-semibold rounded-lg py-2 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        Отправить
+                        {leadContext === "lookbook" ? "Получить лукбук" : "Отправить"}
                       </button>
                       <button
                         onClick={() => setShowPhonePrompt(false)}
@@ -467,7 +538,7 @@ export default function ChatWidget() {
                   className="flex-1 text-sm border border-gray-200 rounded-xl px-4 py-2.5 outline-none focus:border-accent transition-colors disabled:opacity-50 bg-gray-50"
                 />
                 <button
-                  onClick={sendMessage}
+                  onClick={() => sendMessage()}
                   disabled={!input.trim() || avatarState === "thinking"}
                   className="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center flex-shrink-0 hover:bg-accent/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   aria-label="Отправить"

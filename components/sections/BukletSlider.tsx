@@ -416,7 +416,7 @@ const TIER_SLIDES = [
   },
 ];
 
-export default function BukletSlider({ nextSectionId = "project-case" }: { nextSectionId?: string }) {
+export default function BukletSlider() {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const cellsRef = useRef<HTMLDivElement[]>([]);
@@ -480,9 +480,10 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
     return () => window.removeEventListener("keydown", onKey);
   }, [current, goTo]);
 
-  const scrollToNext = () => {
-    const el = document.getElementById(nextSectionId);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  // Забрать лукбук через Влада (лид + допродажа). Мягкий гейт: рядом всегда прямая ссылка на PDF.
+  const getLookbook = () => {
+    if (typeof ym !== "undefined") ym(109280535, "reachGoal", "lookbook_click");
+    window.dispatchEvent(new CustomEvent("vlad:open", { detail: { intent: "lookbook" } }));
   };
 
   const ArrowBtn = ({ dir, onClick, disabled }: { dir: "left" | "right"; onClick: () => void; disabled: boolean }) => (
@@ -569,22 +570,22 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
             ))}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginRight: 72, pointerEvents: "auto" }}>
-            <a href="/buklet.pdf" download style={{ background: "#F39C2D", border: "none", borderRadius: 999, color: "#1A1A1A", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, textDecoration: "none" }}>
-              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Скачать PDF
-            </a>
-            <button onClick={scrollToNext} style={{ background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", border: "1px solid rgba(245,243,239,.18)", borderRadius: 999, color: "rgba(245,243,239,.65)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font }}>
-              Пропустить
-              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+            <button onClick={getLookbook} style={{ background: "#F39C2D", border: "none", borderRadius: 999, color: "#1A1A1A", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, textDecoration: "none" }}>
+              <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              Лукбук в подарок
             </button>
+            <a href="/buklet.pdf" download style={{ background: "rgba(15,15,15,.85)", backdropFilter: "blur(8px)", border: "1px solid rgba(245,243,239,.18)", borderRadius: 999, color: "rgba(245,243,239,.65)", fontSize: 11, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700, cursor: "pointer", padding: "5px 14px", display: "flex", alignItems: "center", gap: 5, fontFamily: font, textDecoration: "none" }}>
+              PDF
+              <svg width={10} height={10} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </a>
           </div>
         </div>
       </div>
 
       {/* ── MOBILE (<900px): аккордеон ── */}
       <div className="buklet-mobile" style={{ background: "#F5F3EF", color: "#1A1A1A", fontFamily: font, padding: "84px 16px 56px" }}>
-        {/* Интро — без логотипа, бренд уже в шапке сайта */}
-        <div style={{ marginBottom: 24 }}>
+        {/* Интро — тёмная full-bleed шапка, стыкуется со свечением Hero */}
+        <div style={{ background: "#161616", color: "#F5F3EF", margin: "-84px -16px 24px", padding: "96px 16px 30px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
             <span style={{ width: 22, height: 2, background: "#F39C2D", display: "inline-block", flex: "none" }}></span>
             <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700 }}>Варианты ремонта</span>
@@ -592,7 +593,7 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
           <h2 style={{ margin: 0, fontWeight: 800, fontSize: 32, lineHeight: 1.05, letterSpacing: "-.03em" }}>
             Три уровня отделки <span style={{ color: "#F39C2D" }}>под ключ в Крыму</span>
           </h2>
-          <p style={{ margin: "14px 0 0", fontSize: 15, lineHeight: 1.55, color: "rgba(26,26,26,.65)" }}>
+          <p style={{ margin: "14px 0 0", fontSize: 15, lineHeight: 1.55, color: "rgba(245,243,239,.72)" }}>
             Со стартовыми ценами от 17 000 ₽ за м² — от инвестиционной аренды до архитектурного премиума. Прозрачная смета и готовые сценарии заселения.
           </p>
         </div>
@@ -700,15 +701,22 @@ export default function BukletSlider({ nextSectionId = "project-case" }: { nextS
           ))}
         </div>
 
-        {/* CTA */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          <a href="/buklet.pdf" download style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "#F39C2D", color: "#1A1A1A", padding: 17, borderRadius: 999, fontWeight: 800, fontSize: 15, textDecoration: "none" }}>
-            <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Скачать PDF-лукбук
-          </a>
-          <a href="tel:+79787174447" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "transparent", color: "#1A1A1A", padding: 16, borderRadius: 999, fontWeight: 700, fontSize: 14, border: "1px solid rgba(26,26,26,.25)", textDecoration: "none" }}>
-            Позвонить · +7 (978) 717‑44‑47
-          </a>
+        {/* CTA — мягкий гейт: забрать у Влада (лид) ИЛИ просто скачать PDF */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <button onClick={getLookbook} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 9, background: "#F39C2D", color: "#1A1A1A", padding: 17, borderRadius: 999, fontWeight: 800, fontSize: 15, border: "none", cursor: "pointer", fontFamily: font }}>
+            <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            Забрать лукбук у Влада
+          </button>
+          <div style={{ display: "flex", gap: 10 }}>
+            <a href="/buklet.pdf" download style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, background: "transparent", color: "rgba(26,26,26,.7)", padding: 14, borderRadius: 999, fontWeight: 700, fontSize: 13, border: "1px solid rgba(26,26,26,.22)", textDecoration: "none" }}>
+              <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Скачать PDF
+            </a>
+            <a href="tel:+79787174447" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, background: "transparent", color: "rgba(26,26,26,.7)", padding: 14, borderRadius: 999, fontWeight: 700, fontSize: 13, border: "1px solid rgba(26,26,26,.22)", textDecoration: "none" }}>
+              <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Позвонить
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -18,13 +18,33 @@ const navLinks = [
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [idle, setIdle] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [trainKey, setTrainKey] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
   }, []);
+
+  useEffect(() => {
+    let idleTimer: ReturnType<typeof setTimeout>;
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      setIdle(false); // палец ведёт → хедер твёрдый
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => setIdle(true), 700); // палец убрали → прозрачный
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", handleScroll); clearTimeout(idleTimer); };
+  }, []);
+
+  // Твёрдый фон: когда прокрутили И (на десктопе — всегда, на мобиле — только пока активно скроллят).
+  // В покое на мобиле возвращается к прозрачному, как в самом верху страницы.
+  const solid = scrolled && !(isMobile && idle);
 
   useEffect(() => {
     const trigger = () => setTrainKey((k) => k + 1);
@@ -39,7 +59,7 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-dark shadow-lg" : "bg-transparent"
+        solid ? "bg-dark shadow-lg" : "bg-transparent"
       }`}
     >
       <Container>
