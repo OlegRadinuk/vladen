@@ -45,10 +45,10 @@ export default function HomePage() {
     <>
       <Hero />
       <div id="buklet"><BukletSlider /></div>
+      <Calculator />
       <div id="services"><Services /></div>
       <div id="project-case"><ProjectCase /></div>
       <WhyWe />
-      <Calculator />
       <FAQ />
       <Contacts />
       <Partners />

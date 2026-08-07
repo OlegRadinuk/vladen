@@ -34,18 +34,18 @@ function Initials({ name }: { name: string }) {
 function PersonCard({ member, featured = false, sizes }: { member: Member; featured?: boolean; sizes: string }) {
   return (
     <div
-      className={`overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow border ${
+      className={`h-full flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow border ${
         featured ? "border-accent/40 ring-1 ring-accent/20" : "border-black/5"
       }`}
     >
-      <div className="relative aspect-[4/3]">
+      <div className="relative aspect-[4/3] flex-none">
         {member.photo ? (
           <Image src={member.photo} alt={member.name} fill className="object-cover object-center" sizes={sizes} />
         ) : (
           <Initials name={member.name} />
         )}
       </div>
-      <div className="p-4 text-center">
+      <div className="p-4 text-center flex-1 flex flex-col justify-center">
         <h3 className="font-oswald font-semibold text-text-light text-sm leading-snug">{member.name}</h3>
         <p className="text-text-muted text-xs mt-1">{member.role}</p>
       </div>
@@ -59,8 +59,8 @@ function VladCard() {
     window.dispatchEvent(new CustomEvent("vlad:open", { detail: { intent: "chat" } }));
   };
   return (
-    <div className="overflow-hidden rounded-2xl bg-dark border border-accent/40 flex flex-col shadow-sm">
-      <div className="relative aspect-[4/3] flex items-center justify-center bg-gradient-to-br from-[#1f1a13] to-dark">
+    <div className="h-full overflow-hidden rounded-2xl bg-dark border border-accent/40 flex flex-col shadow-sm">
+      <div className="relative aspect-[4/3] flex-none flex items-center justify-center bg-gradient-to-br from-[#1f1a13] to-dark">
         {/* Бейдж «онлайн» */}
         <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/15 px-2.5 py-1 text-[10px] font-inter font-semibold text-white uppercase tracking-wide">
           <span className="relative flex w-2 h-2">
@@ -74,7 +74,7 @@ function VladCard() {
           <span className="font-oswald font-bold text-white text-3xl leading-none">В</span>
         </div>
       </div>
-      <div className="p-4 text-center flex flex-col">
+      <div className="p-4 text-center flex-1 flex flex-col justify-center">
         <h3 className="font-oswald font-semibold text-white text-sm">Влад</h3>
         <p className="text-accent text-xs mt-1">ИИ-ассистент · 24/7</p>
         <button
@@ -109,12 +109,12 @@ export default function TeamSection() {
       <div className="-mx-4 px-4 md:mx-0 md:px-0">
         <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 md:grid md:grid-cols-4 md:overflow-visible md:pb-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {team.map((m) => (
-            <div key={m.name} className="snap-center shrink-0 w-[70%] sm:w-[45%] md:w-auto">
+            <div key={m.name} className="snap-center shrink-0 w-[70%] sm:w-[45%] md:w-auto h-full">
               <PersonCard member={m} sizes="(max-width: 768px) 70vw, 220px" />
             </div>
           ))}
           {/* ИИ-Влад — отдельная карточка (честно: не человек, а ассистент) */}
-          <div className="snap-center shrink-0 w-[70%] sm:w-[45%] md:w-auto">
+          <div className="snap-center shrink-0 w-[70%] sm:w-[45%] md:w-auto h-full">
             <VladCard />
           </div>
         </div>

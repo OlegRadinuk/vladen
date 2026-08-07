@@ -21,7 +21,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-dark">
+    <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden bg-dark">
       {/* Video background */}
       <div
         ref={bgRef}
@@ -61,7 +61,7 @@ export default function Hero() {
         }}
       />
 
-      <Container className="relative z-10 py-24 sm:py-32 md:py-40">
+      <Container className="relative z-10 py-16 sm:py-20 md:py-24">
         <motion.div
           className="w-full max-w-5xl"
           initial={{ opacity: 0, y: 24 }}
@@ -142,7 +142,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.6, ease: "easeOut" }}
-        className="group absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+        className="group absolute bottom-4 sm:bottom-6 left-0 right-0 mx-auto w-fit z-20 flex flex-col items-center gap-2"
         aria-label="Смотреть варианты ремонта — лукбук в подарок"
       >
         {/* Крючок-подарок */}

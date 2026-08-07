@@ -43,13 +43,15 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="bg-light py-20">
+    <section id="faq" className="relative py-20" style={{ backgroundColor: "#16191D" }}>
+      {/* Оранжевая акцентная полоска сверху — как в подвале */}
+      <div className="absolute top-0 inset-x-0 h-1 bg-accent" />
       <Container>
         <AnimateOnView className="text-center mb-12">
           <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
             Частые вопросы
           </p>
-          <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light">
+          <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-white">
             FAQ
           </h2>
         </AnimateOnView>
@@ -58,14 +60,14 @@ export default function FAQ() {
           {faqs.map((item, i) => (
             <AnimateOnView key={i} delay={i * 0.05}>
               <div
-                className="border border-gray-200 rounded-xl overflow-hidden bg-white hover:border-accent/30 transition-colors"
+                className="border border-white/10 rounded-xl overflow-hidden bg-white/[0.04] hover:border-accent/40 transition-colors"
               >
                 <button
                   className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
                   onClick={() => setOpen(open === i ? null : i)}
                   aria-expanded={open === i}
                 >
-                  <span className="font-oswald font-semibold text-text-light text-base sm:text-lg leading-tight">
+                  <span className="font-oswald font-semibold text-white text-base sm:text-lg leading-tight">
                     {item.q}
                   </span>
                   <span

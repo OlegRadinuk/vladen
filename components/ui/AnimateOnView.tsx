@@ -19,7 +19,9 @@ export default function AnimateOnView({
   duration = 0.55,
 }: AnimateOnViewProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  // Положительный нижний margin — элемент «появляется» ещё до входа в кадр,
+  // чтобы на мобиле контент не ждали, а он уже готов при доскролле.
+  const isInView = useInView(ref, { once: true, margin: "0px 0px 120px 0px" });
 
   const variants = {
     hidden: {

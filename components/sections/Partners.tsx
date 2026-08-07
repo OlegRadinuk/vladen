@@ -30,7 +30,7 @@ export default function Partners() {
                   alt={p.name}
                   width={160}
                   height={48}
-                  className="max-h-10 w-auto object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-200"
+                  className="max-h-10 w-auto object-contain"
                 />
               ) : (
                 <span className="font-oswald font-semibold text-base text-text-muted group-hover:text-text-light transition-colors duration-200">

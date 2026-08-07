@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
@@ -214,6 +214,21 @@ export default function ProjectCase() {
   const prev = () => go((current - 1 + cases.length) % cases.length);
   const next = () => go((current + 1) % cases.length);
 
+  // Свайп пальцем по кейсам на мобиле
+  const touchStartX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+  };
+
   const c = cases[current];
 
   return (
@@ -234,8 +249,10 @@ export default function ProjectCase() {
 
         {/* Slide */}
         <div
-          className="transition-opacity duration-250"
+          className="transition-opacity duration-250 touch-pan-y"
           style={{ opacity: animating ? 0 : 1 }}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Media grid */}

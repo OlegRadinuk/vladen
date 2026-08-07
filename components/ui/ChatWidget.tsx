@@ -397,11 +397,11 @@ export default function ChatWidget() {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-white/50 hover:text-white transition-colors flex-shrink-0 p-1"
+                className="flex-shrink-0 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center transition-colors"
                 aria-label="Закрыть чат"
               >
                 <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-                  <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
                 </svg>
               </button>
             </div>

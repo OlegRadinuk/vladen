@@ -538,18 +538,18 @@ export default function BukletSlider() {
 
         {/* Трек — только слайды, без стрелок */}
         <div ref={trackRef} className="buklet-track" style={{ flex: 1, overflowX: "auto", overflowY: "hidden", scrollSnapType: "x mandatory", scrollBehavior: "smooth", display: "flex", alignItems: "center", WebkitOverflowScrolling: "touch" as never, background: "#0a0a0a" }}>
-          <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div ref={el => { if (el) cellsRef.current[0] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", background: "#1A1A1A" }}>
             <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide01 /></div>
           </div>
-          <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div ref={el => { if (el) cellsRef.current[1] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F3EF" }}>
             <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide02 /></div>
           </div>
           {TIER_SLIDES.map((tier, i) => (
-            <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div key={tier.num} ref={el => { if (el) cellsRef.current[2 + i] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", background: tier.bg }}>
               <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><TierSlide tier={tier} pageNum={String(3 + i).padStart(2, "0")} /></div>
             </div>
           ))}
-          <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div ref={el => { if (el) cellsRef.current[5] = el; }} style={{ flex: "0 0 100%", width: "100%", height: "100%", scrollSnapAlign: "center", scrollSnapStop: "always", display: "flex", alignItems: "center", justifyContent: "center", background: "#161616" }}>
             <div style={{ width: 1920, height: 1080, transform: `scale(${scale})`, transformOrigin: "center center", position: "relative", flex: "none" }}><Slide06 /></div>
           </div>
         </div>
@@ -584,16 +584,16 @@ export default function BukletSlider() {
 
       {/* ── MOBILE (<900px): аккордеон ── */}
       <div className="buklet-mobile" style={{ background: "#F5F3EF", color: "#1A1A1A", fontFamily: font, padding: "84px 16px 56px" }}>
-        {/* Интро — тёмная full-bleed шапка, стыкуется со свечением Hero */}
-        <div style={{ background: "#161616", color: "#F5F3EF", margin: "-84px -16px 24px", padding: "96px 16px 30px" }}>
+        {/* Интро — светлый заголовок (тёмный только премиум-тир) */}
+        <div style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
             <span style={{ width: 22, height: 2, background: "#F39C2D", display: "inline-block", flex: "none" }}></span>
-            <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700 }}>Варианты ремонта</span>
+            <span style={{ fontSize: 11, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: "#1A1A1A" }}>Варианты ремонта</span>
           </div>
-          <h2 style={{ margin: 0, fontWeight: 800, fontSize: 32, lineHeight: 1.05, letterSpacing: "-.03em" }}>
+          <h2 style={{ margin: 0, fontWeight: 800, fontSize: 32, lineHeight: 1.05, letterSpacing: "-.03em", color: "#1A1A1A" }}>
             Три уровня отделки <span style={{ color: "#F39C2D" }}>под ключ в Крыму</span>
           </h2>
-          <p style={{ margin: "14px 0 0", fontSize: 15, lineHeight: 1.55, color: "rgba(245,243,239,.72)" }}>
+          <p style={{ margin: "14px 0 0", fontSize: 15, lineHeight: 1.55, color: "rgba(26,26,26,.65)" }}>
             Со стартовыми ценами от 17 000 ₽ за м² — от инвестиционной аренды до архитектурного премиума. Прозрачная смета и готовые сценарии заселения.
           </p>
         </div>

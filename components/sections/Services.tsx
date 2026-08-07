@@ -69,9 +69,9 @@ export default function Services() {
           </p>
         </AnimateOnView>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {services.map((service, i) => (
-            <AnimateOnView key={service.title} delay={i * 0.08}>
+            <AnimateOnView key={service.title} delay={(i % 3) * 0.06}>
               <Card className="group cursor-pointer overflow-hidden h-full">
                 <div className="relative overflow-hidden bg-gray-100">
                   <Image
@@ -79,16 +79,16 @@ export default function Services() {
                     alt={service.title}
                     width={800}
                     height={450}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+                    className="w-full h-32 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-oswald text-xl font-semibold text-text-light mb-2">
+                <div className="p-3 sm:p-6">
+                  <h3 className="font-oswald text-base sm:text-xl font-semibold text-text-light mb-1 sm:mb-2 leading-tight">
                     {service.title}
                   </h3>
-                  <p className="text-text-muted text-sm leading-relaxed">
+                  <p className="text-text-muted text-sm leading-relaxed hidden sm:block">
                     {service.desc}
                   </p>
                 </div>
