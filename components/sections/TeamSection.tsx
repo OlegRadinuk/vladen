@@ -7,19 +7,19 @@ type Member = { name: string; role: string; photo: string | null };
 
 // Руководство — по центру, крупно (учредитель + гендир)
 const leaders: Member[] = [
-  { name: "Биленчук Александр Михайлович", role: "Учредитель, собственник", photo: "/team/founder.png" },
-  { name: "Биленчук Юлия Владимировна", role: "Генеральный директор", photo: null },
+  { name: "Биленчук Александр Михайлович", role: "Учредитель, собственник", photo: "/team/founder.webp" },
+  { name: "Биленчук Юлия Владимировна", role: "Генеральный директор", photo: "/team/gd.webp" },
 ];
 
 // Остальная команда — слайдер на мобиле / сетка на десктопе
 const team: Member[] = [
-  { name: "Дымов Григорий Григорьевич", role: "Заместитель по строительству", photo: "/team/deputy.png" },
-  { name: "Полончук Владимир Леонидович", role: "Главный инженер", photo: "/team/engineer.png" },
+  { name: "Дымов Григорий Григорьевич", role: "Заместитель по строительству", photo: "/team/deputy.webp" },
+  { name: "Полончук Владимир Леонидович", role: "Главный инженер", photo: "/team/engineer.webp" },
   { name: "Комочкина Татьяна Александровна", role: "Архитектор", photo: null },
-  { name: "Дуквен Ольга Александровна", role: "Дизайнер", photo: "/team/designer.png" },
-  { name: "Супиченко Зинаида Николаевна", role: "Главный бухгалтер", photo: "/team/accountant.png" },
-  { name: "Шелпакова Татьяна Валерьевна", role: "Сметчик", photo: "/team/estimator.png" },
-  { name: "Гриценко Виталий Борисович", role: "Прораб", photo: "/team/foreman.png" },
+  { name: "Дуквен Ольга Александровна", role: "Дизайнер", photo: "/team/designer.webp" },
+  { name: "Супиченко Зинаида Николаевна", role: "Главный бухгалтер", photo: "/team/accountant.webp" },
+  { name: "Шелпакова Татьяна Валерьевна", role: "Сметчик", photo: "/team/estimator.webp" },
+  { name: "Гриценко Виталий Борисович", role: "Прораб", photo: "/team/foreman.webp" },
 ];
 
 function Initials({ name }: { name: string }) {
