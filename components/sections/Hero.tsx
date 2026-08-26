@@ -20,8 +20,11 @@ export default function Hero() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
+  // Секция — колонка: контент растягивается, подсказка «Варианты ремонта»
+  // лежит под ним в обычном потоке. Раньше она была absolute и на низких
+  // ноутбучных экранах наезжала на кнопку «Смотреть наши работы».
   return (
-    <section className="relative h-[100svh] min-h-[600px] flex items-center overflow-hidden bg-dark">
+    <section className="relative min-h-[100svh] flex flex-col overflow-hidden bg-dark">
       {/* Video background */}
       <div
         ref={bgRef}
@@ -61,7 +64,9 @@ export default function Hero() {
         }}
       />
 
-      <Container className="relative z-10 py-16 sm:py-20 md:py-24">
+      {/* short: компактный ритм для ноутбуков с низким экраном (≈720px и ниже),
+          чтобы контент и нижняя подсказка помещались в первый экран */}
+      <Container className="relative z-10 flex-1 flex items-center py-16 sm:py-20 md:py-24 short:py-4 short-sm:py-6">
         <motion.div
           className="w-full max-w-5xl"
           initial={{ opacity: 0, y: 24 }}
@@ -70,7 +75,7 @@ export default function Hero() {
         >
           {/* Badge — скрыт на очень маленьких экранах */}
           <div className="hidden sm:block">
-            <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/40 rounded-full px-4 py-1.5 mb-6">
+            <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/40 rounded-full px-4 py-1.5 mb-6 short:mb-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-accent text-sm font-inter font-medium">
                 Ремонт и строительство в Крыму с 2014 года
@@ -79,26 +84,26 @@ export default function Hero() {
           </div>
 
           {/* Heading */}
-          <h1 className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+          <h1 className="font-oswald text-4xl sm:text-5xl md:text-6xl lg:text-7xl short:text-5xl font-bold text-white leading-tight mb-6 short:mb-4 short-sm:mb-4">
             Ремонт квартир и домов
             <br />
             <span className="text-accent">под ключ в Крыму</span>
           </h1>
 
-          <p className="text-text-dark text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
+          <p className="text-text-dark text-lg md:text-xl short:text-base leading-relaxed mb-10 short:mb-5 short-sm:mb-5 max-w-2xl">
             Дизайнерский ремонт, чистовая отделка, строительство.
             Фиксированная цена в договоре — без сюрпризов.
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12 short:mb-6 short-sm:mb-6">
             {[
               { to: 369, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
               { to: 12,  suffix: "",  label: "лет на рынке",   sub: "работаем с 2014" },
               { to: 98,  suffix: "%", label: "клиентов довольны", sub: "по отзывам" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col">
-                <div className="text-accent font-oswald text-3xl sm:text-5xl font-bold leading-none">
+                <div className="text-accent font-oswald text-3xl sm:text-5xl short:text-4xl font-bold leading-none">
                   <CountUp to={stat.to} suffix={stat.suffix} duration={2} />
                 </div>
                 <div className="text-white font-oswald text-xs sm:text-lg font-semibold mt-1 uppercase tracking-wide leading-tight">{stat.label}</div>
@@ -134,7 +139,8 @@ export default function Hero() {
         </motion.div>
       </Container>
 
-      {/* Scroll-cue → Варианты ремонта + крючок «лукбук в подарок» */}
+      {/* Scroll-cue → Варианты ремонта + крючок «лукбук в подарок».
+          В обычном потоке под контентом — не перекрывает CTA на низких экранах. */}
       <motion.button
         onClick={() =>
           document.getElementById("buklet")?.scrollIntoView({ behavior: "smooth" })
@@ -142,7 +148,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9, duration: 0.6, ease: "easeOut" }}
-        className="group absolute bottom-4 sm:bottom-6 left-0 right-0 mx-auto w-fit z-20 flex flex-col items-center gap-2"
+        className="group relative z-20 mx-auto w-fit shrink-0 mb-4 sm:mb-6 flex flex-col items-center gap-2"
         aria-label="Смотреть варианты ремонта — лукбук в подарок"
       >
         {/* Крючок-подарок */}
