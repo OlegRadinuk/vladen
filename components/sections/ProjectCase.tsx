@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import Lightbox, { LightboxImage } from "@/components/ui/Lightbox";
@@ -14,6 +15,8 @@ interface MediaItem {
 
 interface Case {
   id: number;
+  /** Слаг страницы объекта — /projects/[slug] */
+  slug: string;
   tag: string;
   title: string;
   subtitle: string;
@@ -25,9 +28,51 @@ interface Case {
   gallery?: LightboxImage[];
 }
 
+const sagaGallery = (zone: string, count: number, label: string): LightboxImage[] =>
+  Array.from({ length: count }, (_, i) => ({
+    src: `/projects/saga/${zone}-${String(i + 1).padStart(2, "0")}.webp`,
+    alt: `${label}, ЖК «Сага», Крым — вид ${i + 1}`,
+  }));
+
 const cases: Case[] = [
   {
+    id: 5,
+    slug: "kvartira-zhk-saga",
+    tag: "Дизайн-проект и ремонт под ключ",
+    title: "Двухуровневая квартира в ЖК «Сага»",
+    subtitle: "Два уровня · 83,3 м² · Дизайн, рабочие чертежи, ремонт и авторский надзор",
+    location: "Крым, ЖК «Сага»",
+    year: "2026",
+    stats: [
+      { value: "83,3 м²", label: "Площадь" },
+      { value: "2 уровня", label: "Этажность" },
+      { value: "2026", label: "Год сдачи" },
+    ],
+    features: [
+      "Полный цикл в одних руках: планировка, визуализация, чертежи, ремонт, надзор",
+      "36 фотореалистичных видов — интерьер утвердили до начала работ",
+      "Развёртки всех стен, планы электрики, сантехники, тёплого пола и потолка",
+      "Светлая палитра: белый, тёплое дерево и синий акцент, арочные ниши с подсветкой",
+      "Инженерия с нуля: тёплый пол по контурам, конвекторы в полу, скрытые коллекторы",
+      "Кухня-гостиная с верандой наверху, спальни и санузлы на нижнем уровне",
+    ],
+    media: [
+      { src: "/projects/saga/kitchen-01.webp", type: "image", alt: "Кухня-гостиная с выходом на веранду, ЖК «Сага»" },
+      { src: "/projects/saga/kids-01.webp", type: "image", alt: "Детская комната, ЖК «Сага»" },
+      { src: "/projects/saga/mainbath-01.webp", type: "image", alt: "Основной санузел, ЖК «Сага»" },
+    ],
+    gallery: [
+      ...sagaGallery("kitchen", 10, "Кухня-гостиная и прихожая"),
+      ...sagaGallery("bedroom", 5, "Спальня"),
+      ...sagaGallery("kids", 7, "Детская"),
+      ...sagaGallery("hall", 3, "Холл и лестница"),
+      ...sagaGallery("bath1", 5, "Санузел"),
+      ...sagaGallery("mainbath", 6, "Основной санузел"),
+    ],
+  },
+  {
     id: 3,
+    slug: "poselok-krymskaya-palitra",
     tag: "Коттеджный посёлок",
     title: "«Крымская Палитра»",
     subtitle: "6 домов по типовому проекту · Симферопольский район · 2025",
@@ -54,6 +99,7 @@ const cases: Case[] = [
   },
   {
     id: 4,
+    slug: "remont-doma-pod-klyuch-78",
     tag: "Ремонт под ключ",
     title: "Ремонт дома под ключ",
     subtitle: "Полный цикл чистовой отделки · Все инженерные системы · 78 м²",
@@ -84,6 +130,7 @@ const cases: Case[] = [
   },
   {
     id: 2,
+    slug: "dom-mirnoe-81",
     tag: "Под ключ · Предчистовая",
     title: "Одноэтажный дом в с. Мирное",
     subtitle: "Ракушечник · Битумная черепица · Тёплый пол · Все коммуникации",
@@ -103,13 +150,14 @@ const cases: Case[] = [
       "Забор, откатные ворота, центральные газ / вода / электричество / канализация",
     ],
     media: [
-      { src: "/cases/keys2-vnutri.jpg", type: "image", alt: "Интерьер" },
-      { src: "/cases/keys2-gorizontalnaya.jpg", type: "image", alt: "Вид горизонтальный" },
-      { src: "/cases/keys2.jpg", type: "image", alt: "Фасад дома, с. Мирное" },
+      { src: "/cases/keys2-gorizontalnaya.jpg", type: "image", alt: "Фасад дома, с. Мирное" },
+      { src: "/cases/keys2-vnutri.jpg", type: "image", alt: "Гостиная, предчистовая отделка" },
+      { src: "/cases/keys2.jpg", type: "image", alt: "Санузел, чистовая отделка" },
     ],
   },
   {
     id: 1,
+    slug: "dom-evpatoriya-165",
     tag: "Индивидуальный проект",
     title: "Двухэтажный дом в Евпатории",
     subtitle: "Природный камень ракушка · Металлочерепица · Декоративная штукатурка",
@@ -323,15 +371,25 @@ export default function ProjectCase() {
               </div>
 
               <div className="flex flex-wrap gap-3">
+                <Link
+                  href={`/projects/${c.slug}`}
+                  className="inline-flex items-center justify-center font-oswald font-medium tracking-wide rounded border-2 border-accent text-accent hover:bg-accent hover:text-white transition-all duration-200 px-6 py-3 text-base"
+                >
+                  Подробнее о проекте
+                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={() =>
                     document
                       .getElementById("contacts")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
                 >
-                  Хочу такой же дом
+                  Хочу такой же
                 </Button>
 
                 {c.gallery && c.gallery.length > 0 && (

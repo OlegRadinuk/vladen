@@ -1,9 +1,17 @@
 import { MetadataRoute } from "next";
+import { projects } from "@/lib/projects";
 
 const BASE_URL = "https://vladen-crimea.ru";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  const projectPages: MetadataRoute.Sitemap = projects.map((p) => ({
+    url: `${BASE_URL}/projects/${p.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
   return [
     {
@@ -17,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/services/avtorskiy-nadzor`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${BASE_URL}/modular`,
@@ -42,5 +56,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    ...projectPages,
   ];
 }

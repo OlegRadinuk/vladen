@@ -1,0 +1,396 @@
+{
+  "renders": {
+    "kitchen": [
+      {
+        "file": "kitchen-01.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 144
+      },
+      {
+        "file": "kitchen-02.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 120
+      },
+      {
+        "file": "kitchen-03.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 223
+      },
+      {
+        "file": "kitchen-04.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 201
+      },
+      {
+        "file": "kitchen-05.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 183
+      },
+      {
+        "file": "kitchen-06.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 170
+      },
+      {
+        "file": "kitchen-07.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 110
+      },
+      {
+        "file": "kitchen-08.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 119
+      },
+      {
+        "file": "kitchen-09.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 95
+      },
+      {
+        "file": "kitchen-10.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 106
+      }
+    ],
+    "bath1": [
+      {
+        "file": "bath1-01.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 150
+      },
+      {
+        "file": "bath1-02.webp",
+        "w": 1800,
+        "h": 1800,
+        "kb": 176
+      },
+      {
+        "file": "bath1-03.webp",
+        "w": 1170,
+        "h": 1800,
+        "kb": 54
+      },
+      {
+        "file": "bath1-04.webp",
+        "w": 1170,
+        "h": 1800,
+        "kb": 95
+      },
+      {
+        "file": "bath1-05.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 110
+      }
+    ],
+    "kids": [
+      {
+        "file": "kids-01.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 78
+      },
+      {
+        "file": "kids-02.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 89
+      },
+      {
+        "file": "kids-03.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 173
+      },
+      {
+        "file": "kids-04.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 91
+      },
+      {
+        "file": "kids-05.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 132
+      },
+      {
+        "file": "kids-06.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 117
+      },
+      {
+        "file": "kids-07.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 163
+      }
+    ],
+    "hall": [
+      {
+        "file": "hall-01.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 56
+      },
+      {
+        "file": "hall-02.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 48
+      },
+      {
+        "file": "hall-03.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 52
+      }
+    ],
+    "bedroom": [
+      {
+        "file": "bedroom-01.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 191
+      },
+      {
+        "file": "bedroom-02.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 190
+      },
+      {
+        "file": "bedroom-03.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 180
+      },
+      {
+        "file": "bedroom-04.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 201
+      },
+      {
+        "file": "bedroom-05.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 120
+      }
+    ],
+    "mainbath": [
+      {
+        "file": "mainbath-01.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 124
+      },
+      {
+        "file": "mainbath-02.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 177
+      },
+      {
+        "file": "mainbath-03.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 153
+      },
+      {
+        "file": "mainbath-04.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 143
+      },
+      {
+        "file": "mainbath-05.webp",
+        "w": 1800,
+        "h": 1200,
+        "kb": 80
+      },
+      {
+        "file": "mainbath-06.webp",
+        "w": 1350,
+        "h": 1800,
+        "kb": 123
+      }
+    ]
+  },
+  "nadzor": [
+    {
+      "file": "nadzor/otoplenie-radiator.webp",
+      "w": 823,
+      "h": 1244,
+      "kb": 28
+    },
+    {
+      "file": "nadzor/otoplenie-konvektor.webp",
+      "w": 796,
+      "h": 1197,
+      "kb": 53
+    },
+    {
+      "file": "nadzor/vanna-vyvody-provodov.webp",
+      "w": 1500,
+      "h": 1142,
+      "kb": 55
+    },
+    {
+      "file": "nadzor/vanna-kollektor.webp",
+      "w": 1071,
+      "h": 1480,
+      "kb": 123
+    },
+    {
+      "file": "nadzor/vanna-nisha-podsvetka.webp",
+      "w": 1080,
+      "h": 1492,
+      "kb": 70
+    },
+    {
+      "file": "nadzor/detskaya-razvertka.webp",
+      "w": 1040,
+      "h": 998,
+      "kb": 40
+    },
+    {
+      "file": "nadzor/detskaya-otklonenie.webp",
+      "w": 1174,
+      "h": 1128,
+      "kb": 55
+    },
+    {
+      "file": "nadzor/detskaya-razvodka.webp",
+      "w": 940,
+      "h": 1006,
+      "kb": 64
+    },
+    {
+      "file": "nadzor/kuhnya-razvertka.webp",
+      "w": 1304,
+      "h": 1500,
+      "kb": 89
+    },
+    {
+      "file": "nadzor/kuhnya-rozetka-smeshchenie.webp",
+      "w": 1500,
+      "h": 1226,
+      "kb": 71
+    },
+    {
+      "file": "nadzor/kuhnya-shtroby.webp",
+      "w": 1500,
+      "h": 1349,
+      "kb": 58
+    },
+    {
+      "file": "nadzor/prihozhaya-razvertka.webp",
+      "w": 1500,
+      "h": 1153,
+      "kb": 131
+    },
+    {
+      "file": "nadzor/prihozhaya-shchit.webp",
+      "w": 837,
+      "h": 1358,
+      "kb": 56
+    },
+    {
+      "file": "nadzor/prihozhaya-proem.webp",
+      "w": 1169,
+      "h": 1471,
+      "kb": 148
+    },
+    {
+      "file": "nadzor/spalnya-arka-chertezh.webp",
+      "w": 1500,
+      "h": 1252,
+      "kb": 70
+    },
+    {
+      "file": "nadzor/spalnya-rozetki-os.webp",
+      "w": 1500,
+      "h": 1132,
+      "kb": 156
+    },
+    {
+      "file": "nadzor/spalnya-pereproverit-os.webp",
+      "w": 1500,
+      "h": 1204,
+      "kb": 58
+    },
+    {
+      "file": "nadzor/sanuzel-regulyator.webp",
+      "w": 1198,
+      "h": 1492,
+      "kb": 167
+    },
+    {
+      "file": "nadzor/sanuzel-dvernaya-korobka.webp",
+      "w": 1108,
+      "h": 1460,
+      "kb": 227
+    },
+    {
+      "file": "nadzor/sanuzel-razvertka.webp",
+      "w": 1500,
+      "h": 844,
+      "kb": 75
+    },
+    {
+      "file": "nadzor/holl-razvertka-shtroby.webp",
+      "w": 1500,
+      "h": 941,
+      "kb": 71
+    },
+    {
+      "file": "nadzor/holl-proem-truby.webp",
+      "w": 822,
+      "h": 1298,
+      "kb": 32
+    },
+    {
+      "file": "nadzor/holl-kladovka-chertezh.webp",
+      "w": 1412,
+      "h": 1280,
+      "kb": 73
+    },
+    {
+      "file": "nadzor/holl-router-kladovka.webp",
+      "w": 964,
+      "h": 1398,
+      "kb": 110
+    },
+    {
+      "file": "nadzor/lestnica-privyazka.webp",
+      "w": 916,
+      "h": 1416,
+      "kb": 44
+    },
+    {
+      "file": "nadzor/lestnica-proem.webp",
+      "w": 1034,
+      "h": 1462,
+      "kb": 102
+    },
+    {
+      "file": "nadzor/santehnika-privyazka-unitaza.webp",
+      "w": 570,
+      "h": 858,
+      "kb": 70
+    }
+  ]
+}

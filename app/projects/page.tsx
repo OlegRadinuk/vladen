@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
+import { projects, flatGallery } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Примеры ремонтов квартир и домов в Крыму — портфолио Владен",
@@ -33,73 +35,30 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumbJsonLd = {
+const BASE_URL = "https://vladen-crimea.ru";
+
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Главная", item: "https://vladen-crimea.ru" },
-    { "@type": "ListItem", position: 2, name: "Проекты", item: "https://vladen-crimea.ru/projects" },
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Главная", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "Проекты", item: `${BASE_URL}/projects` },
+      ],
+    },
+    {
+      "@type": "ItemList",
+      name: "Портфолио реализованных объектов ООО «ВЛАДЕН»",
+      itemListElement: projects.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: p.title,
+        url: `${BASE_URL}/projects/${p.slug}`,
+      })),
+    },
   ],
 };
-
-const projects = [
-  {
-    title: "Ремонт дома под ключ",
-    type: "Ремонт под ключ",
-    area: "78 м²",
-    year: "2026",
-    desc: "Полный цикл чистовой отделки: электрика и сантехника с нуля, выравнивание и покраска стен, обои, кварцвинил и ламинат, керамогранит, натяжные потолки со светильниками, стеклянная душевая перегородка и встроенные тумбы. Стоимость работ — 23 000 ₽/м².",
-    image: "/cases/1.webp",
-  },
-  {
-    title: "Двухэтажный дом в Евпатории",
-    type: "Индивидуальный проект",
-    area: "165 м²",
-    year: "2025",
-    desc: "Стены из природного камня ракушка, металлочерепица, декоративная штукатурка. Баня, кухня-гостиная 38 м², две спальни. Сдан в декабре 2025.",
-    image: "/cases/1keys-fasad.jpg",
-  },
-  {
-    title: "Одноэтажный дом в с. Мирное",
-    type: "Под ключ · Предчистовая",
-    area: "81 м²",
-    year: "2025",
-    desc: "Ракушечник, битумная черепица, тёплый пол, электрокотёл + бойлер. Забор, откатные ворота, все центральные коммуникации.",
-    image: "/cases/keys2.jpg",
-  },
-  {
-    title: "Посёлок «Крымская Палитра»",
-    type: "Коттеджный посёлок",
-    area: "6 × 107 м²",
-    year: "2025",
-    desc: "6 одноэтажных домов по типовому проекту. Четыре комнаты, терраса, центральное отопление, газ. Планировка участка 6 соток.",
-    image: "/cases/kottedge.jpg",
-  },
-  {
-    title: "Ремонт квартиры в Симферополе",
-    type: "Ремонт под ключ",
-    area: "74 м²",
-    year: "2024",
-    desc: "Трёхкомнатная квартира, чистовая отделка. Тёплый пол в ванной, натяжные потолки, новая электропроводка, встроенная кухня.",
-    image: null,
-  },
-  {
-    title: "Одноэтажный дом в Бахчисарае",
-    type: "Строительство под ключ",
-    area: "112 м²",
-    year: "2024",
-    desc: "Дом из ракушечника с мансардой. Три спальни, кухня-гостиная с террасой. Полная чистовая отделка, отопление, скважина.",
-    image: null,
-  },
-  {
-    title: "Ремонт офиса в Симферополе",
-    type: "Коммерческий ремонт",
-    area: "135 м²",
-    year: "2024",
-    desc: "Офисное помещение под ключ: перепланировка, стяжка, натяжные потолки, новая электрика, сантехника, покраска фасада.",
-    image: null,
-  },
-];
 
 function ProjectThumb({ image, title }: { image: string | null; title: string }) {
   if (image) {
@@ -109,7 +68,7 @@ function ProjectThumb({ image, title }: { image: string | null; title: string })
           src={image}
           alt={title}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
@@ -131,7 +90,7 @@ function ProjectThumb({ image, title }: { image: string | null; title: string })
 export default function ProjectsPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>
@@ -160,35 +119,59 @@ export default function ProjectsPage() {
       {/* Projects grid */}
       <div className="bg-light py-20">
         <Container>
-          <h2 className="font-oswald text-2xl sm:text-3xl font-bold text-text-light mb-8">
+          <h2 className="font-oswald text-2xl sm:text-3xl font-bold text-text-light mb-2">
             Портфолио реализованных объектов
           </h2>
+          <p className="text-text-muted text-sm mb-8">
+            Нажмите на объект — откроется страница проекта с фото, составом работ и этапами.
+          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, i) => (
-              <AnimateOnView key={project.title} delay={i * 0.08}>
-              <Card className="group overflow-hidden h-full">
-                <div className="relative overflow-hidden">
-                  <ProjectThumb image={project.image} title={project.title} />
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-accent text-xs font-medium bg-accent/10 px-2 py-0.5 rounded">
-                      {project.type}
-                    </span>
-                    <span className="text-text-muted text-xs">{project.year}</span>
-                  </div>
-                  <h3 className="font-oswald text-lg font-semibold text-text-light mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-text-muted text-sm leading-relaxed mb-3">
-                    {project.desc}
-                  </p>
-                  <p className="text-text-light text-sm font-medium">{project.area}</p>
-                </div>
-              </Card>
-              </AnimateOnView>
-            ))}
+            {projects.map((project, i) => {
+              const photoCount = flatGallery(project).length;
+              return (
+                <AnimateOnView key={project.slug} delay={i * 0.08}>
+                  <Link
+                    href={`/projects/${project.slug}`}
+                    className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg"
+                  >
+                    <Card className="group overflow-hidden h-full flex flex-col">
+                      <div className="relative overflow-hidden">
+                        <ProjectThumb image={project.cover} title={project.title} />
+                        {photoCount > 0 && (
+                          <span className="absolute top-3 right-3 bg-dark/70 text-white text-[11px] font-oswald px-2 py-1 rounded backdrop-blur-sm">
+                            {photoCount} фото
+                          </span>
+                        )}
+                        <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                      </div>
+                      <div className="p-6 flex flex-col flex-1">
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-accent text-xs font-medium bg-accent/10 px-2 py-0.5 rounded">
+                            {project.tag}
+                          </span>
+                          <span className="text-text-muted text-xs shrink-0">{project.year}</span>
+                        </div>
+                        <h3 className="font-oswald text-lg font-semibold text-text-light mb-2 group-hover:text-accent transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-text-muted text-sm leading-relaxed mb-3">
+                          {project.cardDesc}
+                        </p>
+                        <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+                          <span className="text-text-light text-sm font-medium">{project.area}</span>
+                          <span className="text-accent text-sm font-oswald inline-flex items-center gap-1">
+                            Подробнее
+                            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                </AnimateOnView>
+              );
+            })}
           </div>
         </Container>
       </div>

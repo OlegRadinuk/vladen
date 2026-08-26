@@ -97,12 +97,21 @@ export default function Services() {
           ))}
         </div>
 
-        <AnimateOnView className="text-center mt-10">
+        <AnimateOnView className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 mt-10">
           <Link
             href="/services"
             className="inline-flex items-center gap-2 text-accent font-oswald font-medium hover:gap-3 transition-all duration-200"
           >
             Все услуги
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <Link
+            href="/services/avtorskiy-nadzor"
+            className="inline-flex items-center gap-2 text-accent font-oswald font-medium hover:gap-3 transition-all duration-200"
+          >
+            Как устроен авторский надзор
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
