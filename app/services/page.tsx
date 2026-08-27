@@ -4,11 +4,12 @@ import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
+import { FOUNDED_YEAR } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Ремонт квартир и домов в Симферополе — услуги и цены",
   description:
-    "Ремонт квартир под ключ, дизайнерский ремонт, отделка домов, строительство в Симферополе и Крыму. Прозрачные цены, гарантия качества. ООО «ВЛАДЕН» с 2005 года. Звоните: +7 (978) 717-44-47",
+    `Ремонт квартир под ключ, дизайнерский ремонт, отделка домов, строительство в Симферополе и Крыму. Прозрачные цены, гарантия качества. ООО «ВЛАДЕН» с ${FOUNDED_YEAR} года. Звоните: +7 (978) 717-44-47`,
   keywords: [
     "ремонт квартиры Симферополь цена",
     "ремонт квартиры под ключ Симферополь",

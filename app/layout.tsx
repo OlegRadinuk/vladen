@@ -8,6 +8,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import ChatWidget from "@/components/ui/ChatWidget";
+import { FOUNDED_YEAR, YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE } from "@/lib/company";
 import CookieBanner from "@/components/ui/CookieBanner";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Владен — Ремонт и строительство в Крыму",
   },
   description:
-    "Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, отделка, строительство. ООО «ВЛАДЕН» — 12 лет опыта, более 200 объектов. Звоните: +7 (978) 717-44-47",
+    `Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, отделка, строительство. ООО «ВЛАДЕН» — ${YEARS_PHRASE} опыта, более ${OBJECTS_DONE} объектов. Звоните: +7 (978) 717-44-47`,
   keywords: [
     "ремонт квартир Симферополь",
     "ремонт квартиры под ключ Симферополь",
@@ -86,14 +87,14 @@ export const metadata: Metadata = {
     siteName: "Владен",
     title: "Ремонт квартир и домов в Симферополе — Владен",
     description:
-      "Ремонт квартир и домов под ключ в Крыму. Дизайнерский ремонт, отделка, строительство. 12 лет опыта, 200+ объектов.",
+      `Ремонт квартир и домов под ключ в Крыму. Дизайнерский ремонт, отделка, строительство. ${YEARS_PHRASE} опыта, ${OBJECTS_PHRASE} объектов.`,
     url: "https://vladen-crimea.ru",
     images: [{ url: "/icons/favicon-192x192.png", width: 192, height: 192 }],
   },
   twitter: {
     card: "summary",
     title: "Ремонт квартир и домов в Симферополе — Владен",
-    description: "Ремонт и строительство под ключ в Крыму. 12 лет опыта, 200+ объектов. Звоните: +7 (978) 717-44-47",
+    description: `Ремонт и строительство под ключ в Крыму. ${YEARS_PHRASE} опыта, ${OBJECTS_PHRASE} объектов. Звоните: +7 (978) 717-44-47`,
   },
   robots: {
     index: true,
@@ -109,11 +110,11 @@ const jsonLd = {
   name: "ООО «ВЛАДЕН»",
   alternateName: "Владен",
   description:
-    "Строительная компания в Симферополе. Строительство домов под ключ, ремонт, проектирование, инженерные сети по всему Крыму с 2005 года.",
+    `Строительная компания в Симферополе. Строительство домов под ключ, ремонт, проектирование, инженерные сети по всему Крыму с ${FOUNDED_YEAR} года.`,
   url: "https://vladen-crimea.ru",
   telephone: "+79787174447",
   email: "vladen2026@mail.ru",
-  foundingDate: "2014",
+  foundingDate: String(FOUNDED_YEAR),
   taxID: "2317074414",
   legalName: "ООО «ВЛАДЕН»",
   address: {

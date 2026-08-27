@@ -6,11 +6,12 @@ import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
 import { projects, flatGallery } from "@/lib/projects";
+import { YEARS_ON_MARKET, OBJECTS_DONE, OBJECTS_PHRASE, CITIES } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Примеры ремонтов квартир и домов в Крыму — портфолио Владен",
   description:
-    "Фото и примеры выполненных ремонтов квартир, дизайнерских отделок и строительства в Симферополе, Ялте, Евпатории. Более 200 объектов ООО «ВЛАДЕН» по Крыму и Краснодарскому краю.",
+    `Фото и примеры выполненных ремонтов квартир, дизайнерских отделок и строительства в Симферополе, Ялте, Евпатории. Более ${OBJECTS_DONE} объектов ООО «ВЛАДЕН» по Крыму и Краснодарскому краю.`,
   keywords: [
     "ремонт квартиры Симферополь фото",
     "примеры ремонта квартир Крым",
@@ -25,13 +26,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Портфолио ремонтов и строительства в Крыму | Владен",
     description:
-      "Примеры ремонтов квартир и домов в Симферополе, Ялте, Евпатории. 200+ реализованных объектов ООО «ВЛАДЕН» по Крыму и Краснодарскому краю.",
+      `Примеры ремонтов квартир и домов в Симферополе, Ялте, Евпатории. ${OBJECTS_PHRASE} реализованных объектов ООО «ВЛАДЕН» по Крыму и Краснодарскому краю.`,
     url: "https://vladen-crimea.ru/projects",
   },
   twitter: {
     card: "summary",
     title: "Портфолио ремонтов и строительства в Крыму — Владен",
-    description: "Реальные фото выполненных ремонтов квартир и строительства домов. 200+ объектов по Крыму и Краснодарскому краю.",
+    description: `Реальные фото выполненных ремонтов квартир и строительства домов. ${OBJECTS_PHRASE} объектов по Крыму и Краснодарскому краю.`,
   },
 };
 
@@ -98,14 +99,14 @@ export default function ProjectsPage() {
             Наши проекты
           </h1>
           <p className="text-text-dark text-lg max-w-2xl">
-            Более 200 реализованных объектов по Крыму и Краснодарскому краю. Каждый проект —
+            Более {OBJECTS_DONE} реализованных объектов по Крыму и Краснодарскому краю. Каждый проект —
             это история доверия и качества.
           </p>
           <div className="flex flex-wrap gap-8 mt-8">
             {[
-              { v: "200+", l: "Объектов" },
-              { v: "18", l: "Лет опыта" },
-              { v: "6", l: "Городов" },
+              { v: OBJECTS_PHRASE, l: "Объектов" },
+              { v: String(YEARS_ON_MARKET), l: "Лет опыта" },
+              { v: String(CITIES), l: "Городов" },
             ].map((s) => (
               <div key={s.l}>
                 <div className="font-oswald text-3xl font-bold text-accent">{s.v}</div>

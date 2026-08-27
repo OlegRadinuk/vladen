@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import CountUp from "@/components/ui/CountUp";
+import { FOUNDED_YEAR, YEARS_ON_MARKET, OBJECTS_DONE, SATISFACTION } from "@/lib/company";
 
 export default function Hero() {
   const bgRef = useRef<HTMLDivElement>(null);
@@ -98,9 +99,9 @@ export default function Hero() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12 short:mb-6 short-sm:mb-6">
             {[
-              { to: 369, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
-              { to: 12,  suffix: "",  label: "лет на рынке",   sub: "работаем с 2014" },
-              { to: 98,  suffix: "%", label: "клиентов довольны", sub: "по отзывам" },
+              { to: OBJECTS_DONE, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
+              { to: YEARS_ON_MARKET, suffix: "",  label: "лет на рынке",   sub: `работаем с ${FOUNDED_YEAR}` },
+              { to: SATISFACTION, suffix: "%", label: "клиентов довольны", sub: "по отзывам" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col">
                 <div className="text-accent font-oswald text-3xl sm:text-5xl short:text-4xl font-bold leading-none">

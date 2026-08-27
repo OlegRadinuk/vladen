@@ -4,11 +4,12 @@ import AnimateOnView from "@/components/ui/AnimateOnView";
 import YandexReviews from "@/components/ui/YandexReviews";
 import Contacts from "@/components/sections/Contacts";
 import TeamSection from "@/components/sections/TeamSection";
+import { FOUNDED_YEAR, YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "О компании Владен — ремонт и строительство в Крыму с 2014 года",
   description:
-    "ООО «ВЛАДЕН» — компания по ремонту квартир и строительству с 2014 года. Собственная бригада отделочников и строителей, 200+ объектов в Крыму и Краснодарском крае, официальный договор.",
+    `ООО «ВЛАДЕН» — компания по ремонту квартир и строительству с ${FOUNDED_YEAR} года. Собственная бригада отделочников и строителей, ${OBJECTS_PHRASE} объектов в Крыму и Краснодарском крае, официальный договор.`,
   keywords: [
     "компания по ремонту квартир Симферополь",
     "отзывы о ремонте квартир Симферополь",
@@ -21,13 +22,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "О компании Владен | Ремонт и строительство в Крыму",
     description:
-      "ООО «ВЛАДЕН» — ремонт квартир и строительство в Симферополе с 2014 года. 12 лет, 200+ объектов, собственная бригада.",
+      `ООО «ВЛАДЕН» — ремонт квартир и строительство в Симферополе с ${FOUNDED_YEAR} года. ${YEARS_PHRASE}, ${OBJECTS_PHRASE} объектов, собственная бригада.`,
     url: "https://vladen-crimea.ru/about",
   },
   twitter: {
     card: "summary",
     title: "О компании Владен — ремонт и строительство в Крыму",
-    description: "ООО «ВЛАДЕН» с 2014 года. 200+ объектов, собственная бригада, официальный договор.",
+    description: `ООО «ВЛАДЕН» с ${FOUNDED_YEAR} года. ${OBJECTS_PHRASE} объектов, собственная бригада, официальный договор.`,
   },
 };
 
@@ -80,7 +81,7 @@ export default function AboutPage() {
                 Наша история
               </p>
               <h2 className="font-oswald text-3xl md:text-4xl font-bold text-text-light mb-6">
-                12 лет строим Крым
+                {YEARS_PHRASE} строим Крым
               </h2>
               <div className="space-y-4 text-text-muted leading-relaxed">
                 <p>
@@ -94,7 +95,7 @@ export default function AboutPage() {
                   Евпатории и Джанкое.
                 </p>
                 <p>
-                  За эти годы реализовали более 200 объектов по Крыму и
+                  За эти годы реализовали более {OBJECTS_DONE} объектов по Крыму и
                   Краснодарскому краю: от небольших дач до коммерческих
                   комплексов. Каждый проект — новая ответственность.
                 </p>

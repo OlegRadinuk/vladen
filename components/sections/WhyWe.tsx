@@ -1,5 +1,6 @@
 import Container from "@/components/ui/Container";
 import AnimateOnView from "@/components/ui/AnimateOnView";
+import { YEARS_PHRASE, OBJECTS_DONE } from "@/lib/company";
 
 const reasons = [
   {
@@ -76,7 +77,7 @@ export default function WhyWe() {
             Почему выбирают нас
           </h2>
           <p className="text-text-muted max-w-xl mx-auto">
-            12 лет работы в Крыму. Более 300 реализованных объектов. Репутация
+            {YEARS_PHRASE} работы в Крыму. Более {OBJECTS_DONE} реализованных объектов. Репутация
             строится годами.
           </p>
         </AnimateOnView>

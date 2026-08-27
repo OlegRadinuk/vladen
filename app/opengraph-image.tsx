@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { YEARS_ON_MARKET, OBJECTS_PHRASE, SATISFACTION } from "@/lib/company";
 
 export const runtime = "edge";
 export const alt = "Владен — Ремонт квартир и домов в Симферополе";
@@ -145,9 +146,9 @@ export default function OGImage() {
           {/* Stats row */}
           <div style={{ display: "flex", gap: 60 }}>
             {[
-              { num: "369+", label: "объектов сдано" },
-              { num: "12", label: "лет на рынке" },
-              { num: "98%", label: "клиентов довольны" },
+              { num: OBJECTS_PHRASE, label: "объектов сдано" },
+              { num: String(YEARS_ON_MARKET), label: "лет на рынке" },
+              { num: `${SATISFACTION}%`, label: "клиентов довольны" },
             ].map((s) => (
               <div
                 key={s.label}
