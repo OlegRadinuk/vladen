@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { safeJsonLd } from "@/lib/utils";
 import Container from "@/components/ui/Container";
 import Contacts from "@/components/sections/Contacts";
 
@@ -40,7 +41,7 @@ const breadcrumbJsonLd = {
 export default function ContactsPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       <div className="bg-dark pt-32 pb-20">
         <Container>
           <h1 className="font-oswald text-4xl md:text-6xl font-bold text-white mb-4">

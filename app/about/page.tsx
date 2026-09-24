@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
+import { safeJsonLd } from "@/lib/utils";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import YandexReviews from "@/components/ui/YandexReviews";
 import Contacts from "@/components/sections/Contacts";
@@ -53,7 +54,7 @@ const milestones = [
 export default function AboutPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>
