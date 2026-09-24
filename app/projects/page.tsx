@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { safeJsonLd } from "@/lib/utils";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Card from "@/components/ui/Card";
@@ -131,7 +132,7 @@ function ProjectThumb({ image, title }: { image: string | null; title: string })
 export default function ProjectsPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbJsonLd) }} />
       {/* Hero */}
       <div className="bg-dark pt-32 pb-20">
         <Container>
