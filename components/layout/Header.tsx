@@ -6,11 +6,11 @@ import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 
-const navLinks = [
+const navLinks: { href: string; label: string; hot?: boolean }[] = [
   { href: "/", label: "Главная" },
   { href: "/services", label: "Услуги" },
-  { href: "/modular", label: "Модульные дома / Бани", hot: true },
   { href: "/projects", label: "Проекты" },
+  { href: "/blog", label: "Блог" },
   { href: "/about", label: "О компании" },
   { href: "/contacts", label: "Контакты" },
 ];
