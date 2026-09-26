@@ -52,24 +52,28 @@ const services = [
   },
 ];
 
-export default function Services() {
+interface ServicesProps {
+  compact?: boolean;
+}
+
+export default function Services({ compact }: ServicesProps) {
   return (
-    <section id="services" className="py-20 md:py-28 bg-light">
-      <Container>
-        <AnimateOnView className="text-center mb-14">
+    <section id={compact ? undefined : "services"} className={`py-20 md:py-28 bg-light${compact ? " lg:py-24 lg:bg-transparent" : ""}`}>
+      <Container className={compact ? "lg:px-8" : undefined}>
+        <AnimateOnView className={`text-center mb-14${compact ? " lg:text-left lg:mb-10" : ""}`}>
           <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
             Что мы делаем
           </p>
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light mb-4">
             Наши услуги
           </h2>
-          <p className="text-text-muted max-w-xl mx-auto">
+          <p className={`text-text-muted max-w-xl mx-auto${compact ? " lg:mx-0" : ""}`}>
             Полный спектр строительных и ремонтных работ в Крыму. Гарантируем
             качество и соблюдение сроков.
           </p>
         </AnimateOnView>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className={`grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6${compact ? " lg:gap-4" : ""}`}>
           {services.map((service, i) => (
             <AnimateOnView key={service.title} delay={(i % 3) * 0.06}>
               <Card className="group cursor-pointer overflow-hidden h-full">
@@ -79,16 +83,16 @@ export default function Services() {
                     alt={service.title}
                     width={800}
                     height={450}
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
-                    className="w-full h-32 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes={compact ? "(max-width: 640px) 50vw, (max-width: 1024px) 50vw, (max-width: 1440px) 20vw, 18vw" : "(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"}
+                    className={`w-full h-32 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500${compact ? " lg:h-36" : ""}`}
                   />
                   <div className="absolute bottom-0 left-0 right-0 h-1 bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                 </div>
-                <div className="p-3 sm:p-6">
+                <div className={`p-3 sm:p-6${compact ? " lg:p-4" : ""}`}>
                   <h3 className="font-oswald text-base sm:text-xl font-semibold text-text-light mb-1 sm:mb-2 leading-tight">
                     {service.title}
                   </h3>
-                  <p className="text-text-muted text-sm leading-relaxed hidden sm:block">
+                  <p className={`text-text-muted text-sm leading-relaxed hidden sm:block${compact ? " lg:hidden" : ""}`}>
                     {service.desc}
                   </p>
                 </div>

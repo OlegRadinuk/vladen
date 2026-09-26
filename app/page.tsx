@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import Hero from "@/components/sections/Hero";
-import Services from "@/components/sections/Services";
 import BukletSlider from "@/components/sections/BukletSlider";
 import ProjectCase from "@/components/sections/ProjectCase";
-import WhyWe from "@/components/sections/WhyWe";
-import Calculator from "@/components/sections/Calculator";
-import FAQ from "@/components/sections/FAQ";
+import ServicesCalculatorRow from "@/components/sections/ServicesCalculatorRow";
+import WhyWeAndFAQRow from "@/components/sections/WhyWeAndFAQRow";
 import Reviews from "@/components/sections/Reviews";
 import Partners from "@/components/sections/Partners";
 import Contacts from "@/components/sections/Contacts";
@@ -46,11 +44,9 @@ export default function HomePage() {
     <>
       <Hero />
       <div id="buklet"><BukletSlider /></div>
-      <Calculator />
-      <div id="services"><Services /></div>
+      <ServicesCalculatorRow />
       <div id="project-case"><ProjectCase /></div>
-      <WhyWe />
-      <FAQ />
+      <WhyWeAndFAQRow />
       <Contacts />
       <Partners />
       <Reviews />

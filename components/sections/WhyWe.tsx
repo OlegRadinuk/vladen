@@ -65,36 +65,42 @@ const reasons = [
   },
 ];
 
-export default function WhyWe() {
+interface WhyWeProps {
+  compact?: boolean;
+}
+
+export default function WhyWe({ compact }: WhyWeProps) {
   return (
-    <section id="why" className="py-20 md:py-28 bg-light">
-      <Container>
-        <AnimateOnView className="text-center mb-14">
+    <section id={compact ? undefined : "why"} className={`py-20 md:py-28 bg-light${compact ? " lg:py-24 lg:bg-transparent" : ""}`}>
+      <Container className={compact ? "lg:px-8" : undefined}>
+        <AnimateOnView className={`text-center mb-14${compact ? " lg:text-left lg:mb-10" : ""}`}>
           <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
             Наши преимущества
           </p>
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light mb-4">
             Почему выбирают нас
           </h2>
-          <p className="text-text-muted max-w-xl mx-auto">
+          <p className={`text-text-muted max-w-xl mx-auto${compact ? " lg:mx-0 lg:max-w-none" : ""}`}>
             {YEARS_PHRASE} работы в Крыму. Более {OBJECTS_DONE} реализованных объектов. Репутация
             строится годами.
           </p>
         </AnimateOnView>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-6${compact ? " lg:grid-cols-1 lg:gap-3" : " lg:grid-cols-3"}`}>
           {reasons.map((item, i) => (
             <AnimateOnView key={item.title} delay={i * 0.07}>
-              <div className="group p-6 bg-white rounded-lg border border-transparent hover:border-accent/30 shadow-sm hover:shadow-md transition-all duration-200 h-full">
-                <div className="text-accent mb-4 group-hover:scale-110 transition-transform duration-200 inline-block">
+              <div className={`group p-6 bg-white rounded-lg border border-transparent hover:border-accent/30 shadow-sm hover:shadow-md transition-all duration-200 h-full${compact ? " lg:flex lg:gap-4 lg:items-start lg:p-4" : ""}`}>
+                <div className={`text-accent mb-4 group-hover:scale-110 transition-transform duration-200 inline-block${compact ? " lg:mb-0 lg:flex-shrink-0 lg:mt-0.5" : ""}`}>
                   {item.icon}
                 </div>
-                <h3 className="font-oswald text-xl font-semibold text-text-light mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-text-muted text-sm leading-relaxed">
-                  {item.desc}
-                </p>
+                <div>
+                  <h3 className="font-oswald text-xl font-semibold text-text-light mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-text-muted text-sm leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
             </AnimateOnView>
           ))}

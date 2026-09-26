@@ -39,8 +39,83 @@ const faqs = [
   },
 ];
 
-export default function FAQ() {
+function FaqItems({ open, setOpen }: { open: number | null; setOpen: (v: number | null) => void }) {
+  return (
+    <>
+      {faqs.map((item, i) => (
+        <AnimateOnView key={i} delay={i * 0.05}>
+          <div className="border border-white/10 rounded-xl overflow-hidden bg-white/[0.04] hover:border-accent/40 transition-colors">
+            <button
+              className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+              onClick={() => setOpen(open === i ? null : i)}
+              aria-expanded={open === i}
+            >
+              <span className="font-oswald font-semibold text-white text-base sm:text-lg leading-tight">
+                {item.q}
+              </span>
+              <span
+                className={`flex-shrink-0 w-7 h-7 rounded-full border-2 border-accent/40 flex items-center justify-center transition-transform duration-300 ${
+                  open === i ? "rotate-45 bg-accent border-accent" : ""
+                }`}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  className={open === i ? "text-white" : "text-accent"}
+                >
+                  <path
+                    d="M6 1v10M1 6h10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                open === i ? "max-h-96" : "max-h-0"
+              }`}
+            >
+              <p className="px-6 pb-5 text-text-muted text-sm sm:text-base leading-relaxed">
+                {item.a}
+              </p>
+            </div>
+          </div>
+        </AnimateOnView>
+      ))}
+    </>
+  );
+}
+
+interface FAQProps {
+  sidebar?: boolean;
+}
+
+export default function FAQ({ sidebar }: FAQProps) {
   const [open, setOpen] = useState<number | null>(null);
+
+  if (sidebar) {
+    return (
+      <section className="relative py-20 lg:py-24">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <AnimateOnView className="text-center mb-12 lg:text-left lg:mb-10">
+            <p className="text-accent font-oswald text-sm tracking-widest uppercase mb-2">
+              Частые вопросы
+            </p>
+            <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+              FAQ
+            </h2>
+          </AnimateOnView>
+          <div className="max-w-3xl mx-auto space-y-3 lg:max-w-none lg:mx-0">
+            <FaqItems open={open} setOpen={setOpen} />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="faq" className="relative py-20" style={{ backgroundColor: "#16191D" }}>
@@ -55,54 +130,8 @@ export default function FAQ() {
             FAQ
           </h2>
         </AnimateOnView>
-
         <div className="max-w-3xl mx-auto space-y-3">
-          {faqs.map((item, i) => (
-            <AnimateOnView key={i} delay={i * 0.05}>
-              <div
-                className="border border-white/10 rounded-xl overflow-hidden bg-white/[0.04] hover:border-accent/40 transition-colors"
-              >
-                <button
-                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
-                  onClick={() => setOpen(open === i ? null : i)}
-                  aria-expanded={open === i}
-                >
-                  <span className="font-oswald font-semibold text-white text-base sm:text-lg leading-tight">
-                    {item.q}
-                  </span>
-                  <span
-                    className={`flex-shrink-0 w-7 h-7 rounded-full border-2 border-accent/40 flex items-center justify-center transition-transform duration-300 ${
-                      open === i ? "rotate-45 bg-accent border-accent" : ""
-                    }`}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 12 12"
-                      fill="none"
-                      className={open === i ? "text-white" : "text-accent"}
-                    >
-                      <path
-                        d="M6 1v10M1 6h10"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-                <div
-                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                    open === i ? "max-h-96" : "max-h-0"
-                  }`}
-                >
-                  <p className="px-6 pb-5 text-text-muted text-sm sm:text-base leading-relaxed">
-                    {item.a}
-                  </p>
-                </div>
-              </div>
-            </AnimateOnView>
-          ))}
+          <FaqItems open={open} setOpen={setOpen} />
         </div>
       </Container>
     </section>

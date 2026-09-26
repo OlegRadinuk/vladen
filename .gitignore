@@ -41,6 +41,7 @@ ecosystem.config.js
 # debug screenshots & tooling
 /*.png
 .playwright-mcp/
+spec/shots/
 
 # client raw materials (не для git — переписка/исходники)
 /ВЛАДЕН — Варианты ремонта.pdf
