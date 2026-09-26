@@ -67,15 +67,15 @@ export default function Hero() {
 
       {/* short: компактный ритм для ноутбуков с низким экраном (≈720px и ниже),
           чтобы контент и нижняя подсказка помещались в первый экран */}
-      <Container className="relative z-10 flex-1 flex items-center py-16 sm:py-20 md:py-24 short:py-4 short-sm:py-6 lg:w-full">
+      <Container className="relative z-10 flex-1 flex items-center py-16 sm:py-20 md:py-24 short:py-4 short-sm:py-6">
         <motion.div
-          className="w-full max-w-5xl lg:max-w-[760px] lg:ml-auto lg:text-right"
+          className="w-full max-w-5xl"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           {/* Badge — скрыт на очень маленьких экранах */}
-          <div className="hidden sm:block lg:flex lg:justify-end">
+          <div className="hidden sm:block">
             <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/40 rounded-full px-4 py-1.5 mb-6 short:mb-3">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-accent text-sm font-inter font-medium">
@@ -91,13 +91,13 @@ export default function Hero() {
             <span className="text-accent">под ключ в Крыму</span>
           </h1>
 
-          <p className="text-text-dark text-lg md:text-xl short:text-base leading-relaxed mb-10 short:mb-5 short-sm:mb-5 max-w-2xl lg:ml-auto">
+          <p className="text-text-dark text-lg md:text-xl short:text-base leading-relaxed mb-10 short:mb-5 short-sm:mb-5 max-w-2xl">
             Дизайнерский ремонт, чистовая отделка, строительство.
             Фиксированная цена в договоре — без сюрпризов.
           </p>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12 short:mb-6 short-sm:mb-6 lg:justify-items-end">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8 mb-10 sm:mb-12 short:mb-6 short-sm:mb-6">
             {[
               { to: OBJECTS_DONE, suffix: "+", label: "объектов сдано", sub: "Крым и Краснодар" },
               { to: YEARS_ON_MARKET, suffix: "",  label: "лет на рынке",   sub: `работаем с ${FOUNDED_YEAR}` },
@@ -114,10 +114,9 @@ export default function Hero() {
           </div>
 
           {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-4 lg:flex-row-reverse lg:justify-end">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Button
               size="lg"
-              className="lg:flex-1"
               onClick={() =>
                 document
                   .getElementById("calculator")
@@ -129,10 +128,9 @@ export default function Hero() {
             <Button
               size="lg"
               variant="outline"
-              className="lg:flex-1"
               onClick={() =>
                 document
-                  .getElementById("project-case")
+                  .getElementById("projects")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
             >
