@@ -16,14 +16,24 @@ npm ci
 echo "=== [2/5] Сборка проекта ==="
 npm run build
 
-echo "=== [3/5] Копирование статики в standalone (ОБЯЗАТЕЛЬНО для CSS/JS) ==="
+echo "=== [3/5] Копирование статики и env в standalone ==="
 # Next.js standalone не включает статику автоматически — копируем вручную
 cp -r .next/static .next/standalone/.next/static
 cp -r public .next/standalone/public
 
+# .env.local: standalone читает env ТОЛЬКО из своей директории (process.cwd = .next/standalone).
+# Файл пересоздаётся при каждом build — копируем обратно и жёстко проверяем наличие.
+cp .env.local .next/standalone/.env.local
+chmod 600 .next/standalone/.env.local
+if [ ! -f .next/standalone/.env.local ]; then
+  echo "ERROR: .next/standalone/.env.local не создан — СТОП" >&2
+  exit 1
+fi
+echo "  .env.local скопирован в standalone OK"
+
 echo "=== [4/5] Перезапуск pm2 ==="
 if pm2 describe "$PM2_APP_NAME" > /dev/null 2>&1; then
-  pm2 restart "$PM2_APP_NAME"
+  pm2 restart "$PM2_APP_NAME" --update-env
 else
   pm2 start .next/standalone/server.js --name "$PM2_APP_NAME"
   pm2 save
