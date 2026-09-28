@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/company";
 
 const SLIDES = [
   { id: "01", label: "Обложка" },
@@ -237,7 +238,7 @@ function Slide06() {
         <div style={{ paddingRight: 36 }}>
           <div style={{ fontSize: 12, letterSpacing: ".24em", textTransform: "uppercase", fontWeight: 700, opacity: .55, marginBottom: 16 }}>Телефон</div>
           <div style={{ fontWeight: 600, fontSize: 26, lineHeight: 1.35, letterSpacing: "-.005em" }}>
-            <a href="tel:+79787174447" style={{ color: "inherit", textDecoration: "none" }}><span style={{ color: "#F39C2D" }}>+7</span> (978) 717‑44‑47</a>
+            <a href={PHONE_HREF} style={{ color: "inherit", textDecoration: "none" }}><span style={{ color: "#F39C2D" }}>+7</span> (978) 456‑41‑56</a>
           </div>
           <div style={{ fontSize: 12, letterSpacing: ".24em", textTransform: "uppercase", fontWeight: 700, opacity: .55, marginBottom: 16, marginTop: 32 }}>Email</div>
           <div style={{ fontWeight: 600, fontSize: 26, lineHeight: 1.35, letterSpacing: "-.005em" }}>
@@ -712,7 +713,7 @@ export default function BukletSlider() {
               <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Скачать PDF
             </a>
-            <a href="tel:+79787174447" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, background: "transparent", color: "rgba(26,26,26,.7)", padding: 14, borderRadius: 999, fontWeight: 700, fontSize: 13, border: "1px solid rgba(26,26,26,.22)", textDecoration: "none" }}>
+            <a href={PHONE_HREF} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 7, background: "transparent", color: "rgba(26,26,26,.7)", padding: 14, borderRadius: 999, fontWeight: 700, fontSize: 13, border: "1px solid rgba(26,26,26,.22)", textDecoration: "none" }}>
               <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
               Позвонить
             </a>

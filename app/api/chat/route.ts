@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { PHONE_DISPLAY } from "@/lib/company";
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest) {
   });
 
   if (!res.ok) {
-    return new Response("Произошла ошибка. Позвоните нам напрямую: +7 (978) 717-44-47", {
+    return new Response(`Произошла ошибка. Позвоните нам напрямую: ${PHONE_DISPLAY}`, {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });

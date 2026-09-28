@@ -3,6 +3,7 @@
  * Не создаёт новую форму. Использует /contacts (якорь на форму).
  */
 import Link from "next/link"
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/company"
 
 interface Props {
   cta?: { text: string; url: string }
@@ -32,10 +33,10 @@ export default function ContactCTA({ cta }: Props) {
           {text}
         </Link>
         <a
-          href="tel:+79787174447"
+          href={PHONE_HREF}
           className="inline-flex items-center justify-center px-6 py-3 border-2 border-white/30 text-white font-oswald font-medium rounded hover:border-accent hover:text-accent transition-all whitespace-nowrap"
         >
-          +7 (978) 717-44-47
+          {PHONE_DISPLAY}
         </a>
       </div>
     </div>

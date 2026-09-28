@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/company";
 
 type CalcData = {
   service: string;
@@ -126,7 +127,7 @@ export default function Contacts() {
 
             <div className="space-y-4">
               <a
-                href="tel:+79787174447"
+                href={PHONE_HREF}
                 className="flex items-center gap-4 group"
                 onClick={() => { if(typeof ym!=='undefined') ym(109280535,'reachGoal','phone_click'); }}
               >
@@ -139,7 +140,7 @@ export default function Contacts() {
                 <div>
                   <div className="text-text-muted text-xs">Телефон</div>
                   <div className="text-text-light font-medium group-hover:text-accent transition-colors">
-                    +7 (978) 717-44-47
+                    {PHONE_DISPLAY}
                   </div>
                 </div>
               </a>

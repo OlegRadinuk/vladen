@@ -5,6 +5,7 @@ import { safeJsonLd } from "@/lib/utils"
 import Container from "@/components/ui/Container"
 import ContactCTA from "@/components/blog/ContactCTA"
 import { fetchArticle, fetchArticles, mdToSafeHtml, rubricLabel } from "@/lib/blog"
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/company"
 
 export const revalidate = 3600
 
@@ -302,10 +303,10 @@ export default async function ArticlePage({ params }: Props) {
                     200+ объектов.
                   </p>
                   <a
-                    href="tel:+79787174447"
+                    href={PHONE_HREF}
                     className="block text-center bg-accent text-white font-oswald font-medium py-3 rounded hover:bg-amber-600 transition-colors"
                   >
-                    +7 (978) 717-44-47
+                    {PHONE_DISPLAY}
                   </a>
                 </div>
 

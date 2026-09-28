@@ -6,11 +6,12 @@ import Card from "@/components/ui/Card";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
 import { FOUNDED_YEAR } from "@/lib/company";
+import { PHONE_DISPLAY } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Ремонт квартир и домов в Симферополе — услуги и цены",
   description:
-    `Ремонт квартир под ключ, дизайнерский ремонт, отделка домов, строительство в Симферополе и Крыму. Прозрачные цены, гарантия качества. ООО «ВЛАДЕН» с ${FOUNDED_YEAR} года. Звоните: +7 (978) 717-44-47`,
+    `Ремонт квартир под ключ, дизайнерский ремонт, отделка домов, строительство в Симферополе и Крыму. Прозрачные цены, гарантия качества. ООО «ВЛАДЕН» с ${FOUNDED_YEAR} года. Звоните: ${PHONE_DISPLAY}`,
   keywords: [
     "ремонт квартиры Симферополь цена",
     "ремонт квартиры под ключ Симферополь",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ремонт квартир и домов в Симферополе — цены | Владен",
     description:
-      "Ремонт квартир, дизайнерская отделка, строительство в Симферополе. Полный цикл работ под ключ. Звоните: +7 (978) 717-44-47",
+      `Ремонт квартир, дизайнерская отделка, строительство в Симферополе. Полный цикл работ под ключ. Звоните: ${PHONE_DISPLAY}`,
     url: "https://vladen-crimea.ru/services",
   },
   twitter: {

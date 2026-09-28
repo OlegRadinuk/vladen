@@ -5,7 +5,7 @@
  * Run with: npx playwright test e2e/compliance.spec.ts
  */
 
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./fixtures";
 
 const BASE_URL = "http://localhost:3000";
 const COOKIE_KEY = "vladen_cookie_consent_v1";

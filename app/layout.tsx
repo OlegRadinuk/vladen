@@ -9,7 +9,7 @@ import LoadingScreen from "@/components/LoadingScreen";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 import ChatWidget from "@/components/ui/ChatWidget";
-import { FOUNDED_YEAR, YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE } from "@/lib/company";
+import { FOUNDED_YEAR, YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE, PHONE_DISPLAY, PHONE_TEL } from "@/lib/company";
 import CookieBanner from "@/components/ui/CookieBanner";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Владен — Ремонт и строительство в Крыму",
   },
   description:
-    `Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, отделка, строительство. ООО «ВЛАДЕН» — ${YEARS_PHRASE} опыта, более ${OBJECTS_DONE} объектов. Звоните: +7 (978) 717-44-47`,
+    `Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, отделка, строительство. ООО «ВЛАДЕН» — ${YEARS_PHRASE} опыта, более ${OBJECTS_DONE} объектов. Звоните: ${PHONE_DISPLAY}`,
   keywords: [
     "ремонт квартир Симферополь",
     "ремонт квартиры под ключ Симферополь",
@@ -95,7 +95,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     title: "Ремонт квартир и домов в Симферополе — Владен",
-    description: `Ремонт и строительство под ключ в Крыму. ${YEARS_PHRASE} опыта, ${OBJECTS_PHRASE} объектов. Звоните: +7 (978) 717-44-47`,
+    description: `Ремонт и строительство под ключ в Крыму. ${YEARS_PHRASE} опыта, ${OBJECTS_PHRASE} объектов. Звоните: ${PHONE_DISPLAY}`,
   },
   robots: {
     index: true,
@@ -113,7 +113,7 @@ const jsonLd = {
   description:
     `Строительная компания в Симферополе. Строительство домов под ключ, ремонт, проектирование, инженерные сети по всему Крыму с ${FOUNDED_YEAR} года.`,
   url: "https://vladen-crimea.ru",
-  telephone: "+79787174447",
+  telephone: PHONE_TEL,
   email: "vladen2026@mail.ru",
   foundingDate: String(FOUNDED_YEAR),
   taxID: "2317074414",
@@ -245,7 +245,7 @@ const faqJsonLd = {
       name: "Как начать работу с компанией Владен?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Позвоните по номеру +7 (978) 717-44-47 или оставьте заявку на сайте. Выедем на замер, составим смету — бесплатно и без обязательств. Обычно это занимает 2–3 дня.",
+        text: `Позвоните по номеру ${PHONE_DISPLAY} или оставьте заявку на сайте. Выедем на замер, составим смету — бесплатно и без обязательств. Обычно это занимает 2–3 дня.`,
       },
     },
   ],

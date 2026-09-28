@@ -10,12 +10,12 @@ import Reviews from "@/components/sections/Reviews";
 import Partners from "@/components/sections/Partners";
 import Contacts from "@/components/sections/Contacts";
 import MobileCTABar from "@/components/ui/MobileCTABar";
-import { YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE } from "@/lib/company";
+import { YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE, PHONE_DISPLAY } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Ремонт квартир и домов под ключ в Симферополе — Владен",
   description:
-    `Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, чистовая отделка, строительство. ${YEARS_PHRASE} опыта, более ${OBJECTS_DONE} объектов. Бесплатная консультация: +7 (978) 717-44-47`,
+    `Ремонт квартир и домов под ключ в Симферополе и Крыму. Дизайнерский ремонт, чистовая отделка, строительство. ${YEARS_PHRASE} опыта, более ${OBJECTS_DONE} объектов. Бесплатная консультация: ${PHONE_DISPLAY}`,
   keywords: [
     "ремонт квартир Симферополь",
     "ремонт квартиры под ключ Симферополь",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Ремонт квартир и домов под ключ в Симферополе — Владен",
     description:
-      `Ремонт квартир, дизайнерская отделка, строительство в Симферополе и Крыму. ${YEARS_PHRASE}, ${OBJECTS_PHRASE} объектов. Звоните: +7 (978) 717-44-47`,
+      `Ремонт квартир, дизайнерская отделка, строительство в Симферополе и Крыму. ${YEARS_PHRASE}, ${OBJECTS_PHRASE} объектов. Звоните: ${PHONE_DISPLAY}`,
     url: "https://vladen-crimea.ru",
     images: [{ url: "https://vladen-crimea.ru/opengraph-image", width: 1200, height: 630 }],
   },

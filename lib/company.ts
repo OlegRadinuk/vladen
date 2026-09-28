@@ -52,3 +52,17 @@ export function yearsWord(n: number = YEARS_ON_MARKET): string {
 
 /** Готовая строка вида «12 лет». */
 export const YEARS_PHRASE = `${YEARS_ON_MARKET} ${yearsWord()}`;
+
+/**
+ * Контактный телефон компании.
+ * Менять только здесь — все tel-ссылки и тексты на сайте берут данные отсюда.
+ */
+
+/** Номер для отображения: +7 (978) 456-41-56 */
+export const PHONE_DISPLAY = "+7 (978) 456-41-56";
+
+/** Номер для tel: ссылок */
+export const PHONE_TEL = "+79784564156";
+
+/** Готовая href для <a>: tel:+79784564156 */
+export const PHONE_HREF = "tel:+79784564156";

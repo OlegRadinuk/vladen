@@ -3,11 +3,12 @@ import { safeJsonLd } from "@/lib/utils";
 import Container from "@/components/ui/Container";
 import AnimateOnView from "@/components/ui/AnimateOnView";
 import Contacts from "@/components/sections/Contacts";
+import { PHONE_DISPLAY } from "@/lib/company";
 
 export const metadata: Metadata = {
   title: "Модульные дома и бани в Крыму — быстро и под ключ",
   description:
-    "Модульные дома и бани под ключ в Симферополе и Крыму. Сборка за 7 дней, утеплённые круглогодичные конструкции, полная отделка. ООО «ВЛАДЕН» — от 350 000 руб. Звоните: +7 (978) 717-44-47",
+    `Модульные дома и бани под ключ в Симферополе и Крыму. Сборка за 7 дней, утеплённые круглогодичные конструкции, полная отделка. ООО «ВЛАДЕН» — от 350 000 руб. Звоните: ${PHONE_DISPLAY}`,
   keywords: [
     "модульный дом Крым",
     "модульный дом Симферополь",

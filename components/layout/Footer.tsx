@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import PhoneLink from "@/components/ui/PhoneLink";
+import { PHONE_DISPLAY } from "@/lib/company";
 
 const navLinks = [
   { href: "/services", label: "Услуги" },
@@ -93,7 +94,7 @@ export default function Footer() {
                       </svg>
                     </span>
                     <span className="text-sm text-text-muted group-hover:text-white transition-colors leading-tight pt-0.5 whitespace-nowrap">
-                      +7 (978) 717-44-47
+                      {PHONE_DISPLAY}
                     </span>
                   </PhoneLink>
                 </li>

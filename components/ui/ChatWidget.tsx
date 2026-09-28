@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PHONE_DISPLAY } from "@/lib/company";
 
 type Message = { role: "user" | "assistant"; content: string };
 type AvatarState = "idle" | "thinking" | "talking";
@@ -225,7 +226,7 @@ export default function ChatWidget() {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Что-то пошло не так. Позвоните нам: +7 (978) 717-44-47" },
+        { role: "assistant", content: `Что-то пошло не так. Позвоните нам: ${PHONE_DISPLAY}` },
       ]);
     } finally {
       setAvatarState("idle");
@@ -279,7 +280,7 @@ export default function ChatWidget() {
         ...prev,
         {
           role: "assistant",
-          content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: +7 (978) 717-44-47\n\nЕсть ещё вопросы? С удовольствием отвечу.`,
+          content: `Отлично, ${name}! Мы перезвоним вам на ${phone} в рабочее время. Если срочно — звоните сами: ${PHONE_DISPLAY}\n\nЕсть ещё вопросы? С удовольствием отвечу.`,
         },
       ]);
     }
