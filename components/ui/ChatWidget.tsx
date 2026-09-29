@@ -94,6 +94,7 @@ export default function ChatWidget() {
   const [phoneInput, setPhoneInput] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [pdConsent, setPdConsent] = useState(false);
+  const [sendingPhone, setSendingPhone] = useState(false);
   const [leadContext, setLeadContext] = useState<"chat" | "lookbook">("chat");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -245,8 +246,11 @@ export default function ChatWidget() {
         .map((m) => `${m.role === "user" ? "Клиент" : "Влад"}: ${m.content}`)
         .join("\n");
 
+    if (sendingPhone) return;
+    setSendingPhone(true);
+    let delivered = false;
     try {
-      await fetch("/api/telegram", {
+      const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -257,8 +261,27 @@ export default function ChatWidget() {
           consent_timestamp: new Date().toISOString(),
         }),
       });
+      delivered = res.ok;
     } catch {
-      // fail silently
+      delivered = false;
+    } finally {
+      setSendingPhone(false);
+    }
+
+    if (!delivered) {
+      // Не делаем вид, что номер ушёл: даём телефон, форму оставляем открытой для повтора
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            `Не получилось отправить номер. Позвоните нам: ${PHONE_DISPLAY}` +
+            (leadContext === "lookbook"
+              ? "\n\nЛукбук можно открыть по прямой ссылке: vladen-crimea.ru/buklet.pdf"
+              : ""),
+        },
+      ]);
+      return;
     }
 
     setPhoneSent(true);
@@ -507,7 +530,7 @@ export default function ChatWidget() {
                     <div className="flex gap-2">
                       <button
                         onClick={sendPhone}
-                        disabled={!pdConsent}
+                        disabled={!pdConsent || sendingPhone}
                         className="flex-1 bg-accent text-white text-xs font-semibold rounded-lg py-2 hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {leadContext === "lookbook" ? "Получить лукбук" : "Отправить"}

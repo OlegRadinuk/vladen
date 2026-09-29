@@ -280,8 +280,11 @@ export default function Contacts({
                 )}
 
                 {status === "error" && (
-                  <p className="text-red-500 text-sm">
-                    Ошибка отправки. Пожалуйста, позвоните нам напрямую.
+                  <p className="text-red-500 text-sm" role="alert" data-testid="contacts-error">
+                    Ошибка отправки. Пожалуйста, позвоните нам напрямую:{" "}
+                    <a href={PHONE_HREF} className="underline font-semibold whitespace-nowrap">
+                      {PHONE_DISPLAY}
+                    </a>
                   </p>
                 )}
 

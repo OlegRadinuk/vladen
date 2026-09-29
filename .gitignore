@@ -50,3 +50,6 @@ ecosystem.config.js
 
 # сырьё рекламы/аналитики
 spec/evp-focus/data/
+
+# резервный журнал заявок (ПД, 152-ФЗ) — никогда в git
+/data/
