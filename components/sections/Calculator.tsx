@@ -24,8 +24,20 @@ function saveCalc(data: object) {
   window.dispatchEvent(new Event("vladen_calc_update"));
 }
 
-export default function Calculator() {
-  const [serviceId, setServiceId]   = useState("house");
+interface CalculatorProps {
+  defaultServiceId?: "house" | "repair" | "foundation" | "roof";
+  /** H2 секции; по умолчанию «Калькулятор цены» */
+  heading?: string;
+  /** Подзаголовок под H2 */
+  subtitle?: string;
+}
+
+export default function Calculator({
+  defaultServiceId = "house",
+  heading = "Калькулятор цены",
+  subtitle = "Получите предварительный расчёт стоимости работ. Точная смета — после выезда специалиста.",
+}: CalculatorProps = {}) {
+  const [serviceId, setServiceId]   = useState<string>(defaultServiceId);
   const [area, setArea]             = useState(100);
   const [tierIdx, setTierIdx]       = useState(0);
   const [saved, setSaved]           = useState(false);
@@ -84,11 +96,10 @@ export default function Calculator() {
             Стоимость работ
           </p>
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Калькулятор цены
+            {heading}
           </h2>
           <p className="text-text-dark max-w-xl mx-auto">
-            Получите предварительный расчёт стоимости работ. Точная смета —
-            после выезда специалиста.
+            {subtitle}
           </p>
         </div>
 

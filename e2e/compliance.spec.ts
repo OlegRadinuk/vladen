@@ -173,19 +173,25 @@ test("T-4: chat widget phone-prompt send button is disabled without PD consent",
 
   // Locate the chat text input and send button.
   const chatInput = chatPanel.locator('input[placeholder="Напишите вопрос..."]');
-  const chatSendBtn = chatPanel.getByRole("button", { name: /отправить/i });
+  // Chat send is the icon button with aria-label; the phone prompt has its own
+  // text "Отправить" button, so a role/name regex would be ambiguous.
+  const chatSendBtn = chatPanel.locator('button[aria-label="Отправить"]');
 
   // Send first message.
   await chatInput.fill("Сколько стоит ремонт?");
+  // Register the response wait BEFORE clicking: the mocked route fulfils
+  // instantly, so a wait registered after click() can miss the response.
+  const firstResponse = page.waitForResponse("**/api/chat");
   await chatSendBtn.click();
 
   // Wait for assistant response to arrive (assistantCount becomes 2).
-  await page.waitForResponse("**/api/chat");
+  await firstResponse;
 
   // Send second message to trigger assistantCount >= SUGGEST_AFTER (2).
   await chatInput.fill("А балкон?");
+  const secondResponse = page.waitForResponse("**/api/chat");
   await chatSendBtn.click();
-  await page.waitForResponse("**/api/chat");
+  await secondResponse;
 
   // The phone prompt card should now be visible.
   const phonePrompt = page.locator(".bg-accent\\/10.border.border-accent\\/30");

@@ -37,9 +37,9 @@ function Slide01() {
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#F39C2D", display: "inline-block" }}></span>
           Ремонт и строительство в Крыму с 2014 года
         </div>
-        <h1 style={{ margin: 0, fontWeight: 800, fontSize: 168, lineHeight: .92, letterSpacing: "-.035em" }}>
+        <h2 style={{ margin: 0, fontWeight: 800, fontSize: 168, lineHeight: .92, letterSpacing: "-.035em" }}>
           Варианты ремонта<br /><span style={{ color: "#F39C2D" }}>под ключ в Крыму</span>
-        </h1>
+        </h2>
         <p style={{ marginTop: 36, maxWidth: 880, fontSize: 26, lineHeight: 1.45, color: "rgba(245,243,239,.8)", fontWeight: 400 }}>
           Три уровня отделки со стартовыми ценами от 17 000 ₽ за квадратный метр — от инвестиционной аренды до архитектурного премиума. Подобранные материалы, прозрачная смета, готовые сценарии заселения.
         </p>
@@ -82,7 +82,7 @@ function Slide02() {
 
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 60 }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 720 }}>
-          <h1 style={{ margin: 0, fontWeight: 800, fontSize: 96, lineHeight: .95, letterSpacing: "-.035em" }}>Три уровня,<br />один <span style={{ color: "#F39C2D" }}>стандарт.</span></h1>
+          <h2 style={{ margin: 0, fontWeight: 800, fontSize: 96, lineHeight: .95, letterSpacing: "-.035em" }}>Три уровня,<br />один <span style={{ color: "#F39C2D" }}>стандарт.</span></h2>
         </div>
         <p style={{ textAlign: "right", maxWidth: 520, fontSize: 20, lineHeight: 1.55, color: "#2A2A2A", fontWeight: 400, margin: 0 }}>
           Каждый пакет — это готовый продукт: стартовая цена от квадратного метра, подобранные материалы и понятный сценарий. Без скрытых платежей.

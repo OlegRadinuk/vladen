@@ -26,6 +26,8 @@ interface Case {
   features: string[];
   media: (MediaItem | null)[];
   gallery?: LightboxImage[];
+  /** Показывать только при явном filterSlugs (на главной не выводится). */
+  onlyWhenFiltered?: boolean;
 }
 
 const sagaGallery = (zone: string, count: number, label: string): LightboxImage[] =>
@@ -182,6 +184,30 @@ const cases: Case[] = [
       null,
     ],
   },
+  {
+    id: 6,
+    slug: "dom-bahchisaray-112",
+    tag: "Строительство под ключ",
+    title: "Одноэтажный дом в Бахчисарае",
+    subtitle: "Ракушечник · Мансарда · Чистовая отделка · Скважина",
+    location: "Бахчисарай",
+    year: "2024",
+    stats: [
+      { value: "112 м²", label: "Площадь дома" },
+      { value: "1 этаж + мансарда", label: "Этажность" },
+      { value: "2024", label: "Год сдачи" },
+    ],
+    features: [
+      "Дом из ракушечника с мансардой",
+      "Три спальни, кухня-гостиная с террасой",
+      "Полная чистовая отделка",
+      "Отопление и собственная скважина",
+    ],
+    // TODO-6: запросить у Олега фото объекта — cover: null
+    media: [null, null, null],
+    // Без фото — на главной не показываем, только на посадочных через filterSlugs
+    onlyWhenFiltered: true,
+  },
 ];
 
 function PlaceholderSlot() {
@@ -242,8 +268,28 @@ function MediaSlot({ item }: { item: MediaItem | null }) {
   );
 }
 
-export default function ProjectCase() {
-  const [current, setCurrent] = useState(0);
+interface ProjectCaseProps {
+  filterSlugs?: string[];   // если передан — показывать только эти кейсы в этом порядке
+  initialSlug?: string;     // начать с этого кейса (по умолчанию — первый в массиве/filterSlugs)
+  sectionHeading?: string;  // заголовок секции (переопределяет «Реализованные проекты»)
+  sectionSubtitle?: string; // подзаголовок секции
+}
+
+export default function ProjectCase({
+  filterSlugs,
+  initialSlug,
+  sectionHeading,
+  sectionSubtitle,
+}: ProjectCaseProps = {}) {
+  const visibleCases = filterSlugs
+    ? filterSlugs.map((slug) => cases.find((c) => c.slug === slug)).filter((c): c is Case => Boolean(c))
+    : cases.filter((c) => !c.onlyWhenFiltered);
+
+  const startIdx = initialSlug
+    ? Math.max(0, visibleCases.findIndex((c) => c.slug === initialSlug))
+    : 0;
+
+  const [current, setCurrent] = useState(startIdx);
   const [animating, setAnimating] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -259,8 +305,8 @@ export default function ProjectCase() {
     [animating, current]
   );
 
-  const prev = () => go((current - 1 + cases.length) % cases.length);
-  const next = () => go((current + 1) % cases.length);
+  const prev = () => go((current - 1 + visibleCases.length) % visibleCases.length);
+  const next = () => go((current + 1) % visibleCases.length);
 
   // Свайп пальцем по кейсам на мобиле
   const touchStartX = useRef<number | null>(null);
@@ -277,7 +323,10 @@ export default function ProjectCase() {
     touchStartX.current = null;
   };
 
-  const c = cases[current];
+  // Страховка: все filterSlugs могли не найтись — не рендерим пустую секцию (после всех хуков)
+  if (!visibleCases.length) return null;
+
+  const c = visibleCases[current];
 
   return (
     <section id="projects" className="py-20 md:py-28 bg-dark overflow-hidden">
@@ -288,10 +337,10 @@ export default function ProjectCase() {
             Наши кейсы
           </p>
           <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-            Реализованные проекты
+            {sectionHeading ?? "Реализованные проекты"}
           </h2>
           <p className="text-text-muted max-w-xl mx-auto text-sm">
-            Каждый дом — индивидуальная история. Реальные объекты, реальные сроки.
+            {sectionSubtitle ?? "Каждый дом — индивидуальная история. Реальные объекты, реальные сроки."}
           </p>
         </div>
 
@@ -416,53 +465,55 @@ export default function ProjectCase() {
           />
         )}
 
-        {/* Controls */}
-        <div className="flex items-center justify-between mt-10">
-          {/* Arrows */}
-          <div className="flex gap-3">
-            <button
-              onClick={prev}
-              className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"
-              aria-label="Назад"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={next}
-              className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"
-              aria-label="Вперёд"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Dots */}
-          <div className="flex gap-2">
-            {cases.map((_, i) => (
+        {/* Controls — только если кейсов больше одного */}
+        {visibleCases.length > 1 ? (
+          <div className="flex items-center justify-between mt-10">
+            {/* Arrows */}
+            <div className="flex gap-3">
               <button
-                key={i}
-                onClick={() => go(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "w-6 bg-accent"
-                    : "w-2 bg-white/20 hover:bg-white/40"
-                }`}
-                aria-label={`Кейс ${i + 1}`}
-              />
-            ))}
-          </div>
+                onClick={prev}
+                className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"
+                aria-label="Назад"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={next}
+                className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:border-accent hover:text-accent transition-colors"
+                aria-label="Вперёд"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
 
-          {/* Counter */}
-          <span className="text-text-muted text-sm font-oswald">
-            {String(current + 1).padStart(2, "0")}{" "}
-            <span className="text-white/20">/</span>{" "}
-            {String(cases.length).padStart(2, "0")}
-          </span>
-        </div>
+            {/* Dots */}
+            <div className="flex gap-2">
+              {visibleCases.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => go(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === current
+                      ? "w-6 bg-accent"
+                      : "w-2 bg-white/20 hover:bg-white/40"
+                  }`}
+                  aria-label={`Кейс ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Counter */}
+            <span className="text-text-muted text-sm font-oswald">
+              {String(current + 1).padStart(2, "0")}{" "}
+              <span className="text-white/20">/</span>{" "}
+              {String(visibleCases.length).padStart(2, "0")}
+            </span>
+          </div>
+        ) : null}
       </Container>
     </section>
   );

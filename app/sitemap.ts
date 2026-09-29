@@ -35,6 +35,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    // Посадочные под Евпаторию и «дом из ракушечника» (spec/evp-focus/30-seo-plan.md §6)
+    {
+      url: `${BASE_URL}/evpatoriya`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/evpatoriya/remont-kvartir`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/evpatoriya/stroitelstvo-domov`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/dom-iz-rakushechnika`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     {
       url: `${BASE_URL}/modular`,
       lastModified: now,

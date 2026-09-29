@@ -65,7 +65,11 @@ const reasons = [
   },
 ];
 
-export default function WhyWe() {
+interface WhyWeProps {
+  subtitle?: string; // если не передан — использовать строку из YEARS_PHRASE/OBJECTS_DONE
+}
+
+export default function WhyWe({ subtitle }: WhyWeProps = {}) {
   return (
     <section id="why" className="py-20 md:py-28 bg-light">
       <Container>
@@ -77,8 +81,7 @@ export default function WhyWe() {
             Почему выбирают нас
           </h2>
           <p className="text-text-muted max-w-xl mx-auto">
-            {YEARS_PHRASE} работы в Крыму. Более {OBJECTS_DONE} реализованных объектов. Репутация
-            строится годами.
+            {subtitle ?? `${YEARS_PHRASE} работы в Крыму. Более ${OBJECTS_DONE} реализованных объектов. Репутация строится годами.`}
           </p>
         </AnimateOnView>
 

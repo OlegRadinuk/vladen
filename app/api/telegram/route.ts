@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   type CalcData = { service?: string; area?: number; material?: string; total?: number };
-  let body: { name?: string; phone?: string; calc?: CalcData; chat?: string };
+  let body: { name?: string; phone?: string; calc?: CalcData; chat?: string; source?: string; consent_timestamp?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { name, phone, calc, chat } = body;
-  if (!name || !phone) {
+  const { name, phone, calc, chat, source } = body;
+  if (typeof name !== "string" || typeof phone !== "string" || !name.trim() || !phone) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -42,14 +42,22 @@ export async function POST(request: NextRequest) {
     : "";
 
   // Telegram limit ~4096 chars; резервируем ~300 на шапку — остаток на чат
-  const chatBlock = chat
-    ? `\n\n💬 <b>Переписка с ИИ-консультантом:</b>\n<blockquote>${esc(chat).slice(0, 3700)}</blockquote>`
+  // Срез после esc мог разрезать сущность (&am…) → Telegram отклонял всё сообщение; хвост-обрубок убираем
+  const chatBlock = typeof chat === "string" && chat
+    ? `\n\n💬 <b>Переписка с ИИ-консультантом:</b>\n<blockquote>${esc(chat).slice(0, 3700).replace(/&[a-z]*$/, "")}</blockquote>`
     : "";
+
+  // source приходит с клиента: только строка, режем длину ДО экранирования (иначе можно разрезать &amp;)
+  const sourceBlock =
+    typeof source === "string" && source.trim()
+      ? `\n🔖 Источник: ${esc(source.trim().slice(0, 64))}`
+      : "";
 
   const text =
     `🏗 <b>Новая заявка с сайта ВЛАДЕН</b>\n\n` +
-    `👤 Имя: ${name}\n` +
-    `📞 Телефон: ${phone}` +
+    `👤 Имя: ${esc(name.trim().slice(0, 200))}\n` +
+    `📞 Телефон: ${esc(phone.slice(0, 40))}` +
+    sourceBlock +
     calcBlock +
     chatBlock +
     `\n\n🕐 ${new Date().toLocaleString("ru-RU", { timeZone: "Europe/Moscow" })}`;

@@ -40,7 +40,19 @@ function formatPhone(value: string): string {
   return result;
 }
 
-export default function Contacts() {
+interface ContactsProps {
+  heading?: string;
+  subtitle?: string;
+  source?: string;
+  submitLabel?: string;
+}
+
+export default function Contacts({
+  heading = "Обсудим ваш проект",
+  subtitle = "Оставьте заявку — перезвоним в течение 30 минут. Консультация бесплатна. Выезд специалиста для оценки объёма работ — тоже.",
+  source,
+  submitLabel = "Отправить заявку",
+}: ContactsProps = {}) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
@@ -95,7 +107,7 @@ export default function Contacts() {
       const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, calc: calcData, consent_timestamp: new Date().toISOString() }),
+        body: JSON.stringify({ name, phone, calc: calcData, source, consent_timestamp: new Date().toISOString() }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
@@ -118,11 +130,10 @@ export default function Contacts() {
               Свяжитесь с нами
             </p>
             <h2 className="font-oswald text-3xl sm:text-4xl md:text-5xl font-bold text-text-light mb-6">
-              Обсудим ваш проект
+              {heading}
             </h2>
             <p className="text-text-muted leading-relaxed mb-8">
-              Оставьте заявку — перезвоним в течение 30 минут. Консультация
-              бесплатна. Выезд специалиста для оценки объёма работ — тоже.
+              {subtitle}
             </p>
 
             <div className="space-y-4">
@@ -300,7 +311,7 @@ export default function Contacts() {
                   className="w-full"
                   disabled={status === "loading" || !pdConsent}
                 >
-                  {status === "loading" ? "Отправка..." : "Отправить заявку"}
+                  {status === "loading" ? "Отправка..." : submitLabel}
                 </Button>
               </form>
             )}

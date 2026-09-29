@@ -39,7 +39,13 @@ const faqs = [
   },
 ];
 
-export default function FAQ() {
+interface FAQItem { q: string; a: string; }
+interface FAQProps {
+  items?: FAQItem[]; // если не передан — использовать дефолтный массив faqs
+}
+
+export default function FAQ({ items }: FAQProps = {}) {
+  const list = items ?? faqs;
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -57,7 +63,7 @@ export default function FAQ() {
         </AnimateOnView>
 
         <div className="max-w-3xl mx-auto space-y-3">
-          {faqs.map((item, i) => (
+          {list.map((item, i) => (
             <AnimateOnView key={i} delay={i * 0.05}>
               <div
                 className="border border-white/10 rounded-xl overflow-hidden bg-white/[0.04] hover:border-accent/40 transition-colors"
@@ -66,6 +72,7 @@ export default function FAQ() {
                   className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
                   onClick={() => setOpen(open === i ? null : i)}
                   aria-expanded={open === i}
+                  aria-controls={`faq-answer-${i}`}
                 >
                   <span className="font-oswald font-semibold text-white text-base sm:text-lg leading-tight">
                     {item.q}
@@ -92,6 +99,8 @@ export default function FAQ() {
                   </span>
                 </button>
                 <div
+                  id={`faq-answer-${i}`}
+                  role="region"
                   className={`overflow-hidden transition-all duration-300 ease-in-out ${
                     open === i ? "max-h-96" : "max-h-0"
                   }`}

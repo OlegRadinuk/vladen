@@ -7,6 +7,7 @@ import { PHONE_DISPLAY } from "@/lib/company";
 const navLinks = [
   { href: "/services", label: "Услуги" },
   { href: "/projects", label: "Проекты" },
+  { href: "/evpatoriya", label: "Евпатория" },
   { href: "/about", label: "О компании" },
   { href: "/contacts", label: "Контакты" },
 ];
