@@ -10,6 +10,7 @@ import { test, expect } from "./fixtures";
 import type { Page } from "playwright/test";
 
 const PHONE_DISPLAY = "+7 (978) 456-41-56";
+const PHONE_MASKED = "+7 (978) 123-45-67";
 
 async function stubYm(page: Page) {
   await page.addInitScript(() => {
@@ -93,4 +94,56 @@ test("L-2: chat phone prompt — API 502 shows 'Не получилось отп
   await expect(page.getByText(/Лукбук открылся/)).toHaveCount(0);
   await expect(page.getByPlaceholder("Ваше имя")).toBeVisible();
   expect(popups).toHaveLength(0);
+});
+
+test("L-3: contacts form — номер, набранный с «8», уходит как +7 (978) 123-45-67; Backspace в маске не залипает", async ({ page }) => {
+  await stubYm(page);
+  let body: { phone?: string } | null = null;
+  await page.route("**/api/telegram", (route) => {
+    body = JSON.parse(route.request().postData() ?? "{}");
+    return route.fulfill({ status: 200, contentType: "application/json", body: '{"ok":true}' });
+  });
+
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const section = page.locator("#contacts");
+  await section.scrollIntoViewIfNeeded();
+  const tel = section.locator('input[type="tel"]');
+
+  await section.getByPlaceholder("Иван Иванов").fill("Тест Восьмёрка");
+  await tel.click();
+  await expect(tel).toHaveValue("+7 ");
+  await tel.pressSequentially("89781234567");
+  await expect(tel).toHaveValue(PHONE_MASKED);
+
+  // Backspace проходит через разделители маски, номер можно допечатать заново
+  for (let i = 0; i < 4; i++) await tel.press("Backspace");
+  await expect(tel).toHaveValue("+7 (978) 123-");
+  await tel.pressSequentially("4567");
+  await expect(tel).toHaveValue(PHONE_MASKED);
+
+  await section.locator('input[type="checkbox"]').check();
+  await section.locator('button[type="submit"]').click();
+  await expect(section.getByText("Заявка отправлена!")).toBeVisible();
+  expect(body).not.toBeNull();
+  expect(body!.phone).toBe(PHONE_MASKED);
+});
+
+test("L-4: contacts form — вставка «8 978 123 45 67» в поле с «+7 » нормализуется", async ({ page }) => {
+  await stubYm(page);
+  await page.route("**/api/telegram", (route) =>
+    route.fulfill({ status: 599, contentType: "application/json", body: '{"ok":false}' }),
+  );
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  const section = page.locator("#contacts");
+  await section.scrollIntoViewIfNeeded();
+  const tel = section.locator('input[type="tel"]');
+
+  for (const pasted of ["8 978 123 45 67", "+7 (978) 123-45-67", "79781234567"]) {
+    await tel.click();
+    await tel.press("Control+A");
+    await tel.press("Backspace");
+    await tel.press("End");
+    await page.keyboard.insertText(pasted);
+    await expect(tel, `paste: ${pasted}`).toHaveValue(PHONE_MASKED);
+  }
 });

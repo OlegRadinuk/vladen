@@ -21,9 +21,18 @@ export default function SmoothScroll() {
     const scrollToTop = () => lenis.scrollTo(0, { duration: 1.2 });
     window.addEventListener("lenis-scroll-to-top", scrollToTop);
 
+    // Блокировка скролла фона (модалки): lenis.stop()/start() через события,
+    // чтобы не тащить инстанс Lenis в контекст.
+    const stop = () => lenis.stop();
+    const start = () => lenis.start();
+    window.addEventListener("lenis-stop", stop);
+    window.addEventListener("lenis-start", start);
+
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("lenis-scroll-to-top", scrollToTop);
+      window.removeEventListener("lenis-stop", stop);
+      window.removeEventListener("lenis-start", start);
       lenis.destroy();
     };
   }, []);

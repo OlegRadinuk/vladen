@@ -1,44 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Container from "@/components/ui/Container";
-import Button from "@/components/ui/Button";
+import LeadForm from "@/components/forms/LeadForm";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/company";
-
-type CalcData = {
-  service: string;
-  area: number;
-  material: string;
-  total: number;
-};
-
-type Status = "idle" | "loading" | "success" | "error";
-
-function validatePhone(phone: string) {
-  const cleaned = phone.replace(/\D/g, "");
-  return cleaned.length >= 11;
-}
-
-function formatPhone(value: string): string {
-  // Оставляем только цифры
-  let digits = value.replace(/\D/g, "");
-
-  // Если начинается с 8 — меняем на 7
-  if (digits.startsWith("8")) digits = "7" + digits.slice(1);
-  // Если начинается с 9 (например, 978...) — добавляем 7
-  if (digits.startsWith("9")) digits = "7" + digits;
-  // Обрезаем до 11 цифр
-  digits = digits.slice(0, 11);
-
-  // Форматируем: +7 (978) 123-45-67
-  let result = "+7";
-  if (digits.length > 1) result += " (" + digits.slice(1, 4);
-  if (digits.length >= 4) result += ") " + digits.slice(4, 7);
-  if (digits.length >= 7) result += "-" + digits.slice(7, 9);
-  if (digits.length >= 9) result += "-" + digits.slice(9, 11);
-
-  return result;
-}
 
 interface ContactsProps {
   heading?: string;
@@ -53,73 +17,6 @@ export default function Contacts({
   source,
   submitLabel = "Отправить заявку",
 }: ContactsProps = {}) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-  const [calcData, setCalcData] = useState<CalcData | null>(null);
-  const [pdConsent, setPdConsent] = useState(false);
-
-  useEffect(() => {
-    const readCalc = () => {
-      try {
-        const raw = localStorage.getItem("vladen_calc");
-        setCalcData(raw ? JSON.parse(raw) : null);
-      } catch {}
-    };
-    // Слушаем обновления от калькулятора на этой же странице
-    window.addEventListener("vladen_calc_update", readCalc);
-    return () => window.removeEventListener("vladen_calc_update", readCalc);
-  }, []);
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatPhone(e.target.value);
-    setPhone(formatted);
-    setPhoneError("");
-  };
-
-  const handlePhoneFocus = () => {
-    if (phone === "") setPhone("+7 ");
-  };
-
-  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Не даём удалить "+7 " префикс
-    if (
-      (e.key === "Backspace" || e.key === "Delete") &&
-      phone.replace(/\D/g, "").length <= 1
-    ) {
-      e.preventDefault();
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!pdConsent) return;
-    setPhoneError("");
-
-    if (!validatePhone(phone)) {
-      setPhoneError("Введите корректный номер телефона");
-      return;
-    }
-
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/telegram", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, calc: calcData, source, consent_timestamp: new Date().toISOString() }),
-      });
-      if (!res.ok) throw new Error();
-      setStatus("success");
-      if(typeof ym!=='undefined') ym(109280535,'reachGoal','form_submit');
-      setName("");
-      setPhone("");
-      setPdConsent(false);
-    } catch {
-      setStatus("error");
-    }
-  };
-
   return (
     <section id="contacts" className="py-20 md:py-28 bg-light">
       <Container>
@@ -204,120 +101,12 @@ export default function Contacts({
               Оставить заявку
             </h3>
 
-            {status === "success" ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <p className="font-oswald text-xl font-semibold text-text-light mb-2">
-                  Заявка отправлена!
-                </p>
-                <p className="text-text-muted">
-                  Перезвоним вам в течение 30 минут.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <label className="block text-text-muted text-sm mb-1.5">
-                    Ваше имя
-                  </label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Иван Иванов"
-                    required
-                    className="w-full border border-gray-200 rounded-lg px-4 py-3 text-text-light focus:outline-none focus:border-accent transition-colors"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-text-muted text-sm mb-1.5">
-                    Телефон
-                  </label>
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={handlePhoneChange}
-                    onFocus={handlePhoneFocus}
-                    onKeyDown={handlePhoneKeyDown}
-                    placeholder="+7 (978) 123-45-67"
-                    required
-                    className={`w-full border rounded-lg px-4 py-3 text-text-light focus:outline-none transition-colors ${
-                      phoneError
-                        ? "border-red-400 focus:border-red-400"
-                        : "border-gray-200 focus:border-accent"
-                    }`}
-                  />
-                  {phoneError && (
-                    <p className="text-red-500 text-xs mt-1">{phoneError}</p>
-                  )}
-                </div>
-
-                {calcData && (
-                  <div className="relative bg-accent/8 border border-accent/25 rounded-lg px-4 py-3 text-sm">
-                    <button
-                      type="button"
-                      onClick={() => setCalcData(null)}
-                      className="absolute top-2 right-2 text-text-muted hover:text-text-light transition-colors"
-                      aria-label="Убрать расчёт"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                    <p className="text-text-muted text-xs mb-1 font-medium uppercase tracking-wide">Ваш расчёт из калькулятора</p>
-                    <div className="text-text-light space-y-0.5">
-                      <p>Вид работ: <span className="font-medium">{calcData.service}</span></p>
-                      <p>Площадь: <span className="font-medium">{calcData.area} м²</span></p>
-                      <p>Класс материалов: <span className="font-medium">{calcData.material}</span></p>
-                      <p>Ориентировочная стоимость: <span className="font-medium text-accent">от {new Intl.NumberFormat("ru-RU").format(calcData.total)} ₽</span></p>
-                    </div>
-                  </div>
-                )}
-
-                {status === "error" && (
-                  <p className="text-red-500 text-sm" role="alert" data-testid="contacts-error">
-                    Ошибка отправки. Пожалуйста, позвоните нам напрямую:{" "}
-                    <a href={PHONE_HREF} className="underline font-semibold whitespace-nowrap">
-                      {PHONE_DISPLAY}
-                    </a>
-                  </p>
-                )}
-
-                <label className="flex items-start gap-2 text-xs text-text-muted cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={pdConsent}
-                    onChange={(e) => setPdConsent(e.target.checked)}
-                    className="mt-0.5 flex-shrink-0 accent-accent"
-                  />
-                  <span>
-                    Согласен на обработку персональных данных в соответствии с{" "}
-                    <a
-                      href="/privacy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline hover:text-accent transition-colors"
-                    >
-                      Политикой конфиденциальности
-                    </a>
-                  </span>
-                </label>
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={status === "loading" || !pdConsent}
-                >
-                  {status === "loading" ? "Отправка..." : submitLabel}
-                </Button>
-              </form>
-            )}
+            <LeadForm
+              source={source}
+              submitLabel={submitLabel}
+              withCalc
+              errorTestId="contacts-error"
+            />
           </div>
         </div>
       </Container>

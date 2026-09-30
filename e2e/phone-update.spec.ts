@@ -190,7 +190,7 @@ test("T-P-SCREENSHOT-375: mobile phone area (footer)", async ({ page }) => {
   });
 
   await page.screenshot({
-    path: "D:/projects/vladen/spec/evp-focus/shots/home-mobile-375-phone.png",
+    path: "test-results/shots/home-mobile-375-phone.png",
     fullPage: false,
   });
 });
@@ -209,7 +209,7 @@ test("T-P-SCREENSHOT-1440: desktop footer", async ({ page }) => {
   ).toBeVisible({ timeout: 8000 });
 
   await page.screenshot({
-    path: "D:/projects/vladen/spec/evp-focus/shots/home-desktop-1440-footer.png",
+    path: "test-results/shots/home-desktop-1440-footer.png",
     fullPage: false,
   });
 });

@@ -12,6 +12,7 @@ import ChatWidget from "@/components/ui/ChatWidget";
 import { FOUNDED_YEAR, YEARS_PHRASE, OBJECTS_DONE, OBJECTS_PHRASE, PHONE_DISPLAY, PHONE_TEL } from "@/lib/company";
 import CookieBanner from "@/components/ui/CookieBanner";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { ConsultModalProvider } from "@/contexts/ConsultModalContext";
 
 const oswald = Oswald({
   subsets: ["latin", "cyrillic"],
@@ -273,11 +274,13 @@ export default function RootLayout({
           <SmoothScroll />
           <ScrollToTop />
           <LoadingScreen />
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <ChatWidget />
-          <CookieBanner />
+          <ConsultModalProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <ChatWidget />
+            <CookieBanner />
+          </ConsultModalProvider>
         </LoadingProvider>
         <script
           dangerouslySetInnerHTML={{__html: `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");ym(109280535,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});`}}

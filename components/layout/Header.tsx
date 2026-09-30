@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import { useConsultModal } from "@/contexts/ConsultModalContext";
 
 const navLinks: { href: string; label: string; hot?: boolean }[] = [
   { href: "/", label: "Главная" },
@@ -19,6 +20,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [trainKey, setTrainKey] = useState(0);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const { openConsult } = useConsultModal();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -120,11 +123,8 @@ export default function Header() {
               <Button
                 size="md"
                 className="hover:shadow-[0_0_18px_5px_rgba(217,119,6,0.4)] transition-shadow duration-300"
-                onClick={() => {
-                  document
-                    .getElementById("contacts")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
+                aria-haspopup="dialog"
+                onClick={(e) => openConsult(e.currentTarget)}
               >
                 Получить консультацию
               </Button>
@@ -133,6 +133,7 @@ export default function Header() {
 
           {/* Mobile burger */}
           <button
+            ref={burgerRef}
             className="md:hidden text-accent p-2 flex-shrink-0 ml-3"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Меню"
@@ -198,11 +199,11 @@ export default function Header() {
             <Button
               size="sm"
               className="mt-2 w-full"
+              aria-haspopup="dialog"
               onClick={() => {
                 setIsOpen(false);
-                document
-                  .getElementById("contacts")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                // Меню схлопывается — фокус после закрытия модалки возвращаем на бургер
+                openConsult(burgerRef.current);
               }}
             >
               Получить консультацию
